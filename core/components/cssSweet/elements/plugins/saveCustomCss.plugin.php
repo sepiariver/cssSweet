@@ -23,16 +23,13 @@
  */
 
 // Optionally a chunk name can be specified in plugin properties
-$chunk = $modx->getOption('csss.custom_css_chunk',$scriptProperties,$modx->getOption('csss.custom_css_chunk'));
-if ( !$chunk ) $chunk = 'csss.custom.css';
+$chunk = $modx->getOption('csss.custom_css_chunk',$scriptProperties,$modx->getOption('csss.custom_css_chunk',null,'csss.custom.css'));
 
 // Optionally a file name can be specified in plugin properties
-$filename = $modx->getOption('csss.custom_css_filename',$scriptProperties,$modx->getOption('csss.custom_css_filename'));
-if ( !$filename ) $filename = 'csss-custom.css';
+$filename = $modx->getOption('csss.custom_css_filename',$scriptProperties,$modx->getOption('csss.custom_css_filename',null,'csss-custom.css'));
 
 // Optionally minify the output, defaults to 'true'
-$minify_custom_css = $modx->getOption('csss.minify_custom_css',$scriptProperties,$modx->getOption('csss.minify_custom_css'));
-if ( !$minify_custom_css ) $minify_custom_css = true;
+$minify_custom_css = $modx->getOption('csss.minify_custom_css',$scriptProperties,$modx->getOption('csss.minify_custom_css',null,true));
 
 // Construct path from system settings
 $csssCustomCssPath = $modx->getOption('csss.custom_css_path');
