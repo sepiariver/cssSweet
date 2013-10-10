@@ -23,7 +23,7 @@ if (!defined('MOREPROVIDER_BUILD')) {
     /* define version */
     define('PKG_NAME','cssSweet');
     define('PKG_NAME_LOWER',strtolower(PKG_NAME));
-    define('PKG_VERSION','1.0.0');
+    define('PKG_VERSION','1.0.1');
     define('PKG_RELEASE','beta1');
 
     /* load modx */
