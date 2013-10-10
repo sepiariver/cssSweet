@@ -20,3 +20,6 @@ to manage CSS styles.
 - Use other MODX tags & placeholders in your CSS - limitless 
 possibilities, "dynamic CSS" without performance penalty, because the
 plugin writes the static CSS file on the Manager Clear Cache action.
+
+** Help make cssSweet better. PRs are welcome and will be respectfully
+considered. Vive la MODX!
