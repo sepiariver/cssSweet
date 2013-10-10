@@ -19,7 +19,7 @@
  *
  * @package cssSweet
  *
- *
+ * TO DO: change file_exists check on line 60 to is_dir. Better check on last line OR more accurate return notice.
  */
 
 // Optionally a chunk name can be specified in plugin properties
