@@ -1,7 +1,7 @@
 ----------------------
 cssSweet
 ----------------------
-Version: 1.0.0-beta1
+Version: 1.0.1-beta1
 Author: YJ Tso (@sepiariver)
 Contact: yj@modx.com
 ----------------------
