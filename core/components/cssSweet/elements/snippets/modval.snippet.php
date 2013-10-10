@@ -19,11 +19,11 @@
  */
 $input = isset($input) ? $input : '';
 if( !$input ) return;
-preg_match('/[0-9]+/',$input,$valArr);
-$unit = preg_replace('/[0-9]+/','',$input);
+preg_match('/([0-9.]+)/',$input,$valArr);
+$unit = preg_replace('/([0-9.]+)/','',$input);
 
 // Get options: numbers go in one array, operators in another
-preg_match('/[0-9]+/',$options,$optValArr);
+preg_match('/([0-9.]+)/',$options,$optValArr);
 preg_match('/[\+\-\*\/]/',$options,$op);
 
 // Default operator
