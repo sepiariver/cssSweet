@@ -30,6 +30,8 @@ $filename = $modx->getOption('csss.custom_css_filename',$scriptProperties,$modx-
 
 // Optionally minify the output, defaults to 'true'
 $minify_custom_css = $modx->getOption('csss.minify_custom_css',$scriptProperties,$modx->getOption('csss.minify_custom_css',null,true));
+// strips CSS comment blocks, defaults to 'false'
+$strip_comments = $modx->getOption('csss.strip_css_comment_blocks',$scriptProperties,$modx->getOption('csss.strip_css_comment_blocks',null,false));
 
 // Construct path from system settings
 $csssCustomCssPath = $modx->getOption('csss.custom_css_path');
@@ -83,10 +85,13 @@ $file = $csssCustomCssPath . $filename;
 
 // Output
 if ($minify_custom_css) {
-    $contents = preg_replace("/\s+/"," ",$contents);
+    $contents = preg_replace("/\s+/", " ", $contents);
     $expanded = array(' {', '{ ', ' }', '} ', ' :', ': ', ' ;', '; ', ', ', ' ,');
     $contracted = array('{', '{', '}', '}', ':', ':', ';', ';', ',', ',');
     $contents = str_replace($expanded, $contracted, $contents);
+    if ($strip_comments) {
+        $contents = preg_replace("/\/\*[^*]*\*+([^\/*][^*]*\*+)*\//", " ", $contents);
+    }
 } 
 file_put_contents($file,$contents);
 if (file_exists($file) && is_readable($file)) $modx->log(modX::LOG_LEVEL_INFO, 'Success! Custom CSS saved to file "' . $file . '"','','saveCustomCss');
