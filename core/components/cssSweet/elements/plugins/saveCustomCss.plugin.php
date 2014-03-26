@@ -84,7 +84,7 @@ $file = $csssCustomCssPath . $filename;
 // Output
 if ($minify_custom_css) {
     $contents = preg_replace("/\s+/"," ",$contents);
-    $expanded = array(' {', '{ ', ' }', '} ', ' :', ': ', ' ;', '; ', ', ');
+    $expanded = array(' {', '{ ', ' }', '} ', ' :', ': ', ' ;', '; ', ', ', ' ,');
     $contracted = array('{', '{', '}', '}', ':', ':', ';', ';', ',', ',');
     $contents = str_replace($expanded, $contracted, $contents);
 } 
