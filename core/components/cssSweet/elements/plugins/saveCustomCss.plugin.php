@@ -76,6 +76,11 @@ if ($chunked) {
 $file = $csssCustomCssPath . $filename;
 
 // Output
-if ($minify_custom_css) $contents = preg_replace("/\s+/"," ",$contents);
+if ($minify_custom_css) {
+    $contents = preg_replace("/\s+/"," ",$contents);
+    $expanded = array(' {', '{ ', ' }', '} ', ' :', ': ', ' ;', '; ', ', ');
+    $contracted = array('{', '{', '}', '}', ':', ':', ';', ';', ',', ',');
+    $contents = str_replace($expanded, $contracted, $contents);
+} 
 file_put_contents($file,$contents);
 if (file_exists($file) && is_readable($file)) $modx->log(modX::LOG_LEVEL_INFO, 'Success! Custom CSS saved to file "' . $file . '"','','saveCustomCss');
