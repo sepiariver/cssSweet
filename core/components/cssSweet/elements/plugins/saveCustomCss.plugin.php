@@ -55,9 +55,15 @@ if ($clientConfig instanceof ClientConfig) {
 } else { 
     $modx->log(modX::LOG_LEVEL_WARN, 'Failed to load ClientConfig class. ClientConfig settings not included.','','saveCustomCssClientConfig'); 
 }
+
+// If directory exists but isn't writable we have a problem, Houston
+if ( file_exists($csssCustomCssPath) && !is_writable($csssCustomCssPath) ) {
+    $modx->log(modX::LOG_LEVEL_ERROR, 'The directory at ' . $csssCustomCssPath . 'is not writable!','','saveCustomCss');
+    return;
+}
     
 // Check if directory exists, if not, create it
-if ( !file_exists($csssCustomCssPath) || !is_writable($csssCustomCssPath) ) {
+if ( !file_exists($csssCustomCssPath) ) {
     mkdir($csssCustomCssPath,0755,true);
     $modx->log(modX::LOG_LEVEL_INFO, 'Directory created at ' . $csssCustomCssPath,'','saveCustomCss');
 }
