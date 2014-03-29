@@ -33,8 +33,8 @@ $minify_custom_css = $modx->getOption('csss.minify_custom_css',$scriptProperties
 // strips CSS comment blocks, defaults to 'false'
 $strip_comments = $modx->getOption('csss.strip_css_comment_blocks',$scriptProperties,$modx->getOption('csss.strip_css_comment_blocks',null,false));
 
-// Construct path from system settings
-$csssCustomCssPath = $modx->getOption('csss.custom_css_path');
+// Construct path from system settings - can be set in properties as of v.1.1
+$csssCustomCssPath = $modx->getOption('csss.custom_css_path',$scriptProperties,$modx->getOption('csss.custom_css_path'));
 if ( !$csssCustomCssPath ) {
     $assetsPath = $modx->getOption('assets_path');
     $csssCustomCssPath = $assetsPath . 'components/csssweet/';
