@@ -5,6 +5,7 @@ $s = array(
     'custom_css_chunk' => 'csss.custom.css',
     'custom_css_filename' => 'csss-custom.css',
     'minify_custom_css' => true,
+    'strip_css_comment_blocks' => false,
 );
 
 $settings = array();
@@ -29,5 +30,3 @@ foreach ($s as $key => $value) {
 }
 
 return $settings;
-
-
