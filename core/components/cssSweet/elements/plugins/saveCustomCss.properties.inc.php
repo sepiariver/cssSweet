@@ -32,14 +32,14 @@ $properties = array(
         'desc' => 'Enable CSS minify on output.',
         'type' => 'combo-boolean',
         'options' => '',
-        'value' => '',
+        'value' => '1',
     ),
     array(
         'name' => 'csss.strip_css_comment_blocks',
         'desc' => 'Strips CSS comment blocks on output.',
         'type' => 'combo-boolean',
         'options' => '',
-        'value' => '',
+        'value' => '0',
     ),
 );
 
