@@ -34,6 +34,13 @@ $properties = array(
         'options' => '',
         'value' => '',
     ),
+    array(
+        'name' => 'csss.strip_css_comment_blocks',
+        'desc' => 'Strips CSS comment blocks on output.',
+        'type' => 'combo-boolean',
+        'options' => '',
+        'value' => '',
+    ),
 );
 
 return $properties;
