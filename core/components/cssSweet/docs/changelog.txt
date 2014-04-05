@@ -1,4 +1,11 @@
 ++++++++++++++++++++++++++++++++
+++   cssSweet 1.1.0-rc1     ++
+++   Released on 2014-04-05   ++
+++++++++++++++++++++++++++++++++
+Improved minification
+Improved error checking for ClientConfig class
+
+++++++++++++++++++++++++++++++++
 ++   cssSweet 1.0.1-beta1     ++
 ++   Released on 2013-10-05   ++
 ++++++++++++++++++++++++++++++++
