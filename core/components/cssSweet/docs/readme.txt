@@ -1,9 +1,9 @@
 ----------------------
 cssSweet
 ----------------------
-Version: 1.1.0-rc1
+Version: 1.2.0-pl
 Author: YJ Tso (@sepiariver)
-Contact: yj@modx.com
+Contact: yj@modx.com, info@sepiariver.com
 ----------------------
 
 cssSweet is a suite of tools for processing CSS. It comes with several 
@@ -19,4 +19,5 @@ to manage CSS styles.
 - Author MODX "themes" that are customizable by the end user.
 - Use other MODX tags & placeholders in your CSS - limitless 
 possibilities, "dynamic CSS" without performance penalty, because the
-plugin writes the static CSS file on the Manager Clear Cache action.
+plugin writes the static CSS file on the Manager Clear Cache and
+Chunk Save actions, not per request.

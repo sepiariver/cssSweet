@@ -1,5 +1,12 @@
 ++++++++++++++++++++++++++++++++
-++   cssSweet 1.1.0-rc1     ++
+++   cssSweet 1.2.0-pl        ++
+++   Released on 2015-01-02   ++
+++++++++++++++++++++++++++++++++
+Ability to process multiple Chunks
+Added OnChunkFormSave event
+
+++++++++++++++++++++++++++++++++
+++   cssSweet 1.1.0-rc1       ++
 ++   Released on 2014-04-05   ++
 ++++++++++++++++++++++++++++++++
 Improved minification

@@ -4,6 +4,7 @@ $events = array();
 
 $e = array(
     'OnSiteRefresh',
+    'OnChunkFormSave',
 );
 
 foreach ($e as $ev) {
@@ -16,5 +17,3 @@ foreach ($e as $ev) {
 }
 
 return $events;
-
-
