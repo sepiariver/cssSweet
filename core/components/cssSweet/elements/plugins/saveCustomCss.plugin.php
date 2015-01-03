@@ -41,6 +41,7 @@ $strip_comments = $modx->getOption('csss.strip_css_comment_blocks', $scriptPrope
 
 // Construct path from system settings - can be set in properties as of v.1.1
 $csssCustomCssPath = $modx->getOption('csss.custom_css_path', $scriptProperties, $modx->getOption('csss.custom_css_path'));
+$csssCustomCssPath = rtrim($csssCustomCssPath, '/') . '/';
 if ( !$csssCustomCssPath ) {
     $assetsPath = $modx->getOption('assets_path');
     $csssCustomCssPath = $assetsPath . 'components/csssweet/';
@@ -69,9 +70,13 @@ if (file_exists($csssCustomCssPath) && !is_writable($csssCustomCssPath)) {
 }
     
 // Check if directory exists, if not, create it
-if ( !file_exists($csssCustomCssPath) ) {
-    mkdir($csssCustomCssPath, 0755, true);
-    $modx->log(modX::LOG_LEVEL_INFO, 'Directory created at ' . $csssCustomCssPath, '', 'saveCustomCss');
+if (!file_exists($csssCustomCssPath)) {
+    if (mkdir($csssCustomCssPath, 0755, true)) {
+        $modx->log(modX::LOG_LEVEL_INFO, 'Directory created at ' . $csssCustomCssPath, '', 'saveCustomCss');
+    } else {
+        $modx->log(modX::LOG_LEVEL_ERROR, 'Directory could not be created at ' . $csssCustomCssPath, '', 'saveCustomCss');
+        return;
+    }
 }
 
 // Parse chunk with $settings array

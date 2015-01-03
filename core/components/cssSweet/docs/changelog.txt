@@ -4,6 +4,7 @@
 ++++++++++++++++++++++++++++++++
 Ability to process multiple Chunks
 Added OnChunkFormSave event
+Better path and directory checking
 
 ++++++++++++++++++++++++++++++++
 ++   cssSweet 1.1.0-rc1       ++
