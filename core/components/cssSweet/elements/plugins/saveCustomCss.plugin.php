@@ -41,11 +41,12 @@ $strip_comments = $modx->getOption('csss.strip_css_comment_blocks', $scriptPrope
 
 // Construct path from system settings - can be set in properties as of v.1.1
 $csssCustomCssPath = $modx->getOption('csss.custom_css_path', $scriptProperties, $modx->getOption('csss.custom_css_path'));
-$csssCustomCssPath = rtrim($csssCustomCssPath, '/') . '/';
-if ( !$csssCustomCssPath ) {
+if (empty($csssCustomCssPath)) {
     $assetsPath = $modx->getOption('assets_path');
     $csssCustomCssPath = $assetsPath . 'components/csssweet/';
     $modx->log(modX::LOG_LEVEL_INFO, 'csss.custom_css_path was not defined. Path set to ' . $csssCustomCssPath,'','saveCustomCss');
+} else {
+    $csssCustomCssPath = rtrim($csssCustomCssPath, '/') . '/';
 }
 
 // Grab the ClientConfig class
