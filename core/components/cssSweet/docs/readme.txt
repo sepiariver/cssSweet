@@ -1,7 +1,7 @@
 ----------------------
 cssSweet
 ----------------------
-Version: 1.2.0-pl
+Version: 1.2.1-pl
 Author: YJ Tso (@sepiariver)
 Contact: yj@modx.com, info@sepiariver.com
 ----------------------
