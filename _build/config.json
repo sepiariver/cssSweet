@@ -88,8 +88,31 @@
     },
     "systemSettings" : [
       {
-        "key" : "csss.custom_css_path",
-        "value" : "{assets_path}components/csssweet/"
+        "key" : "custom_css_path",
+        "namespace" : "csss",
+        "value" : "{assets_path}components\/csssweet\/"
+      },
+      {  
+        "key" : "custom_css_chunk",
+        "namespace" : "csss",
+        "value" : "csss.custom.css"
+      },
+      {
+        "key" : "custom_css_filename",
+        "namespace" : "csss",
+        "value" : "csss-custom.css"
+      },
+      {
+        "key" : "minify_custom_css",
+        "namespace" : "csss",
+        "value" : true,
+        "type" : "combo-boolean"
+      },
+      {
+        "key" : "strip_css_comment_blocks",
+        "namespace" : "csss",
+        "value" : false,
+        "type" : "combo-boolean"
       }
     ]
   }
