@@ -1,30 +1,88 @@
 {
   "name" : "cssSweet",
   "lowCaseName" : "csssweet",
-  "description" : "cssSweet is a suite of tools for processing CSS. It comes with several output modifiers to modify CSS values, and a plugin that concatenates and processes CSS from specified chunks to a minified CSS file. Version 2+ also concatenates and minifies JS.",
+  "description" : "cssSweet is a suite of tools for processing CSS. It comes with several output modifiers to modify CSS values, and a plugin that concatenates and processes CSS from specified chunks to a minified CSS file. Version 2+ will also concatenate and minifie JS.",
   "author" : "@sepiariver YJ Tso",
-  "version" : "2.0.0-rc1",
+  "version" : "1.2.1-pl",
   "package" : {
     "elements" : {
+      "categories" : [
+        {
+          "name" : "cssSweet"
+        }
+      ],
       "snippets" : [
         {
           "name" : "lighten",
+          "cateogry" : "cssSweet",
           "properties" : [
             {
               "name" : "percOpt",
-              "desc" : "Can be 'input', 'spectrum' or 'average'.",
+              "description" : "Can be 'input', 'spectrum' or 'average'.",
               "type" : "textfield",
-              "options" : "",
+              
               "value" : "input"
             },
             {
               "name" : "threshold",
-              "desc" : "Valid, 6-character hex against which to evaluate light and dark hex values.",
+              "description" : "Valid, 6-character hex against which to evaluate light and dark hex values.",
               "type" : "textfield",
-              "options" : "",
+              
               "value" : "999999"
             }
           ]
+        },{
+          "name" : "modval",
+          "category" : "cssSweet",
+        },{
+          "name" : "prefix",
+          "category" : "cssSweet",
+        }        
+      ],
+      "plugins" : [
+        {
+          "name" : "saveCustomCss",
+          "category" : "cssSweet",
+          "events" : ["OnSiteRefresh"],
+          "properties" : [  
+            {  
+              "name" : "csss.custom_css_chunk",
+              "description" : "Name of chunk to parse custom CSS.",
+              "type" : "textfield",
+              "value" : "csss.custom.css"
+            },
+            {  
+              "name" : "csss.custom_css_filename",
+              "description" : "Name of file to output custom CSS.",
+              "type" : "textfield",
+              "value" : "csss-custom.css"
+            },
+            {  
+              "name" : "csss.custom_css_path",
+              "description" : "Optionally override the path in system settings.",
+              "type" : "textfield",
+              "value" : ""
+            },
+            {  
+              "name" : "csss.minify_custom_css",
+              "description" : "Enable CSS minify on output.",
+              "type" : "combo-boolean",
+              "value" : "1"
+            },
+            {  
+              "name" : "csss.strip_css_comment_blocks",
+              "description" : "Strips CSS comment blocks on output.",
+              "type" : "combo-boolean",
+              "value" : "0"
+            }
+          ]
+        }
+      ],
+      "chunks" : [
+        {
+          "name" : "csss.custom.css",
+          "file" : "csss.custom.css.tpl",
+          "category" : "cssSweet"
         }
       ]
     },
