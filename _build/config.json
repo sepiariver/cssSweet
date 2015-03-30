@@ -6,43 +6,32 @@
   "version" : "1.2.1-pl",
   "package" : {
     "elements" : {
-      "categories" : [
-        {
-          "name" : "cssSweet"
-        }
-      ],
       "snippets" : [
         {
           "name" : "lighten",
-          "cateogry" : "cssSweet",
           "properties" : [
             {
               "name" : "percOpt",
               "description" : "Can be 'input', 'spectrum' or 'average'.",
               "type" : "textfield",
-              
               "value" : "input"
             },
             {
               "name" : "threshold",
               "description" : "Valid, 6-character hex against which to evaluate light and dark hex values.",
               "type" : "textfield",
-              
               "value" : "999999"
             }
           ]
         },{
-          "name" : "modval",
-          "category" : "cssSweet",
+          "name" : "modval"
         },{
-          "name" : "prefix",
-          "category" : "cssSweet",
+          "name" : "prefix"
         }        
       ],
       "plugins" : [
         {
           "name" : "saveCustomCss",
-          "category" : "cssSweet",
           "events" : ["OnSiteRefresh"],
           "properties" : [  
             {  
@@ -81,8 +70,7 @@
       "chunks" : [
         {
           "name" : "csss.custom.css",
-          "file" : "csss.custom.css.tpl",
-          "category" : "cssSweet"
+          "file" : "csss.custom.css.tpl"
         }
       ]
     },
