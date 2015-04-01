@@ -1,8 +1,8 @@
 cssSweet
 =========================================
 Version: 1.2.1-pl
-Author: YJ Tso (@sepiariver)
-Contact: yj@modx.com, info@sepiariver.com
+
+Author: YJ Tso (@sepiariver) [on Twitter](https://twitter.com/sepiariver)
 
 cssSweet is a suite of tools for processing CSS. It comes with several output modifiers to modify CSS values, and a plugin that writes processed CSS from the specified chunk to a flat CSS file.
 
