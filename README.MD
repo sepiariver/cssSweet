@@ -1,10 +1,8 @@
-----------------------
 cssSweet
-----------------------
+=========================================
 Version: 1.2.1-pl
 Author: YJ Tso (@sepiariver)
 Contact: yj@modx.com, info@sepiariver.com
-----------------------
 
 cssSweet is a suite of tools for processing CSS. It comes with several output modifiers to modify CSS values, and a plugin that writes processed CSS from the specified chunk to a flat CSS file.
 
@@ -24,4 +22,4 @@ Reference this generated CSS file in your template, like this
 and you'll be good to go.
 
 In the Plugin properties, you can set the Chunks that you wish to process and include, as well as the filesystem location to which to write the output file.
-[Screenshot]
+[Screenshot](http://sepiariver.co/1GLQAhv)
