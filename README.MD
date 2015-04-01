@@ -8,9 +8,9 @@ cssSweet is a suite of tools for processing CSS. It comes with several output mo
 
 ## Example Use Cases
 - Use system or context settings to store primary colors in a site's color scheme, then process all other color values relative to these, so you can shift the entire color theme by modifying a few settings.
-- Use in conjunction with ClientConfig to give site owners a nice UI to manage CSS styles---but only the ones you expose, and only in the manner you choose!
+- Use in conjunction with ClientConfig to give site owners a nice UI to manage CSS styles--but only the ones you expose, and only in the manner you choose!
 - Author MODX "themes" that are customizable by the end user.
-- Use other MODX tags & placeholders in your CSS - limitless possibilities, "dynamic CSS" without performance penalty, because the plugin writes the static CSS file on the Manager Clear Cache and Chunk Save actions, not per request.
+- Use other MODX tags & placeholders in your CSS--limitless possibilities! Utilize "dynamic CSS" without the performance penalty, because the plugin writes the static CSS file on the Manager Clear Cache and Chunk Save actions, not per request.
 
 ## Usage
 
@@ -26,7 +26,7 @@ Reference this generated CSS file in your template, like this
 and you'll be good to go.
 
 ### Customization
-In the Plugin properties, you can set the Chunks that you wish to process and include, by name, in a comma-separated list. Note you can include static Chunks that reference files---even minified files. You can also customize the filesystem location to which to write the output file.
+In the Plugin properties, you can set the Chunks that you wish to process and include, by name, in a comma-separated list. Note you can include static Chunks that reference files--even minified files. You can also customize the filesystem location to which to write the output file.
 ![Screenshot](https://www.dropbox.com/s/9i5kkcb7k5097pu/Screenshot%202015-04-01%2010.51.16.png?dl=1)
 
 ### Events
