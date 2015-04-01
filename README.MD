@@ -22,4 +22,4 @@ Reference this generated CSS file in your template, like this
 and you'll be good to go.
 
 In the Plugin properties, you can set the Chunks that you wish to process and include, as well as the filesystem location to which to write the output file.
-![Screenshot](http://sepiariver.co/1GLQAhv)
+![Screenshot](https://www.dropbox.com/s/9i5kkcb7k5097pu/Screenshot%202015-04-01%2010.51.16.png?dl=1)
