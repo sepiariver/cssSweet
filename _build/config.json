@@ -32,7 +32,7 @@
       "plugins" : [
         {
           "name" : "saveCustomCss",
-          "events" : ["OnSiteRefresh"],
+          "events" : ["OnSiteRefresh","OnChunkFormSave"],
           "properties" : [  
             {  
               "name" : "custom_css_chunk",
