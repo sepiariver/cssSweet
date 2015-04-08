@@ -76,6 +76,18 @@
               "value" : "1"
             },
             {  
+              "name" : "css_import_path",
+              "description" : "Optionally set base path to enable CSS imports.",
+              "type" : "textfield",
+              "value" : ""
+            },
+            {  
+              "name" : "convert_with_prefixes",
+              "description" : "Convert CSS3 keyframes and properties with vendor prefixes.",
+              "type" : "combo-boolean",
+              "value" : "0"
+            },
+            {  
               "name" : "strip_css_comment_blocks",
               "description" : "Strips CSS comment blocks on output.",
               "type" : "combo-boolean",

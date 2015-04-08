@@ -37,9 +37,14 @@ if ($modx->event->name === 'OnChunkFormSave' && !in_array($chunk->get('name'), $
 $filename = $modx->getOption($mode . '_css_filename', $scriptProperties, 'csss-custom.css');
 
 // Optionally minify the output, defaults to 'true'
-$minify_custom_css = $modx->getOption('minify_custom_css', $scriptProperties, true);
+$minify_custom_css = (bool) $modx->getOption('minify_custom_css', $scriptProperties, true);
 // strips CSS comment blocks, defaults to 'false'
-$strip_comments = $modx->getOption('strip_css_comment_blocks', $scriptProperties, false);
+$strip_comments = (bool) $modx->getOption('strip_css_comment_blocks', $scriptProperties, false);
+// optionally set base_path for css imports
+$css_import_path = $modx->getOption('css_import_path', $scriptProperties, false);
+$css_import_path = (!$css_import_path || empty($css_import_path) || !is_string($css_import_path)) ? false : array('BasePath' => $css_import_path);
+// optionally add vendor prefixes and convert keyframes
+$convert_with_prefixes = (bool) $modx->getOption('convert_with_prefixes', $scriptProperties, false);
 
 // Construct path from system settings - can be set in properties as of v.1.1
 $csssCustomCssPath = $modx->getOption('custom_css_path', $scriptProperties, '');
@@ -86,7 +91,7 @@ foreach ($chunks as $current) {
     if ($processed) { 
         $contents .= $processed;    
     } else {
-        $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to get Chunk ' . $current . '. Custom CSS not saved.', '', 'saveCustomCss');
+        $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to get Chunk ' . $current . '. Chunk contents not saved.', '', 'saveCustomCss');
     }
 }
 if (empty($contents)) return;
@@ -97,13 +102,34 @@ $file = $csssCustomCssPath . $filename;
 
 // Output
 if ($minify_custom_css) {
-    $contents = preg_replace("/\s+/", " ", $contents);
-    $expanded = array(' {', '{ ', ' }', '} ', ' :', ': ', ' ;', '; ', ', ', ' ,');
-    $contracted = array('{', '{', '}', '}', ':', ':', ';', ';', ',', ',');
-    $contents = str_replace($expanded, $contracted, $contents);
-    if ($strip_comments) {
-        $contents = preg_replace("/\/\*[^*]*\*+([^\/*][^*]*\*+)*\//", " ", $contents);
+    $cssSweetLibsPath = $modx->getOption('csssweet.core_path', null, $modx->getOption('core_path') . 'components/csssweet/');
+    $cssSweetLibsPath .= 'model/cssSweet/libs/';
+    $cssSweetcssMinFile = 'cssmin-v3.0.1-minified.php';
+    
+    if (file_exists($cssSweetLibsPath . $cssSweetcssMinFile)) {
+        include_once $cssSweetLibsPath . $cssSweetcssMinFile;
+        $cssMin = new CssMin();
     }
+    
+    if ($cssMin instanceof CssMin) {
+
+        $filters = array(
+                "ImportImports"                 => $css_import_path,
+                "RemoveComments"                => $strip_comments, 
+                "RemoveEmptyRulesets"           => true,
+                "RemoveEmptyAtBlocks"           => true,
+                "ConvertLevel3AtKeyframes"      => $convert_with_prefixes,
+                "ConvertLevel3Properties"       => $convert_with_prefixes,
+                "Variables"                     => false,
+                "RemoveLastDelarationSemiColon" => false,
+        );
+
+        $contents = $cssMin->minify($contents, $filters);
+        
+    } else { 
+        $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to load CssMin class. CSS minification not performed.','','saveCustomCss'); 
+    }
+
 } 
 file_put_contents($file, $contents);
 if (file_exists($file) && is_readable($file)) $modx->log(modX::LOG_LEVEL_INFO, 'Success! Custom CSS saved to file "' . $file . '"', '', 'saveCustomCss');
