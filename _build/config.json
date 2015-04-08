@@ -35,31 +35,48 @@
           "events" : ["OnSiteRefresh"],
           "properties" : [  
             {  
-              "name" : "csss.custom_css_chunk",
+              "name" : "custom_css_chunk",
               "description" : "Name of chunk to parse custom CSS.",
               "type" : "textfield",
               "value" : "csss.custom.css"
             },
             {  
-              "name" : "csss.custom_css_filename",
+              "name" : "custom_css_filename",
               "description" : "Name of file to output custom CSS.",
               "type" : "textfield",
               "value" : "csss-custom.css"
+            },{  
+              "name" : "dev_css_chunk",
+              "description" : "Name of chunk to parse custom CSS in DEV mode.",
+              "type" : "textfield",
+              "value" : "csss.dev.css"
             },
             {  
-              "name" : "csss.custom_css_path",
+              "name" : "dev_css_filename",
+              "description" : "Name of file to output custom CSS in DEV mode.",
+              "type" : "textfield",
+              "value" : "csss-dev.css"
+            },
+            {  
+              "name" : "dev_mode",
+              "description" : "Enable DEV mode.",
+              "type" : "combo-boolean",
+              "value" : "0"
+            },
+            {  
+              "name" : "custom_css_path",
               "description" : "Optionally override the path in system settings.",
               "type" : "textfield",
               "value" : ""
             },
             {  
-              "name" : "csss.minify_custom_css",
+              "name" : "minify_custom_css",
               "description" : "Enable CSS minify on output.",
               "type" : "combo-boolean",
               "value" : "1"
             },
             {  
-              "name" : "csss.strip_css_comment_blocks",
+              "name" : "strip_css_comment_blocks",
               "description" : "Strips CSS comment blocks on output.",
               "type" : "combo-boolean",
               "value" : "0"

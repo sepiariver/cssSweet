@@ -21,33 +21,29 @@
  *
  * TO DOs: change file_exists check on line 66 to is_dir? Better check on last line OR more accurate return notice.
  */
+// Dev mode option
+$mode = ($modx->getOption('dev_mode', $scriptProperties, 0)) ? 'dev' : 'custom';
 
 // In case the wrong event is enabled in plugin properties
 if ($modx->event->name !== 'OnSiteRefresh' && $modx->event->name !== 'OnChunkFormSave') return;
 
 // Optionally a comma-separated list of chunk names can be specified in plugin properties
-$chunks = array_map('trim', explode(',', $modx->getOption('csss.custom_css_chunk', $scriptProperties, $modx->getOption('csss.custom_css_chunk', null, 'csss.custom.css'))));
+$chunks = array_map('trim', explode(',', $modx->getOption($mode . '_css_chunk', $scriptProperties, 'csss.custom.css')));
 
 // Don't run this for every ChunkSave event
 if ($modx->event->name === 'OnChunkFormSave' && !in_array($chunk->get('name'), $chunks)) return;
 
 // Optionally a file name can be specified in plugin properties
-$filename = $modx->getOption('csss.custom_css_filename', $scriptProperties, $modx->getOption('csss.custom_css_filename', null, 'csss-custom.css'));
+$filename = $modx->getOption($mode . '_css_filename', $scriptProperties, 'csss-custom.css');
 
 // Optionally minify the output, defaults to 'true'
-$minify_custom_css = $modx->getOption('csss.minify_custom_css', $scriptProperties, $modx->getOption('csss.minify_custom_css', null, true));
+$minify_custom_css = $modx->getOption('minify_custom_css', $scriptProperties, true);
 // strips CSS comment blocks, defaults to 'false'
-$strip_comments = $modx->getOption('csss.strip_css_comment_blocks', $scriptProperties, $modx->getOption('csss.strip_css_comment_blocks', null, false));
+$strip_comments = $modx->getOption('strip_css_comment_blocks', $scriptProperties, false);
 
 // Construct path from system settings - can be set in properties as of v.1.1
-$csssCustomCssPath = $modx->getOption('csss.custom_css_path', $scriptProperties, $modx->getOption('csss.custom_css_path'));
-if (empty($csssCustomCssPath)) {
-    $assetsPath = $modx->getOption('assets_path');
-    $csssCustomCssPath = $assetsPath . 'components/csssweet/';
-    $modx->log(modX::LOG_LEVEL_INFO, 'csss.custom_css_path was not defined. Path set to ' . $csssCustomCssPath,'','saveCustomCss');
-} else {
-    $csssCustomCssPath = rtrim($csssCustomCssPath, '/') . '/';
-}
+$csssCustomCssPath = $modx->getOption('custom_css_path', $scriptProperties, $modx->getOption('assets_path') . 'components/csssweet/');
+$csssCustomCssPath = rtrim($csssCustomCssPath, '/') . '/';
 
 // Grab the ClientConfig class
 $ccPath = $modx->getOption('clientconfig.core_path', null, $modx->getOption('core_path') . 'components/clientconfig/');
