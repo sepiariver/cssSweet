@@ -42,7 +42,9 @@ $minify_custom_css = $modx->getOption('minify_custom_css', $scriptProperties, tr
 $strip_comments = $modx->getOption('strip_css_comment_blocks', $scriptProperties, false);
 
 // Construct path from system settings - can be set in properties as of v.1.1
-$csssCustomCssPath = $modx->getOption('custom_css_path', $scriptProperties, $modx->getOption('assets_path') . 'components/csssweet/');
+$csssCustomCssPath = $modx->getOption('custom_css_path', $scriptProperties, '');
+if (empty($csssCustomCssPath)) $csssCustomCssPath = $modx->getOption('assets_path') . 'components/csssweet/';
+$modx->log(modX::LOG_LEVEL_ERROR, '$csssCustomCssPath is: ' . $csssCustomCssPath . ' on line: ' . __LINE__);
 $csssCustomCssPath = rtrim($csssCustomCssPath, '/') . '/';
 
 // Grab the ClientConfig class
