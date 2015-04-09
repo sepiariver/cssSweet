@@ -3,7 +3,7 @@
   "lowCaseName" : "csssweet",
   "description" : "cssSweet is a suite of tools for processing CSS. It comes with several output modifiers to modify CSS values, and a plugin that concatenates and processes CSS from specified chunks to a minified CSS file. Version 2+ will also concatenate and minifie JS.",
   "author" : "@sepiariver YJ Tso",
-  "version" : "1.2.1-pl",
+  "version" : "2.0.0-beta",
   "package" : {
     "elements" : {
       "snippets" : [
@@ -49,19 +49,22 @@
               "name" : "dev_css_chunk",
               "description" : "Name of chunk to parse custom CSS in DEV mode.",
               "type" : "textfield",
-              "value" : "csss.dev.css"
+              "value" : "csss.dev.css",
+              "area" : "Dev Mode"
             },
             {  
               "name" : "dev_css_filename",
               "description" : "Name of file to output custom CSS in DEV mode.",
               "type" : "textfield",
-              "value" : "csss-dev.css"
+              "value" : "csss-dev.css",
+              "area" : "Dev Mode"
             },
             {  
               "name" : "dev_mode",
               "description" : "Enable DEV mode.",
               "type" : "combo-boolean",
-              "value" : "0"
+              "value" : "0",
+              "area" : "Dev Mode"
             },
             {  
               "name" : "custom_css_path",
@@ -73,25 +76,29 @@
               "name" : "minify_custom_css",
               "description" : "Enable CSS minify on output.",
               "type" : "combo-boolean",
-              "value" : "1"
+              "value" : "1",
+              "area" : "CSS Minification"
             },
             {  
               "name" : "css_import_path",
               "description" : "Optionally set base path to enable CSS imports.",
               "type" : "textfield",
-              "value" : ""
+              "value" : "",
+              "area" : "CSS Minification"
             },
             {  
               "name" : "convert_with_prefixes",
               "description" : "Convert CSS3 keyframes and properties with vendor prefixes.",
               "type" : "combo-boolean",
-              "value" : "0"
+              "value" : "0",
+              "area" : "CSS Minification"
             },
             {  
               "name" : "strip_css_comment_blocks",
               "description" : "Strips CSS comment blocks on output.",
               "type" : "combo-boolean",
-              "value" : "0"
+              "value" : "0",
+              "area" : "CSS Minification"
             }
           ]
         }
