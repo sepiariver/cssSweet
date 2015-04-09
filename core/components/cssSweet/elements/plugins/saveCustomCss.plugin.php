@@ -123,7 +123,8 @@ if ($minify_custom_css) {
                 "Variables"                     => false,
                 "RemoveLastDelarationSemiColon" => false,
         );
-
+        
+        $contents = str_replace('@font-face{', '@font-face {', $contents); //workaround CssMin bug: https://code.google.com/p/cssmin/issues/detail?id=52
         $contents = $cssMin->minify($contents, $filters);
         
     } else { 
