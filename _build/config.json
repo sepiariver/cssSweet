@@ -68,30 +68,23 @@
             },
             {  
               "name" : "custom_css_path",
-              "description" : "Optionally override the path in system settings.",
+              "description" : "Filesystem location to which to OUTPUT the final CSS file.",
               "type" : "textfield",
               "value" : ""
             },
             {  
               "name" : "minify_custom_css",
-              "description" : "Enable CSS minify on output.",
+              "description" : "Minify CSS on output. MUST be enabled for SCSS processing.",
               "type" : "combo-boolean",
               "value" : "1",
-              "area" : "CSS Minification"
+              "area" : "SCSS and Minification"
             },
             {  
-              "name" : "css_import_path",
-              "description" : "Optionally set base path to enable CSS imports.",
+              "name" : "scss_import_paths",
+              "description" : "Optionally set import paths to check for SCSS imports. All @import paths must be relative to these.",
               "type" : "textfield",
               "value" : "",
-              "area" : "CSS Minification"
-            },
-            {  
-              "name" : "convert_with_prefixes",
-              "description" : "Convert CSS3 keyframes and properties with vendor prefixes.",
-              "type" : "combo-boolean",
-              "value" : "0",
-              "area" : "CSS Minification"
+              "area" : "SCSS and Minification"
             },
             {  
               "name" : "strip_css_comment_blocks",

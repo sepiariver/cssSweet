@@ -36,14 +36,16 @@ if ($modx->event->name === 'OnChunkFormSave' && !in_array($chunk->get('name'), $
 // Optionally a file name can be specified in plugin properties
 $filename = $modx->getOption($mode . '_css_filename', $scriptProperties, 'csss-custom.css');
 
-// Optionally minify the output, defaults to 'true'
+// Optionally minify the output, defaults to 'true' **Must be enabled for SCSS processing
 $minify_custom_css = (bool) $modx->getOption('minify_custom_css', $scriptProperties, true);
+
 // strips CSS comment blocks, defaults to 'false'
 $strip_comments = (bool) $modx->getOption('strip_css_comment_blocks', $scriptProperties, false);
 $preserve_comments = ($strip_comments) ? false : true;
+
 // optionally set base_path for css imports
-$css_import_path = $modx->getOption('css_import_path', $scriptProperties, false);
-$css_import_path = (!$css_import_path || empty($css_import_path) || !is_string($css_import_path)) ? false : array('BasePath' => $css_import_path);
+$scss_import_paths = $modx->getOption('scss_import_paths', $scriptProperties, '');
+$scss_import_paths = (empty($scss_import_paths)) ? array() : array_map('trim', explode(',', $scss_import_paths));
 
 // Construct path from system settings - can be set in properties as of v.1.1
 $csssCustomCssPath = $modx->getOption('custom_css_path', $scriptProperties, '');
@@ -116,7 +118,7 @@ if ($minify_custom_css) {
     
     if ($scssMin instanceof scssc) {
         try {
-            $scssMin->setImportPaths(array());
+            $scssMin->setImportPaths($scss_import_paths);
             $scssMin->setFormatter('scss_formatter_compressed');
             $contents = $scssMin->compile($contents);
         } 
