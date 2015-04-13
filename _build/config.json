@@ -36,27 +36,27 @@
           "properties" : [  
             {  
               "name" : "custom_css_chunk",
-              "description" : "Name of chunk to parse custom CSS.",
+              "description" : "Name of chunk, or comma-separated list of chunks, from which to parse (S)CSS.",
               "type" : "textfield",
               "value" : "csss.custom.css"
             },
             {  
               "name" : "custom_css_filename",
-              "description" : "Name of file to output custom CSS.",
+              "description" : "Name of file to output custom compiled CSS.",
               "type" : "textfield",
-              "value" : "csss-custom.css"
+              "value" : "csss.compiled.css"
             },{  
               "name" : "dev_css_chunk",
-              "description" : "Name of chunk to parse custom CSS in DEV mode.",
+              "description" : "Name of chunk, or comma-separated list of chunks, from which to parse (S)CSS in DEV mode.",
               "type" : "textfield",
               "value" : "csss.dev.css",
               "area" : "Dev Mode"
             },
             {  
               "name" : "dev_css_filename",
-              "description" : "Name of file to output custom CSS in DEV mode.",
+              "description" : "Name of file to output custom compiled CSS in DEV mode.",
               "type" : "textfield",
-              "value" : "csss-dev.css",
+              "value" : "csss-dev.compiled.css",
               "area" : "Dev Mode"
             },
             {  
@@ -68,7 +68,7 @@
             },
             {  
               "name" : "custom_css_path",
-              "description" : "Filesystem location to which to OUTPUT the final CSS file.",
+              "description" : "Full path for directory to which to OUTPUT the final CSS file.",
               "type" : "textfield",
               "value" : ""
             },
@@ -88,10 +88,17 @@
             },
             {  
               "name" : "strip_css_comment_blocks",
-              "description" : "Strips CSS comment blocks on output.",
+              "description" : "Strips CSS comment blocks on output. minify_custom_css must be enabled for this to have effect.",
               "type" : "combo-boolean",
               "value" : "0",
-              "area" : "CSS Minification"
+              "area" : "SCSS and Minification"
+            },
+            {
+              "name" : "css_output_format",
+              "description" : "Choose either nested or standard CSS output format.",
+              "type" : "textfield",
+              "value" : "standard",
+              "area" : "SCSS and Minification"
             }
           ]
         }
