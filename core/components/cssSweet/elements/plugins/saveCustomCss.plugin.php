@@ -54,11 +54,27 @@ $preserve_comments = ($strip_comments) ? false : true;
 $scss_import_paths = $modx->getOption('scss_import_paths', $scriptProperties, '');
 $scss_import_paths = (empty($scss_import_paths)) ? array() : array_map('trim', explode(',', $scss_import_paths));
 
-// Get the output path; construct from config settings as a fallback
+// Get the output path; construct fallback; log for debugging
 $csssCustomCssPath = $modx->getOption('custom_css_path', $scriptProperties, '');
 if (empty($csssCustomCssPath)) $csssCustomCssPath = $modx->getOption('assets_path') . 'components/csssweet/';
 $modx->log(modX::LOG_LEVEL_INFO, '$csssCustomCssPath is: ' . $csssCustomCssPath . ' on line: ' . __LINE__);
 $csssCustomCssPath = rtrim($csssCustomCssPath, '/') . '/';
+
+// If directory exists but isn't writable we have a problem, Houston
+if (file_exists($csssCustomCssPath) && !is_writable($csssCustomCssPath)) {
+    $modx->log(modX::LOG_LEVEL_ERROR, 'The directory at ' . $csssCustomCssPath . 'is not writable!','','saveCustomCss');
+    return;
+}
+
+// Check if directory exists, if not, create it
+if (!file_exists($csssCustomCssPath)) {
+    if (mkdir($csssCustomCssPath, 0755, true)) {
+        $modx->log(modX::LOG_LEVEL_INFO, 'Directory created at ' . $csssCustomCssPath, '', 'saveCustomCss');
+    } else {
+        $modx->log(modX::LOG_LEVEL_ERROR, 'Directory could not be created at ' . $csssCustomCssPath, '', 'saveCustomCss');
+        return;
+    }
+}
 
 // Grab the ClientConfig class
 $ccPath = $modx->getOption('clientconfig.core_path', null, $modx->getOption('core_path') . 'components/clientconfig/');
@@ -73,22 +89,6 @@ if ($clientConfig instanceof ClientConfig) {
     $modx->setPlaceholders($settings, '+');
 } else { 
     $modx->log(modX::LOG_LEVEL_WARN, 'Failed to load ClientConfig class. ClientConfig settings not included.','','saveCustomCssClientConfig'); 
-}
-
-// If directory exists but isn't writable we have a problem, Houston
-if (file_exists($csssCustomCssPath) && !is_writable($csssCustomCssPath)) {
-    $modx->log(modX::LOG_LEVEL_ERROR, 'The directory at ' . $csssCustomCssPath . 'is not writable!','','saveCustomCss');
-    return;
-}
-    
-// Check if directory exists, if not, create it
-if (!file_exists($csssCustomCssPath)) {
-    if (mkdir($csssCustomCssPath, 0755, true)) {
-        $modx->log(modX::LOG_LEVEL_INFO, 'Directory created at ' . $csssCustomCssPath, '', 'saveCustomCss');
-    } else {
-        $modx->log(modX::LOG_LEVEL_ERROR, 'Directory could not be created at ' . $csssCustomCssPath, '', 'saveCustomCss');
-        return;
-    }
 }
 
 // Parse chunk with $settings array
@@ -133,11 +133,12 @@ if ($scssMin instanceof scssc) {
     catch (Exception $e) {
         $modx->log(modX::LOG_LEVEL_ERROR, $e->getMessage() . ' scss not compiled. minification not performed.','','saveCustomCss'); 
     }
-        
+
 } else { 
-        $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to load scss class. scss not compiled. minification not performed.','','saveCustomCss'); 
+    $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to load scss class. scss not compiled. minification not performed.','','saveCustomCss'); 
 }
 
 // If we failed scss and minification at least output what we have
 file_put_contents($file, $contents);
 if (file_exists($file) && is_readable($file)) $modx->log(modX::LOG_LEVEL_INFO, 'Success! Custom CSS saved to file "' . $file . '"', '', 'saveCustomCss');
+
