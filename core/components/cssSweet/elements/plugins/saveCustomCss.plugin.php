@@ -2,30 +2,30 @@
 /**
  * saveCustomCss
  * @author @sepiariver
- * Copyright 2013 by YJ Tso <yj@modx.com>
+ * Copyright 2013 - 2015 by YJ Tso <yj@modx.com> <info@sepiariver.com>
  *
- * saveCustomCss and cssSweet is free software; you can redistribute it and/or modify it under the
- * terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option) any later
- * version.
+ * saveCustomCss and cssSweet is free software; 
+ * you can redistribute it and/or modify it under the terms of the GNU General 
+ * Public License as published by the Free Software Foundation; 
+ * either version 2 of the License, or (at your option) any later version.
  *
- * saveCustomCss and cssSweet is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * saveCustomCss and cssSweet is distributed in the hope that it will be useful, 
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License along with
- * saveCustomCss and cssSweet; if not, write to the Free Software Foundation, Inc., 59 Temple
- * Place, Suite 330, Boston, MA 02111-1307 USA
+ * saveCustomCss and cssSweet; if not, write to the Free Software Foundation, Inc., 
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  * @package cssSweet
  *
- * TO DOs: change file_exists check on line 66 to is_dir? Better check on last line OR more accurate return notice.
  */
-// Dev mode option
-$mode = ($modx->getOption('dev_mode', $scriptProperties, 0)) ? 'dev' : 'custom';
-
+ 
 // In case the wrong event is enabled in plugin properties
 if ($modx->event->name !== 'OnSiteRefresh' && $modx->event->name !== 'OnChunkFormSave') return;
+
+// Dev mode option
+$mode = ($modx->getOption('dev_mode', $scriptProperties, 0)) ? 'dev' : 'custom';
 
 // Optionally a comma-separated list of chunk names can be specified in plugin properties
 $chunks = array_map('trim', explode(',', $modx->getOption($mode . '_css_chunk', $scriptProperties, 'csss.custom.css')));
@@ -36,23 +36,25 @@ if ($modx->event->name === 'OnChunkFormSave' && !in_array($chunk->get('name'), $
 // Optionally a file name can be specified in plugin properties
 $filename = $modx->getOption($mode . '_css_filename', $scriptProperties, 'csss.compiled.css');
 
-// Optionally minify the output, defaults to 'true' **Must be enabled for SCSS processing
+// Optionally minify the output, defaults to 'true' 
 $minify_custom_css = (bool) $modx->getOption('minify_custom_css', $scriptProperties, true);
 
 // Optionally choose an output format if not minified
 $css_output_format = $modx->getOption('css_output_format', $scriptProperties, 'standard');
 $css_output_format = ($css_output_format === 'nested') ? 'scss_formatter_nested' : 'scss_formatter';
+
+// This is for the formatter class
 $css_output_format = ($minify_custom_css) ? 'scss_formatter_compressed' : $css_output_format;
 
-// strips CSS comment blocks, defaults to 'false'
+// Strip CSS comment blocks; defaults to 'false'
 $strip_comments = (bool) $modx->getOption('strip_css_comment_blocks', $scriptProperties, false);
 $preserve_comments = ($strip_comments) ? false : true;
 
-// optionally set base_path for css imports
+// Optionally set base_path for scss imports
 $scss_import_paths = $modx->getOption('scss_import_paths', $scriptProperties, '');
 $scss_import_paths = (empty($scss_import_paths)) ? array() : array_map('trim', explode(',', $scss_import_paths));
 
-// Construct path from system settings - can be set in properties as of v.1.1
+// Get the output path; construct from config settings as a fallback
 $csssCustomCssPath = $modx->getOption('custom_css_path', $scriptProperties, '');
 if (empty($csssCustomCssPath)) $csssCustomCssPath = $modx->getOption('assets_path') . 'components/csssweet/';
 $modx->log(modX::LOG_LEVEL_INFO, '$csssCustomCssPath is: ' . $csssCustomCssPath . ' on line: ' . __LINE__);
@@ -110,16 +112,17 @@ if ($preserve_comments) $contents = str_replace('/*', '/*!', $contents);
 // Define target file
 $file = $csssCustomCssPath . $filename;
 
-// Output
+// Grab the SCSS processor class
 $cssSweetLibsPath = $modx->getOption('csssweet.core_path', null, $modx->getOption('core_path') . 'components/csssweet/');
 $cssSweetLibsPath .= 'model/cssSweet/libs/';
 $cssSweetcssMinFile = 'scssphp/scss.inc.php';
-    
+
 if (file_exists($cssSweetLibsPath . $cssSweetcssMinFile)) {
     include_once $cssSweetLibsPath . $cssSweetcssMinFile;
     $scssMin = new scssc();
 }
-    
+
+// If we got the class, try minification and scss processing. Log failures.    
 if ($scssMin instanceof scssc) {
 
     try {
@@ -135,5 +138,6 @@ if ($scssMin instanceof scssc) {
         $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to load scss class. scss not compiled. minification not performed.','','saveCustomCss'); 
 }
 
+// If we failed scss and minification at least output what we have
 file_put_contents($file, $contents);
 if (file_exists($file) && is_readable($file)) $modx->log(modX::LOG_LEVEL_INFO, 'Success! Custom CSS saved to file "' . $file . '"', '', 'saveCustomCss');
