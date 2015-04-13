@@ -34,10 +34,15 @@ $chunks = array_map('trim', explode(',', $modx->getOption($mode . '_css_chunk', 
 if ($modx->event->name === 'OnChunkFormSave' && !in_array($chunk->get('name'), $chunks)) return;
 
 // Optionally a file name can be specified in plugin properties
-$filename = $modx->getOption($mode . '_css_filename', $scriptProperties, 'csss-custom.css');
+$filename = $modx->getOption($mode . '_css_filename', $scriptProperties, 'csss.compiled.css');
 
 // Optionally minify the output, defaults to 'true' **Must be enabled for SCSS processing
 $minify_custom_css = (bool) $modx->getOption('minify_custom_css', $scriptProperties, true);
+
+// Optionally choose an output format if not minified
+$css_output_format = $modx->getOption('css_output_format', $scriptProperties, 'standard');
+$css_output_format = ($css_output_format === 'nested') ? 'scss_formatter_nested' : 'scss_formatter';
+$css_output_format = ($minify_custom_css) ? 'scss_formatter_compressed' : $css_output_format;
 
 // strips CSS comment blocks, defaults to 'false'
 $strip_comments = (bool) $modx->getOption('strip_css_comment_blocks', $scriptProperties, false);
@@ -106,30 +111,29 @@ if ($preserve_comments) $contents = str_replace('/*', '/*!', $contents);
 $file = $csssCustomCssPath . $filename;
 
 // Output
-if ($minify_custom_css) {
-    $cssSweetLibsPath = $modx->getOption('csssweet.core_path', null, $modx->getOption('core_path') . 'components/csssweet/');
-    $cssSweetLibsPath .= 'model/cssSweet/libs/';
-    $cssSweetcssMinFile = 'scssphp/scss.inc.php';
+$cssSweetLibsPath = $modx->getOption('csssweet.core_path', null, $modx->getOption('core_path') . 'components/csssweet/');
+$cssSweetLibsPath .= 'model/cssSweet/libs/';
+$cssSweetcssMinFile = 'scssphp/scss.inc.php';
     
-    if (file_exists($cssSweetLibsPath . $cssSweetcssMinFile)) {
-        include_once $cssSweetLibsPath . $cssSweetcssMinFile;
-        $scssMin = new scssc();
-    }
+if (file_exists($cssSweetLibsPath . $cssSweetcssMinFile)) {
+    include_once $cssSweetLibsPath . $cssSweetcssMinFile;
+    $scssMin = new scssc();
+}
     
-    if ($scssMin instanceof scssc) {
-        try {
-            $scssMin->setImportPaths($scss_import_paths);
-            $scssMin->setFormatter('scss_formatter_compressed');
-            $contents = $scssMin->compile($contents);
-        } 
-        catch (Exception $e) {
-            $modx->log(modX::LOG_LEVEL_ERROR, $e->getMessage() . ' scss not compiled. minification not performed.','','saveCustomCss'); 
-        }
-        
-    } else { 
-        $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to load scss class. scss not compiled. minification not performed.','','saveCustomCss'); 
-    }
+if ($scssMin instanceof scssc) {
 
-} 
+    try {
+        $scssMin->setImportPaths($scss_import_paths);
+        $scssMin->setFormatter($css_output_format);
+        $contents = $scssMin->compile($contents);
+    } 
+    catch (Exception $e) {
+        $modx->log(modX::LOG_LEVEL_ERROR, $e->getMessage() . ' scss not compiled. minification not performed.','','saveCustomCss'); 
+    }
+        
+} else { 
+        $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to load scss class. scss not compiled. minification not performed.','','saveCustomCss'); 
+}
+
 file_put_contents($file, $contents);
 if (file_exists($file) && is_readable($file)) $modx->log(modX::LOG_LEVEL_INFO, 'Success! Custom CSS saved to file "' . $file . '"', '', 'saveCustomCss');
