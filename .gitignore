@@ -6,3 +6,5 @@ config.core.php
 _packages/*.*
 !_packages/.gitignore
 !_packages/*.zip
+core/components/cssSweet/elements/plugins/saveCustomCss.plugin.debug.php
+
