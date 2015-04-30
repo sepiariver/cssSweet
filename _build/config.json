@@ -1,9 +1,9 @@
 {
   "name" : "cssSweet",
   "lowCaseName" : "csssweet",
-  "description" : "cssSweet is a suite of tools for processing CSS. It comes with several output modifiers to modify CSS values, and a plugin that concatenates and processes CSS from specified chunks to a minified CSS file. Version 2+ will also concatenate and minifie JS.",
+  "description" : "cssSweet is a suite of tools for processing CSS. It comes with several output modifiers to modify CSS values, and a plugin that concatenates and processes CSS from specified chunks to a minified CSS file. Version 2+ will also concatenate and minify JS.",
   "author" : "@sepiariver YJ Tso",
-  "version" : "2.0.0-beta",
+  "version" : "2.0.0-beta2",
   "package" : {
     "elements" : {
       "snippets" : [
@@ -101,44 +101,73 @@
               "area" : "SCSS and Minification"
             }
           ]
+        },{
+          "name" : "saveCustomJs",
+          "events" : ["OnSiteRefresh","OnChunkFormSave"],
+          "properties" : [  
+            {  
+              "name" : "custom_js_chunk",
+              "description" : "Name of chunk, or comma-separated list of chunks, from which to parse JS.",
+              "type" : "textfield",
+              "value" : ""
+            },
+            {  
+              "name" : "custom_js_filename",
+              "description" : "Name of file to output custom compiled JS.",
+              "type" : "textfield",
+              "value" : "custom_js.min.js"
+            },{  
+              "name" : "dev_js_chunk",
+              "description" : "Name of chunk, or comma-separated list of chunks, from which to parse JS in DEV mode.",
+              "type" : "textfield",
+              "value" : "",
+              "area" : "Dev Mode"
+            },
+            {  
+              "name" : "dev_js_filename",
+              "description" : "Name of file to output custom compiled JS in DEV mode.",
+              "type" : "textfield",
+              "value" : "custom_js.min.dev.js",
+              "area" : "Dev Mode"
+            },
+            {  
+              "name" : "dev_mode",
+              "description" : "Enable DEV mode.",
+              "type" : "combo-boolean",
+              "value" : "0",
+              "area" : "Dev Mode"
+            },
+            {  
+              "name" : "custom_js_path",
+              "description" : "Full path for directory to which to OUTPUT the final JS file.",
+              "type" : "textfield",
+              "value" : ""
+            },
+            {  
+              "name" : "minify_custom_js",
+              "description" : "Minify JS on output.",
+              "type" : "combo-boolean",
+              "value" : "1",
+              "area" : "Minification"
+            },
+            {  
+              "name" : "strip_js_comment_blocks",
+              "description" : "Strips JS comment blocks on output.",
+              "type" : "combo-boolean",
+              "value" : "0",
+              "area" : "Minification"
+            }
+          ]
         }
       ],
       "chunks" : [
         {
           "name" : "csss.custom.css",
+          "description" : "Sample chunk only. It's recommended to create your own chunk(s) with a unique name(s) and set them in the saveCustomCss plugin properties.", 
           "file" : "csss.custom.css.tpl"
         }
       ]
-    },
-    "systemSettings" : [
-      {
-        "key" : "custom_css_path",
-        "namespace" : "csss",
-        "value" : "{assets_path}components\/csssweet\/"
-      },
-      {  
-        "key" : "custom_css_chunk",
-        "namespace" : "csss",
-        "value" : "csss.custom.css"
-      },
-      {
-        "key" : "custom_css_filename",
-        "namespace" : "csss",
-        "value" : "csss-custom.css"
-      },
-      {
-        "key" : "minify_custom_css",
-        "namespace" : "csss",
-        "value" : true,
-        "type" : "combo-boolean"
-      },
-      {
-        "key" : "strip_css_comment_blocks",
-        "namespace" : "csss",
-        "value" : false,
-        "type" : "combo-boolean"
-      }
-    ]
+    }
   },
   "build": {
     "attributes": {
