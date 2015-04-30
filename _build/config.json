@@ -139,5 +139,12 @@
         "type" : "combo-boolean"
       }
     ]
+  },
+  "build": {
+    "attributes": {
+      "chunks": {
+        "update_object": false
+      }
+    }
   }
 }
