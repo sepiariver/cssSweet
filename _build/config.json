@@ -106,7 +106,7 @@
           "events" : ["OnSiteRefresh","OnChunkFormSave"],
           "properties" : [  
             {  
-              "name" : "custom_js_chunk",
+              "name" : "custom_js_chunks",
               "description" : "Name of chunk, or comma-separated list of chunks, from which to parse JS.",
               "type" : "textfield",
               "value" : ""
