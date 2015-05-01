@@ -117,7 +117,7 @@
               "type" : "textfield",
               "value" : "custom_js.min.js"
             },{  
-              "name" : "dev_js_chunk",
+              "name" : "dev_js_chunks",
               "description" : "Name of chunk, or comma-separated list of chunks, from which to parse JS in DEV mode.",
               "type" : "textfield",
               "value" : "",
