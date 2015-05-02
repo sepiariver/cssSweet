@@ -26,6 +26,8 @@ if ($modx->event->name !== 'OnSiteRefresh' && $modx->event->name !== 'OnChunkFor
 
 // Dev mode option
 $mode = ($modx->getOption('dev_mode', $scriptProperties, 0)) ? 'dev' : 'custom';
+// Letting folks know what's going on
+$modx->log(modX::LOG_LEVEL_INFO, 'saveCustomCss plugin is running in mode: ' . $mode);
 
 // Optionally a comma-separated list of chunk names can be specified in plugin properties
 $chunks = array_map('trim', explode(',', $modx->getOption($mode . '_css_chunk', $scriptProperties, 'csss.custom.css')));
@@ -95,11 +97,21 @@ if ($clientConfig instanceof ClientConfig) {
 $contents = '';
 foreach ($chunks as $current) {
     $processed = '';
-    if ($current) $processed = $modx->getChunk($current, $settings);
-    if ($processed) { 
-        $contents .= $processed;    
+    if ($current) {
+        try {
+            $modx->log(modX::LOG_LEVEL_INFO, 'Processing chunk: ' . $current);
+            $processed = $modx->getChunk($current, $settings);
+            if ($processed) {
+                $contents .= $processed;
+            } else {
+                $err = '$modx->getChunk() failed on line: ' . __LINE__ . ' for chunk: ' . $current;
+                throw new Exception($err);
+            }
+        } catch (Exception $err) {
+            $modx->log(modX::LOG_LEVEL_ERROR, $err->getMessage());
+        }
     } else {
-        $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to get Chunk ' . $current . '. Chunk contents not saved.', '', 'saveCustomCss');
+        $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to get Chunk ' . $current . '. Chunk contents not saved.');
     }
 }
 // If there's no result, what's the point?
@@ -141,4 +153,3 @@ if ($scssMin instanceof scssc) {
 // If we failed scss and minification at least output what we have
 file_put_contents($file, $contents);
 if (file_exists($file) && is_readable($file)) $modx->log(modX::LOG_LEVEL_INFO, 'Success! Custom CSS saved to file "' . $file . '"', '', 'saveCustomCss');
-
