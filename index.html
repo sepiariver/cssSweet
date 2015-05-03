@@ -22,11 +22,11 @@
       <h1>
 <a id="csssweet" class="anchor" href="#csssweet" aria-hidden="true"><span class="octicon octicon-link"></span></a>cssSweet</h1>
 
-<p>Version: 2.0.0-beta11</p>
+<p>Version: 2.0.0-beta12</p>
 
 <p>Author: YJ Tso (<a href="https://github.com/sepiariver" class="user-mention">@sepiariver</a>) <a href="https://twitter.com/sepiariver">on Twitter</a></p>
 
-<p>cssSweet is a suite of tools for processing (S)CSS. It comes with several output modifiers to modify CSS values, and a plugin that concatenates and processes (S)CSS from specified Chunks to a minified CSS file. Version 2+ also concatenates and minifies JS with a 2nd plugin.</p>
+<p>cssSweet is a suite of tools for processing (S)CSS. It comes with several output modifiers to modify CSS values, and a plugin that concatenates and processes (S)CSS from specified Chunks and outputs to a minified CSS file. Version 2+ also concatenates and minifies JS with a 2nd plugin.</p>
 
 <h2>
 <a id="example-use-cases" class="anchor" href="#example-use-cases" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example Use Cases</h2>
@@ -36,7 +36,19 @@
 <li>Use in conjunction with ClientConfig to give site owners a nice UI to manage CSS styles--but only the ones you expose, and only in the manner you choose!</li>
 <li>Author MODX "themes" that are customizable by the end user.</li>
 <li>Use other MODX tags &amp; placeholders in your CSS--limitless possibilities! Utilize "dynamic CSS" without the performance penalty, because the plugin writes the static CSS file on the Manager Clear Cache and Chunk Save actions, not per request.</li>
+<li>Add a code editor like Ace, and you can use MODX as your IDE for front-end development.</li>
 </ul>
+
+<h2>
+<a id="important-potentially-breaking-changes-in-version-2" class="anchor" href="#important-potentially-breaking-changes-in-version-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>!IMPORTANT: Potentially Breaking Changes in Version 2</h2>
+
+<p>While care has been taken to make upgrades as safe as possible, there are a few scenarios that could potentially break an existing site, when you upgrade cssSweet from Version 1 to Version 2+. These include, but are not limited to:</p>
+
+<ol>
+<li>I haven't found a way to update the saveCustomCss plugin without overwriting the default property set. If you've  customized the default property set, I recommend exporting it before performing the upgrade. You can then import your property set after upgrade to restore custom values. However:</li>
+<li>Some property keys have changed. Most importantly, 'custom_css_chunk' is now 'custom_scss_chunks' to more semantically describe the new features of the plugin. Even after importing your property set, you'll want to copy your values from the 'custom_css_chunk' property to 'custom_scss_chunks'. I figured since manual copying of values would be necessary in this upgrade, now would be the best time to change property keys.</li>
+<li>In an effort to prevent overwriting your existing compiled CSS before you've had a chance to set the properties correctly, I've changed the default CSS output filename. However, if by some chance, you customized your output filename to 'custom_css.min.css', then the saveCustomCss plugin will overwrite it by default. In this (probably rare) case, <em>make sure</em> to setup the plugin properties correctly before executing the plugin.</li>
+</ol>
 
 <h2>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
@@ -52,7 +64,7 @@
 <p>Once installed, you'll have a default Chunk in the "cssSweet" category. If you edit that Chunk and click the "Manage" » "Clear Cache" main menu item, a CSS file will be generated for you at 
 <code>[[++assets_path]]components/csssweet/csss-custom.css</code></p>
 
-<p>Note: it's highly recommended to create new Chunks with unique names. As of version 2.x, the cssSweet package has been configured to <em>not</em> update an existing Chunk with the same name, but I haven't tested that thoroughly. I'd hate for it to fail in your production environment.</p>
+<p>Note: it's highly recommended to create new Chunks with unique names. As of version 2.x, the cssSweet package has been configured to <em>not</em> update an existing Chunk with the same name, but I haven't tested that thoroughly yet. I'd hate for it to fail in your production environment.</p>
 
 <p>Reference the generated CSS file in your template, like this 
 <code>&lt;link rel="stylesheet" href="[[++assets_path]]components/csssweet/csss-custom.css"&gt;</code>
