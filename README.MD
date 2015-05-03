@@ -4,11 +4,14 @@ Version: 2.0.0-beta12
 
 Author: YJ Tso (@sepiariver) [on Twitter](https://twitter.com/sepiariver)
 
-cssSweet is a suite of tools for processing (S)CSS. It comes with several output modifiers to modify CSS values, and a plugin that concatenates and processes (S)CSS from specified Chunks and outputs to a minified CSS file. Version 2+ also concatenates and minifies JS with a 2nd plugin.
+cssSweet is a suite of tools for processing (S)CSS. It comes with several output modifiers to modify CSS values, and a plugin that concatenates and processes (S)CSS from specified Chunks and outputs to a minified CSS file. version 2+ also concatenates and minifies JS with a 2nd plugin.
 
 The documentation site is here: 
+
 http://sepiariver.github.io/cssSweet
+
 as well as here:
+
 http://rtfm.modx.com/extras/revo/csssweet (this one needs updating)
 
 ## Example Use Cases
@@ -18,12 +21,13 @@ http://rtfm.modx.com/extras/revo/csssweet (this one needs updating)
 - Use other MODX tags & placeholders in your CSS--limitless possibilities! Utilize "dynamic CSS" without the performance penalty, because the plugin writes the static CSS file on the Manager Clear Cache and Chunk Save actions, not per request.
 - Add a code editor like Ace, and you can use MODX as your IDE for front-end development.
 
-## !IMPORTANT: Potentially Breaking Changes in Version 2
-While care has been taken to make upgrades as safe as possible, there are a few scenarios that could potentially break an existing site, when you upgrade cssSweet from Version 1 to Version 2+. These include, but are not limited to:
+## Potentially Breaking Changes in Version 2
+The utmost care has been taken to ensure that upgrades of cssSweet are as safe as possible. However, there are a few scenarios that could potentially break an existing site, when you upgrade cssSweet from version 1 to version 2+. Hopefully the following points will help you avoid those:
 
-1. I haven't found a way to update the saveCustomCss plugin without overwriting the default property set. If you've  customized the default property set, I recommend exporting it before performing the upgrade. You can then import your property set after upgrade to restore custom values. However:
-2. Some property keys have changed. Most importantly, 'custom_css_chunk' is now 'custom_scss_chunks' to more semantically describe the new features of the plugin. Even after importing your property set, you'll want to copy your values from the 'custom_css_chunk' property to 'custom_scss_chunks'. I figured since manual copying of values would be necessary in this upgrade, now would be the best time to change property keys.
-3. In an effort to prevent overwriting your existing compiled CSS before you've had a chance to set the properties correctly, I've changed the default CSS output filename. However, if by some chance, you customized your output filename to 'custom_css.min.css', then the saveCustomCss plugin will overwrite it by default. In this (probably rare) case, *make sure* to setup the plugin properties correctly before executing the plugin.
+1. **The default property set.** I haven't found a way to update the saveCustomCss plugin without overwriting the default property set. If you've  customized the default property set, I recommend exporting it before performing the upgrade. You can then re-import your property set after upgrading, to restore custom values. However:
+2. **Some property keys have changed.** Most notably, `custom_css_chunk` is now `custom_scss_chunks` to more accurately describe the plugin's actions. Ensure that after upgrading, your CSS Chunk names are listed in the new property, rather than the old one. I figured a major version upgrade is the most opportune time to change property keys.
+3. **The sample Chunk has a different name.** This served 2 purposes: to demonstrate the scss syntax compatibility, and prevent overwriting the default Chunk on upgrade, because some users (including myself) erroneously customized the default Chunk without changing its name. As with any MODX Extra that installs Chunks, it's highly recommended that you create new Chunks or rename the sample Chunk. That said, the cssSweet 2.x packages have been authored to *not* overwrite existing Chunks (with the help of @TheBoxer 's GitPackageManagement component), but I've tested this minimally.
+4. In an effort to prevent overwriting your existing compiled CSS before you've had a chance to set the properties correctly, I've changed the default CSS output filename. However, if by sheer chance, you had previously customized your output filename to `custom_css.min.css`, then the saveCustomCss plugin will overwrite it by default! In this (probably rare) case, _*make sure*_ to setup the plugin properties correctly before executing the plugin.
 
 ## Usage
 
@@ -32,25 +36,28 @@ You can install cssSweet via the MODX Extras Installer. Or you can download it f
 
 ### CSS Sweetness
 Once installed, you'll have a default Chunk in the "cssSweet" category. If you edit that Chunk and click the "Manage" » "Clear Cache" main menu item, a CSS file will be generated for you at 
-`[[++assets_path]]components/csssweet/csss-custom.css`
+`[[++assets_path]]components/csssweet/custom_css.min.css`
 
 Note: it's highly recommended to create new Chunks with unique names. As of version 2.x, the cssSweet package has been configured to _not_ update an existing Chunk with the same name, but I haven't tested that thoroughly yet. I'd hate for it to fail in your production environment.
 
 Reference the generated CSS file in your template, like this 
-`<link rel="stylesheet" href="[[++assets_path]]components/csssweet/csss-custom.css">`
+`<link rel="stylesheet" href="[[++assets_path]]components/csssweet/custom_css.min.css">`
 and you'll be good to go.
 
 ### Customization
-In the Plugin properties, you can set the names of Chunks that you wish to process and include, in a comma-separated list. Note you can include static Chunks that reference files--even minified files. You can also customize the filesystem location to which to write the output file. Chunks will be included in the order which they appear in the comma-separated list. As of version 2.x, cssSweet will parse any SCSS syntax in your Chunks, and log error messages generated by the scssphp processor class.
+In the Plugin properties, you can set the names of Chunks that you wish to process and include, in a comma-separated list. (As of version 2, this is required for the plugin to do anything.) 
+
+Note you can include static Chunks that reference files--even minified files. You can also customize the filesystem location to which to write the output file. Chunks will be included in the order which they appear in the comma-separated list. As of version 2, cssSweet will parse any SCSS syntax in your Chunks, and log error messages generated by the scssphp processor class.
 ![Screenshot](https://www.dropbox.com/s/9i5kkcb7k5097pu/Screenshot%202015-04-01%2010.51.16.png?dl=1)
 
 ### Events
-You can optionally enable the `OnChunkFormSave` Event in the Plugin events tab.
+You can optionally enable the `OnChunkFormSave` Event in the Plugin events tab. (As of version 2, this event is enabled by default.)
 ![Screenshot](https://www.dropbox.com/s/9diyvnu04mx15vd/Screenshot%202015-04-01%2011.01.16.png?dl=1)
 Doing so will speed up your process immensely, as a new output file will be generated each time you save a Chunk that is in the list of Chunks you've set.
 
 ### Thanks
-A lot of time, research and consideration was put into which libraries should be included in this package. I whole-heartedly support these fine developers and their open-source projects. Please extend your thanks to these folks, if you find cssSsweet useful (or even if you don't :P)
+A lot of time, research and consideration was put into which libraries should be included in this package, for the minification functions. I whole-heartedly support these fine developers and their open-source projects. Please extend your thanks to these folks, if you find cssSsweet useful (or even if you don't :P)
 
 [@leafo/scssphp] (https://github.com/leafo/scssphp)
+
 [@tedious/Jshrink] (https://github.com/tedious/JShrink)
