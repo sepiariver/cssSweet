@@ -4,13 +4,21 @@ Version: 2.0.0-beta2
 
 Author: YJ Tso (@sepiariver) [on Twitter](https://twitter.com/sepiariver)
 
-cssSweet is a suite of tools for processing (S)CSS. It comes with several output modifiers to modify CSS values, and a plugin that concatenates and processes (S)CSS from specified Chunks to a minified CSS file. Version 2+ also concatenates and minifies JS with a 2nd plugin.
+cssSweet is a suite of tools for processing (S)CSS. It comes with several output modifiers to modify CSS values, and a plugin that concatenates and processes (S)CSS from specified Chunks and outputs to a minified CSS file. Version 2+ also concatenates and minifies JS with a 2nd plugin.
 
 ## Example Use Cases
 - Use system or context settings to store primary colors in a site's color scheme, then process all other color values relative to these, so you can shift the entire color theme by modifying a few settings.
 - Use in conjunction with ClientConfig to give site owners a nice UI to manage CSS styles--but only the ones you expose, and only in the manner you choose!
 - Author MODX "themes" that are customizable by the end user.
 - Use other MODX tags & placeholders in your CSS--limitless possibilities! Utilize "dynamic CSS" without the performance penalty, because the plugin writes the static CSS file on the Manager Clear Cache and Chunk Save actions, not per request.
+- Add a code editor like Ace, and you can use MODX as your IDE for front-end development.
+
+## !IMPORTANT: Potentially Breaking Changes in Version 2
+While care has been taken to make upgrades as safe as possible, there are a few scenarios that could potentially break an existing site, when you upgrade cssSweet from Version 1 to Version 2+. These include, but are not limited to:
+
+1. I haven't found a way to update the saveCustomCss plugin without overwriting the default property set. If you've  customized the default property set, I recommend exporting it before performing the upgrade. You can then import your property set after upgrade to restore custom values. However:
+2. Some property keys have changed. Most importantly, 'custom_css_chunk' is now 'custom_scss_chunks' to more semantically describe the new features of the plugin. Even after importing your property set, you'll want to copy your values from the 'custom_css_chunk' property to 'custom_scss_chunks'. I figured since manual copying of values would be necessary in this upgrade, now would be the best time to change property keys.
+3. In an effort to prevent overwriting your existing compiled CSS before you've had a chance to set the properties correctly, I've changed the default CSS output filename. However, if by some chance, you customized your output filename to 'custom_css.min.css', then the saveCustomCss plugin will overwrite it by default. In this (probably rare) case, *make sure* to setup the plugin properties correctly before executing the plugin.
 
 ## Usage
 
@@ -21,7 +29,7 @@ You can install cssSweet via the MODX Extras Installer. Or you can download it f
 Once installed, you'll have a default Chunk in the "cssSweet" category. If you edit that Chunk and click the "Manage" » "Clear Cache" main menu item, a CSS file will be generated for you at 
 `[[++assets_path]]components/csssweet/csss-custom.css`
 
-Note: it's highly recommended to create new Chunks with unique names. As of version 2.x, the cssSweet package has been configured to _not_ update an existing Chunk with the same name, but I haven't tested that thoroughly. I'd hate for it to fail in your production environment.
+Note: it's highly recommended to create new Chunks with unique names. As of version 2.x, the cssSweet package has been configured to _not_ update an existing Chunk with the same name, but I haven't tested that thoroughly yet. I'd hate for it to fail in your production environment.
 
 Reference the generated CSS file in your template, like this 
 `<link rel="stylesheet" href="[[++assets_path]]components/csssweet/csss-custom.css">`
