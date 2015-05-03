@@ -9,7 +9,7 @@ $output = <<<HTML
 <br />
 <p>Please confirm you understand the important imformation above:</p>
 <div style="padding-left: 20px;">
-    <input type="checkbox" name="confirm_upgrade_breaking_changes" id="confirm_upgrade_breaking_changes" onchange="javascript:this.checked?Ext.getCmp('package-setupoptions-install-btn').enable():Ext.getCmp('package-setupoptions-install-btn').disable()" />
+    <input type="checkbox" name="confirm_upgrade_breaking_changes" id="confirm_upgrade_breaking_changes" onchange="javascript:this.checked?Ext.getCmp('package-setupoptions-install-btn').enable():Ext.getCmp('package-setupoptions-install-btn').disable()" disabled />
         <label for="confirm_upgrade_breaking_changes" style="display: inline;">Confirmed</label> <br />
 </div>
 <script>
