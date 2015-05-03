@@ -29,14 +29,20 @@ $mode = ($modx->getOption('dev_mode', $scriptProperties, 0)) ? 'dev' : 'custom';
 // Letting folks know what's going on
 $modx->log(modX::LOG_LEVEL_INFO, 'saveCustomCss plugin is running in mode: ' . $mode);
 
-// Optionally a comma-separated list of chunk names can be specified in plugin properties
-$chunks = array_map('trim', explode(',', $modx->getOption($mode . '_css_chunk', $scriptProperties, 'csss.custom.css')));
+// Specify a comma-separated list of chunk names in plugin properties
+$chunks = array_filter(array_map('trim', explode(',', $modx->getOption($mode . '_scss_chunks', $scriptProperties, ''))));
+// If no chunk names specified, there's nothing to do.
+if (empty($chunks)) {
+    $modx->log(modX::LOG_LEVEL_WARN, 'No chunks were set in the saveCustomCss plugin property: ' . $mode . '_scss_chunks. No action performed.');
+    return;
+}
 
 // Don't run this for every ChunkSave event
 if ($modx->event->name === 'OnChunkFormSave' && !in_array($chunk->get('name'), $chunks)) return;
 
-// Optionally a file name can be specified in plugin properties
-$filename = $modx->getOption($mode . '_css_filename', $scriptProperties, 'csss.compiled.css');
+// Specify an output file name in plugin properties
+$filename = $modx->getOption($mode . '_css_filename', $scriptProperties, '');
+if (empty($filename)) return;
 
 // Optionally minify the output, defaults to 'true' 
 $minify_custom_css = (bool) $modx->getOption('minify_custom_css', $scriptProperties, true);

@@ -35,28 +35,28 @@
           "events" : ["OnSiteRefresh","OnChunkFormSave"],
           "properties" : [  
             {  
-              "name" : "custom_css_chunk",
+              "name" : "custom_scss_chunks",
               "description" : "Name of chunk, or comma-separated list of chunks, from which to parse (S)CSS.",
               "type" : "textfield",
-              "value" : "csss.custom.css"
+              "value" : "csss.custom_css.scss"
             },
             {  
               "name" : "custom_css_filename",
               "description" : "Name of file to output custom compiled CSS.",
               "type" : "textfield",
-              "value" : "csss.compiled.css"
+              "value" : "custom_css.min.css"
             },{  
-              "name" : "dev_css_chunk",
+              "name" : "dev_scss_chunks",
               "description" : "Name of chunk, or comma-separated list of chunks, from which to parse (S)CSS in DEV mode.",
               "type" : "textfield",
-              "value" : "csss.dev.css",
+              "value" : "",
               "area" : "Dev Mode"
             },
             {  
               "name" : "dev_css_filename",
               "description" : "Name of file to output custom compiled CSS in DEV mode.",
               "type" : "textfield",
-              "value" : "csss-dev.compiled.css",
+              "value" : "custom_css.min.dev.css",
               "area" : "Dev Mode"
             },
             {  
@@ -88,14 +88,14 @@
             },
             {  
               "name" : "strip_css_comment_blocks",
-              "description" : "Strips CSS comment blocks on output. minify_custom_css must be enabled for this to have effect.",
+              "description" : "Strips CSS comment blocks on output.",
               "type" : "combo-boolean",
               "value" : "0",
               "area" : "SCSS and Minification"
             },
             {
               "name" : "css_output_format",
-              "description" : "Choose either nested or standard CSS output format.",
+              "description" : "Choose either nested or standard CSS output format if minification is disabled.",
               "type" : "textfield",
               "value" : "standard",
               "area" : "SCSS and Minification"
@@ -162,9 +162,9 @@
       ],
       "chunks" : [
         {
-          "name" : "csss.custom.css",
+          "name" : "csss.custom_css.scss",
           "description" : "Sample chunk only. It's recommended to create your own chunk(s) with a unique name(s) and set them in the saveCustomCss plugin properties.", 
-          "file" : "csss.custom.css.tpl"
+          "file" : "csss.custom_css.scss.tpl"
         }
       ]
     }
