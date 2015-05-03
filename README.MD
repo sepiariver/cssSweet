@@ -6,6 +6,11 @@ Author: YJ Tso (@sepiariver) [on Twitter](https://twitter.com/sepiariver)
 
 cssSweet is a suite of tools for processing (S)CSS. It comes with several output modifiers to modify CSS values, and a plugin that concatenates and processes (S)CSS from specified Chunks and outputs to a minified CSS file. Version 2+ also concatenates and minifies JS with a 2nd plugin.
 
+The documentation site is here: 
+http://sepiariver.github.io/cssSweet
+as well as here:
+http://rtfm.modx.com/extras/revo/csssweet (this one needs updating)
+
 ## Example Use Cases
 - Use system or context settings to store primary colors in a site's color scheme, then process all other color values relative to these, so you can shift the entire color theme by modifying a few settings.
 - Use in conjunction with ClientConfig to give site owners a nice UI to manage CSS styles--but only the ones you expose, and only in the manner you choose!
