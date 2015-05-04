@@ -1,9 +1,9 @@
 ++++++++++++++++++++++++++++++++
-++   cssSweet 2.0.0-beta2     ++
-++   Released on 2015-05-01   ++
+++   cssSweet 2.0.0-rc1       ++
+++   Released on 2015-05-04   ++
 ++++++++++++++++++++++++++++++++
 Added scssphp library to process SCSS and minify
-Added jShrink library to process JS and minify
+Added jShrink library and plugin to process JS and minify
 Removed system settings. All settings are managed in plugin properties now.
 Added "dev mode"
 
