@@ -22,15 +22,7 @@
  */
  
 // In case the wrong event is enabled in plugin properties
-$eventName = $modx->event->name;
-if ($eventName !== 'OnSiteRefresh' && $eventName !== 'OnChunkFormSave' && $eventName !== 'OnDocFormSave') return;
-
-// Susan Ottwell's Resource-Based Workflow: escape if all conditions are not met
-$sottwell = $modx->getOption('sottwell_mode', $scriptProperties, 0);
-if ($eventName === 'OnDocFormSave') {
-    if (!$sottwell || !is_object($resource)) return;
-    if ($resource->get('content_type') != 4 || $resource->get('contentType') !== 'text/css') return;
-}
+if ($modx->event->name !== 'OnSiteRefresh' && $modx->event->name !== 'OnChunkFormSave') return;
 
 // Dev mode option
 $mode = ($modx->getOption('dev_mode', $scriptProperties, 0)) ? 'dev' : 'custom';
