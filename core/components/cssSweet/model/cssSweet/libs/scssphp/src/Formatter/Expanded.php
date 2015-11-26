@@ -2,17 +2,17 @@
 /**
  * SCSSPHP
  *
- * @copyright 2012-2014 Leaf Corcoran
+ * @copyright 2012-2015 Leaf Corcoran
  *
- * @license http://opensource.org/licenses/gpl-license GPL-3.0
  * @license http://opensource.org/licenses/MIT MIT
  *
- * @link http://leafo.net/scssphp
+ * @link http://leafo.github.io/scssphp
  */
 
 namespace Leafo\ScssPhp\Formatter;
 
 use Leafo\ScssPhp\Formatter;
+use Leafo\ScssPhp\Formatter\OutputBlock;
 
 /**
  * SCSS expanded formatter
@@ -21,6 +21,9 @@ use Leafo\ScssPhp\Formatter;
  */
 class Expanded extends Formatter
 {
+    /**
+     * {@inheritdoc}
+     */
     public function __construct()
     {
         $this->indentLevel = 0;
@@ -30,5 +33,35 @@ class Expanded extends Formatter
         $this->close = '}';
         $this->tagSeparator = ', ';
         $this->assignSeparator = ': ';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function indentStr()
+    {
+        return str_repeat($this->indentChar, $this->indentLevel);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function blockLines(OutputBlock $block)
+    {
+        $inner = $this->indentStr();
+
+        $glue = $this->break . $inner;
+
+        foreach ($block->lines as $index => $line) {
+            if (substr($line, 0, 2) === '/*') {
+                $block->lines[$index] = preg_replace('/(\r|\n)+/', $glue, $line);
+            }
+        }
+
+        echo $inner . implode($glue, $block->lines);
+
+        if (empty($block->selectors) || ! empty($block->children)) {
+            echo $this->break;
+        }
     }
 }
