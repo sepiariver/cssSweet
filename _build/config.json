@@ -3,8 +3,21 @@
   "lowCaseName" : "csssweet",
   "description" : "cssSweet is a suite of tools for processing (S)CSS. It comes with several output modifiers to modify CSS values, and a plugin that concatenates and processes (S)CSS from specified chunks to a minified CSS file. Version 2+ also concatenates and minifies JS with a 2nd plugin.",
   "author" : "@sepiariver YJ Tso",
-  "version" : "3.0.4-dev1",
+  "version" : "3.0.8-dev1",
   "package" : {
+    "systemSettings": [
+      {
+        "key": "custom_css_version",
+        "type": "textfield",
+        "area": "default",
+        "value": "1"
+      },{
+        "key": "dev_css_version",
+        "type": "textfield",
+        "area": "default",
+        "value": "1"
+      }
+    ],
     "elements" : {
       "snippets" : [
         {
@@ -45,6 +58,19 @@
               "description" : "Name of file to output custom compiled CSS.",
               "type" : "textfield",
               "value" : "custom_css.min.css"
+            },
+            {  
+              "name" : "custom_append_version_to_filename",
+              "description" : "Appends incrementing version number to filename. Version number is stored in system setting.",
+              "type" : "combo-boolean",
+              "value" : "0"
+            },
+            {  
+              "name" : "dev_append_version_to_filename",
+              "description" : "Appends incrementing version number to filename. Version number is stored in system setting.",
+              "type" : "combo-boolean",
+              "value" : "0",
+              "area" : "Dev Mode"
             },{  
               "name" : "dev_scss_chunks",
               "description" : "Name of chunk, or comma-separated list of chunks, from which to parse (S)CSS in DEV mode.",
@@ -73,8 +99,14 @@
               "value" : ""
             },
             {  
-              "name" : "context_settings_context",
+              "name" : "custom_context_settings_context",
               "description" : "The key of a single context from which to pull context settings for CSS values.",
+              "type" : "textfield",
+              "value" : ""
+            },
+            {  
+              "name" : "dev_context_settings_context",
+              "description" : "The key of a single context from which to pull context settings for CSS values in DEV mode.",
               "type" : "textfield",
               "value" : ""
             },
