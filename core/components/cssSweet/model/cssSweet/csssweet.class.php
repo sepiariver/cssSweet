@@ -36,8 +36,8 @@ class CssSweet
         $corePath = $this->getOption('core_path', $options, $this->modx->getOption('core_path', null, MODX_CORE_PATH) . 'components/csssweet/');
         $assetsPath = $this->getOption('assets_path', $options, $this->modx->getOption('assets_path', null, MODX_ASSETS_PATH) . 'components/csssweet/');
         $assetsUrl = $this->getOption('assets_url', $options, $this->modx->getOption('assets_url', null, MODX_ASSETS_URL) . 'components/csssweet/');
-        $scssphpPath = $this->getOption('core_path', $options, $this->modx->getOption('core_path', null, MODX_CORE_PATH) . 'components/csssweet/model/csssweet/libs/scssphp/');
-        $jshrinkPath = $this->getOption('core_path', $options, $this->modx->getOption('core_path', null, MODX_CORE_PATH) . 'components/csssweet/model/csssweet/libs/jshrink/');
+        $scssphpPath = $corePath . 'model/csssweet/libs/scssphp/';
+        $jshrinkPath = $corePath . 'model/csssweet/libs/jshrink/';
         
         /* load config defaults */
         $this->options = array_merge(array(
@@ -58,42 +58,51 @@ class CssSweet
                
     }
     
-    public function scssphpInit() {
-        
+    public function scssphpInit($path=array(), $formatter='Expanded') 
+    {
+        $scssphp = null;
         // Check min PHP requirement
         if (version_compare(PHP_VERSION, '5.4') < 0) {
             $this->modx->log(modX::LOG_LEVEL_ERROR, 'scssphp requires PHP 5.4 or above!');
-            return false;
+            return $scssphp;
         }
-        
-        // Check
-        
-        
+   
         // Check class but don't autoload
         if (! class_exists('scssc', false)) {
-            include_once $this->options['scssphpPath'] . '/src/Base/Range.php';
-            include_once $this->options['scssphpPath'] . '/src/Block.php';
-            include_once $this->options['scssphpPath'] . '/src/Colors.php';
-            include_once $this->options['scssphpPath'] . '/src/Compiler.php';
-            include_once $this->options['scssphpPath'] . '/src/Compiler/Environment.php';
-            include_once $this->options['scssphpPath'] . '/src/Formatter.php';
-            include_once $this->options['scssphpPath'] . '/src/Formatter/Compact.php';
-            include_once $this->options['scssphpPath'] . '/src/Formatter/Compressed.php';
-            include_once $this->options['scssphpPath'] . '/src/Formatter/Crunched.php';
-            include_once $this->options['scssphpPath'] . '/src/Formatter/Debug.php';
-            include_once $this->options['scssphpPath'] . '/src/Formatter/Expanded.php';
-            include_once $this->options['scssphpPath'] . '/src/Formatter/Nested.php';
-            include_once $this->options['scssphpPath'] . '/src/Formatter/OutputBlock.php';
-            include_once $this->options['scssphpPath'] . '/src/Node.php';
-            include_once $this->options['scssphpPath'] . '/src/Node/Number.php';
-            include_once $this->options['scssphpPath'] . '/src/Parser.php';
-            include_once $this->options['scssphpPath'] . '/src/Type.php';
-            include_once $this->options['scssphpPath'] . '/src/Util.php';
-            include_once $this->options['scssphpPath'] . '/src/Version.php';
-            include_once $this->options['scssphpPath'] . '/src/Server.php';
+            include_once $this->options['scssphpPath'] . 'src/Base/Range.php';
+            include_once $this->options['scssphpPath'] . 'src/Block.php';
+            include_once $this->options['scssphpPath'] . 'src/Colors.php';
+            include_once $this->options['scssphpPath'] . 'src/Compiler.php';
+            include_once $this->options['scssphpPath'] . 'src/Compiler/Environment.php';
+            include_once $this->options['scssphpPath'] . 'src/Formatter.php';
+            include_once $this->options['scssphpPath'] . 'src/Formatter/Compact.php';
+            include_once $this->options['scssphpPath'] . 'src/Formatter/Compressed.php';
+            include_once $this->options['scssphpPath'] . 'src/Formatter/Crunched.php';
+            include_once $this->options['scssphpPath'] . 'src/Formatter/Debug.php';
+            include_once $this->options['scssphpPath'] . 'src/Formatter/Expanded.php';
+            include_once $this->options['scssphpPath'] . 'src/Formatter/Nested.php';
+            include_once $this->options['scssphpPath'] . 'src/Formatter/OutputBlock.php';
+            include_once $this->options['scssphpPath'] . 'src/Node.php';
+            include_once $this->options['scssphpPath'] . 'src/Node/Number.php';
+            include_once $this->options['scssphpPath'] . 'src/Parser.php';
+            include_once $this->options['scssphpPath'] . 'src/Type.php';
+            include_once $this->options['scssphpPath'] . 'src/Util.php';
+            include_once $this->options['scssphpPath'] . 'src/Version.php';
+            include_once $this->options['scssphpPath'] . 'src/Server.php';
         }
         
-        return true;
+        $scssphp = new Leafo\ScssPhp\Compiler();
+        
+        // Set path
+        $scssphp->setImportPaths($path);
+        
+        // Set formatter
+        $formatter = 'Leafo\ScssPhp\Formatter\\' . $formatter;
+        // Debug
+        var_dump($formatter);
+        
+        $scssphp->setFormatter($formatter);
+        return $scssphp; 
         
     }
     
