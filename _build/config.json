@@ -3,7 +3,7 @@
   "lowCaseName" : "csssweet",
   "description" : "cssSweet is a suite of tools for processing (S)CSS. It comes with several output modifiers to modify CSS values, and a plugin that concatenates and processes (S)CSS from specified chunks to a minified CSS file. Version 2+ also concatenates and minifies JS with a 2nd plugin.",
   "author" : "@sepiariver YJ Tso",
-  "version" : "3.0.2-dev1",
+  "version" : "3.0.3-dev1",
   "package" : {
     "elements" : {
       "snippets" : [
@@ -88,16 +88,16 @@
             },
             {  
               "name" : "strip_css_comment_blocks",
-              "description" : "Strips CSS comment blocks on output.",
+              "description" : "Strips CSS comment blocks on output, only IF minification is ENABLED.",
               "type" : "combo-boolean",
               "value" : "0",
               "area" : "SCSS and Minification"
             },
             {
               "name" : "css_output_format",
-              "description" : "Choose either 'Expanded' (default), 'Nested' or 'Compact' CSS output, IF minification is disabled.",
+              "description" : "Choose either 'Expanded' (default), 'Nested' or 'Compact' CSS output, IF minification is DISABLED.",
               "type" : "textfield",
-              "value" : "standard",
+              "value" : "Expanded",
               "area" : "SCSS and Minification"
             }
           ]

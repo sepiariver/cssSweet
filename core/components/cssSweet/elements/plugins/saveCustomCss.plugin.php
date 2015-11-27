@@ -58,7 +58,7 @@ $css_output_format = ($minify_custom_css) ? 'Compressed' : $css_output_format;
 
 // Strip CSS comment blocks; defaults to 'false'
 $strip_comments = (bool) $modx->getOption('strip_css_comment_blocks', $scriptProperties, false);
-$css_output_format = ($strip_comments) ? 'Crunched' : $css_output_format;
+$css_output_format = ($minify_custom_css && $strip_comments) ? 'Crunched' : $css_output_format;
 
 // Optionally set base_path for scss imports
 $scss_import_paths = $modx->getOption('scss_import_paths', $scriptProperties, '');

@@ -88,7 +88,7 @@ class CssSweet
             include_once $this->options['scssphpPath'] . 'src/Type.php';
             include_once $this->options['scssphpPath'] . 'src/Util.php';
             include_once $this->options['scssphpPath'] . 'src/Version.php';
-            include_once $this->options['scssphpPath'] . 'src/Server.php';
+            //include_once $this->options['scssphpPath'] . 'src/Server.php';
         }
         
         $scssphp = new Leafo\ScssPhp\Compiler();
@@ -98,10 +98,12 @@ class CssSweet
         
         // Set formatter
         $formatter = 'Leafo\ScssPhp\Formatter\\' . $formatter;
-        // Debug
-        var_dump($formatter);
+        // Found this helpful
+        $this->modx->log(modX::LOG_LEVEL_INFO, 'Applying scssphp formatter class: ' . $formatter);
         
         $scssphp->setFormatter($formatter);
+        
+        // Ask and you shall receive
         return $scssphp; 
         
     }
