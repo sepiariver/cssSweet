@@ -86,22 +86,29 @@ if (!file_exists($csssCustomCssPath)) {
     }
 }
 
+// Initialize settings array
+$settings = array();
+
+// Get context settings
+$context = $modx->getOption('context_settings_context', $scriptProperties, '');
+$context = $modx->getContext($context);
+$settings = array_merge($settings, $context->config);
+
 // Grab the ClientConfig class
 $ccPath = $modx->getOption('clientconfig.core_path', null, $modx->getOption('core_path') . 'components/clientconfig/');
 $ccPath .= 'model/clientconfig/';
 if (file_exists($ccPath . 'clientconfig.class.php')) $clientConfig = $modx->getService('clientconfig','ClientConfig', $ccPath);
 
-// Initialize settings array
-$settings = array();
-
 // If we got the class (which means it's installed properly), include the settings
 if ($clientConfig instanceof ClientConfig) {
     $settings = $clientConfig->getSettings();
-    /* Make settings available as [[++tags]] */
-    $modx->setPlaceholders($settings, '+');
+    if (is_array($settings)) $settings = array_merge($settings, $context->config);
 } else { 
     $modx->log(modX::LOG_LEVEL_WARN, 'Failed to load ClientConfig class. ClientConfig settings not included.','','saveCustomCssClientConfig'); 
 }
+
+/* Make settings available as [[++tags]] */
+$modx->setPlaceholders($settings, '+');
 
 // Parse chunk with $settings array
 $contents = '';
