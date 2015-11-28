@@ -100,6 +100,7 @@ class CssSweet
         
         // Instantiate Compiler
         $scssphp = new Leafo\ScssPhp\Compiler();
+		if (!($scssphp instanceof Leafo\ScssPhp\Compiler)) return null;
         
         // Set path
         $scssphp->setImportPaths($paths);
@@ -114,6 +115,22 @@ class CssSweet
         // Ask and you shall receive
         return $scssphp; 
         
+    }
+    
+    public function jshrinkInit() 
+    {
+	    
+	    $jshrink = null;
+	    // Grab the JS minifier class
+		$cssSweetjsMinFile = $this->options['jshrinkPath'] . 'Minifier.php';
+	    
+	    if (file_exists($cssSweetjsMinFile)) {
+	        include_once $cssSweetjsMinFile;
+	        $jshrink = new Minifier();
+	    }
+	    if (!($jshrink instanceof Minifier)) return null;
+	    return $jshrink;
+	    
     }
     
     /**

@@ -127,52 +127,12 @@ $file = $csssCustomJsPath . $filename;
 
 // Status report
 $status = 'not';
-
-$minifier = '';
-
 if ($minify_custom_js) {
-	    
-	$cssSweetLibsPath = $modx->getOption('csssweet.core_path', null, $modx->getOption('core_path') . 'components/csssweet/');
-    $cssSweetLibsPath .= 'model/cssSweet/libs/';
-
-	if (($minifier) === 'JSqueeze') {
-		
-		// Grab the JS minifier class
-	    $cssSweetjsMinFile = 'jsqueeze/JSqueeze.php';
-	    if (file_exists($cssSweetLibsPath . $cssSweetjsMinFile)) {
-	        include_once $cssSweetLibsPath . $cssSweetjsMinFile;
-	        $jsqueeze = new Patchwork\JSqueeze();
-	    }
-	    
-	    if ($jsqueeze instanceof Patchwork\JSqueeze) {
-		    
-		    
-		    try {
-	            $contents = $jsqueeze->squeeze($contents, false);
-	            $status = '';
-	        } 
-	        catch (Exception $e) {
-	            $modx->log(modX::LOG_LEVEL_ERROR, $e->getMessage() . '— js not compiled. Minification not performed.'); 
-	        }
-		    
-		    
-	    } else { 
-		    $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to load js Minifier class — js not compiled. Minification not performed.');    
-	    }
-		
-	} else {
 	
-	
-	    // Grab the JS minifier class
-	    $cssSweetjsMinFile = 'jshrink/Minifier.php';
-	    
-	    if (file_exists($cssSweetLibsPath . $cssSweetjsMinFile)) {
-	        include_once $cssSweetLibsPath . $cssSweetjsMinFile;
-	        $jshrink = new Minifier();
-	    }
+		$jshrink = $csssweet->jshrinkInit();
 	    
 	    // If we got the class, try minification. Log failures.    
-	    if ($jshrink instanceof Minifier) {
+	    if ($jshrink) {
 	    
 	        try {
 	            $contents = $jshrink::minify($contents, array('flaggedComments' => $preserve_comments));
@@ -185,8 +145,6 @@ if ($minify_custom_js) {
 	    } else { 
 	        $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to load js Minifier class — js not compiled. Minification not performed.'); 
 	    }
-	    
-	}
     
 }
 
