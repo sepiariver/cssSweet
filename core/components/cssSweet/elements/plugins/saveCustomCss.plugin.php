@@ -193,9 +193,5 @@ if (!($csssweet instanceof CssSweet)) {
 }
 
 // If we failed scss and minification at least output what we have
-$written = file_put_contents($file, $contents);
-if ($written === false) {
-    $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to write css file at: ' . $file);
-} else {
-    $modx->log(modX::LOG_LEVEL_INFO, 'Success! Custom CSS saved to file: ' . $file . '(' . $written . ' bytes)');
-}
+file_put_contents($file, $contents);
+if (file_exists($file) && is_readable($file)) $modx->log(modX::LOG_LEVEL_INFO, 'Success! Custom CSS saved to file "' . $file . '"', '', 'saveCustomCss');
