@@ -128,32 +128,70 @@ $file = $csssCustomJsPath . $filename;
 // Status report
 $status = 'not';
 
+$minifier = '';
+
 if ($minify_custom_js) {
-    // Grab the JS minifier class
-    $cssSweetLibsPath = $modx->getOption('csssweet.core_path', null, $modx->getOption('core_path') . 'components/csssweet/');
+	    
+	$cssSweetLibsPath = $modx->getOption('csssweet.core_path', null, $modx->getOption('core_path') . 'components/csssweet/');
     $cssSweetLibsPath .= 'model/cssSweet/libs/';
-    $cssSweetjsMinFile = 'JShrink/Minifier.php';
+
+	if (($minifier) === 'JSqueeze') {
+		
+		// Grab the JS minifier class
+	    $cssSweetjsMinFile = 'jsqueeze/JSqueeze.php';
+	    if (file_exists($cssSweetLibsPath . $cssSweetjsMinFile)) {
+	        include_once $cssSweetLibsPath . $cssSweetjsMinFile;
+	        $jsqueeze = new Patchwork\JSqueeze();
+	    }
+	    
+	    if ($jsqueeze instanceof Patchwork\JSqueeze) {
+		    
+		    
+		    try {
+	            $contents = $jsqueeze->squeeze($contents, false);
+	            $status = '';
+	        } 
+	        catch (Exception $e) {
+	            $modx->log(modX::LOG_LEVEL_ERROR, $e->getMessage() . '— js not compiled. Minification not performed.'); 
+	        }
+		    
+		    
+	    } else { 
+		    $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to load js Minifier class — js not compiled. Minification not performed.');    
+	    }
+		
+	} else {
+	
+	
+	    // Grab the JS minifier class
+	    $cssSweetjsMinFile = 'jshrink/Minifier.php';
+	    
+	    if (file_exists($cssSweetLibsPath . $cssSweetjsMinFile)) {
+	        include_once $cssSweetLibsPath . $cssSweetjsMinFile;
+	        $jshrink = new Minifier();
+	    }
+	    
+	    // If we got the class, try minification. Log failures.    
+	    if ($jshrink instanceof Minifier) {
+	    
+	        try {
+	            $contents = $jshrink::minify($contents, array('flaggedComments' => $preserve_comments));
+	            $status = '';
+	        } 
+	        catch (Exception $e) {
+	            $modx->log(modX::LOG_LEVEL_ERROR, $e->getMessage() . '— js not compiled. Minification not performed.'); 
+	        }
+	    
+	    } else { 
+	        $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to load js Minifier class — js not compiled. Minification not performed.'); 
+	    }
+	    
+	}
     
-    if (file_exists($cssSweetLibsPath . $cssSweetjsMinFile)) {
-        include_once $cssSweetLibsPath . $cssSweetjsMinFile;
-        $jshrink = new Minifier();
-    }
-    
-    // If we got the class, try minification. Log failures.    
-    if ($jshrink instanceof Minifier) {
-    
-        try {
-            $contents = $jshrink::minify($contents, array('flaggedComments' => $preserve_comments));
-            $status = '';
-        } 
-        catch (Exception $e) {
-            $modx->log(modX::LOG_LEVEL_ERROR, $e->getMessage() . '— js not compiled. Minification not performed.'); 
-        }
-    
-    } else { 
-        $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to load js Minifier class — js not compiled. Minification not performed.'); 
-    }
 }
+
+// None of the minifiers seem to handle this correctly?
+$contents = str_replace('!function', PHP_EOL . '!function', $contents);
 
 // If we didnt' minify, output what we have
 file_put_contents($file, $contents);
