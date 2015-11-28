@@ -1,5 +1,5 @@
 ++++++++++++++++++++++++++++++++
-++   cssSweet 3.0.0-beta2     ++
+++   cssSweet 3.0.0-beta3     ++
 ++   Released on 2015-11-28   ++
 ++++++++++++++++++++++++++++++++
 Updated scssphp library to 0.5.1
