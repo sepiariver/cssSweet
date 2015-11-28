@@ -3,7 +3,7 @@
   "lowCaseName" : "csssweet",
   "description" : "cssSweet is a suite of tools for processing (S)CSS. It comes with several output modifiers to modify CSS values, and a plugin that concatenates and processes (S)CSS from specified chunks to a minified CSS file. Version 2+ also concatenates and minifies JS with a 2nd plugin.",
   "author" : "@sepiariver YJ Tso",
-  "version" : "3.0.4-dev1",
+  "version" : "3.1.2-dev1",
   "package" : {
     "elements" : {
       "snippets" : [
@@ -73,10 +73,17 @@
               "value" : ""
             },
             {  
-              "name" : "context_settings_context",
+              "name" : "custom_context_settings_context",
               "description" : "The key of a single context from which to pull context settings for CSS values.",
               "type" : "textfield",
               "value" : ""
+            },
+            {  
+              "name" : "dev_context_settings_context",
+              "description" : "The key of a single context from which to pull context settings for CSS values in DEV MODE.",
+              "type" : "textfield",
+              "value" : "",
+              "area" : "Dev Mode"
             },
             {  
               "name" : "minify_custom_css",

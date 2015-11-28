@@ -27,6 +27,18 @@ if ($modx->context->get('key') !== 'mgr') return;
 // In case the wrong event is enabled in plugin properties
 if ($modx->event->name !== 'OnSiteRefresh' && $modx->event->name !== 'OnChunkFormSave') return;
 
+// Grab the cssSweet class
+$cssSweetPath = $modx->getOption('csssweet.core_path', null, $modx->getOption('core_path') . 'components/csssweet/');
+$cssSweetPath .= 'model/csssweet/';
+if (file_exists($cssSweetPath . 'csssweet.class.php')) $csssweet = $modx->getService('csssweet', 'CssSweet', $cssSweetPath);
+
+if (!($csssweet instanceof CssSweet)) {
+
+    $modx->log(modX::LOG_LEVEL_ERROR, '[SaveCustomCss] could not load the required csssweet class!');
+	return;
+	
+}
+
 // Dev mode option
 $mode = ($modx->getOption('dev_mode', $scriptProperties, 0)) ? 'dev' : 'custom';
 // Letting folks know what's going on
@@ -90,9 +102,12 @@ if (!file_exists($csssCustomCssPath)) {
 $settings = array();
 
 // Get context settings
-$context = $modx->getOption('context_settings_context', $scriptProperties, '');
-$context = $modx->getContext($context);
-$settings = array_merge($settings, $context->config);
+$settings_ctx = $modx->getOption($mode . '_context_settings_context', $scriptProperties, '');
+if (!empty($settings_ctx)) {
+    $settings_ctx = $modx->getContext($settings_ctx);
+    if ($settings_ctx && is_array($settings_ctx->config)) $settings = array_merge($settings, $settings_ctx->config);
+}
+
 
 // Grab the ClientConfig class
 $ccPath = $modx->getOption('clientconfig.core_path', null, $modx->getOption('core_path') . 'components/clientconfig/');
@@ -141,18 +156,7 @@ if (!$strip_comments) $contents = str_replace('/*', '/*!', $contents);
 // Define target file
 $file = $csssCustomCssPath . $filename;
 
-// Grab the cssSweet class
-$cssSweetPath = $modx->getOption('csssweet.core_path', null, $modx->getOption('core_path') . 'components/csssweet/');
-$cssSweetPath .= 'model/csssweet/';
-if (file_exists($cssSweetPath . 'csssweet.class.php')) $csssweet = $modx->getService('csssweet', 'CssSweet', $cssSweetPath);
-
-if (!($csssweet instanceof CssSweet)) {
-
-    $modx->log(modX::LOG_LEVEL_ERROR, '[SaveCustomCss] could not load the required csssweet class! No minification performed.');
-
-} else {
-
-    // Init scssphp
+// Init scssphp
     $scssMin = $csssweet->scssphpInit($scss_import_paths, $css_output_format);
     if ($scssMin) {
 
@@ -167,7 +171,7 @@ if (!($csssweet instanceof CssSweet)) {
         $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to load scss class. scss not compiled. minification not performed.','','saveCustomCss'); 
     }
     
-}
+
 
 // If we failed scss and minification at least output what we have
 file_put_contents($file, $contents);
