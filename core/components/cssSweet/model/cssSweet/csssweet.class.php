@@ -58,7 +58,14 @@ class CssSweet
                
     }
     
-    public function scssphpInit($path=array(), $formatter='Expanded') 
+    /**
+     * Do special stuff to init scssphp classes
+     *
+     * @param array $path An array of import paths.
+     * @param string $formatter The scssphp formatter class selector. Default 'Expanded'
+     * @return object An instance of the $scssphp class.
+     */
+    public function scssphpInit($paths=array(), $formatter='Expanded') 
     {
         $scssphp = null;
         // Check min PHP requirement
@@ -94,7 +101,7 @@ class CssSweet
         $scssphp = new Leafo\ScssPhp\Compiler();
         
         // Set path
-        $scssphp->setImportPaths($path);
+        $scssphp->setImportPaths($paths);
         
         // Set formatter
         $formatter = 'Leafo\ScssPhp\Formatter\\' . $formatter;
@@ -108,6 +115,13 @@ class CssSweet
         
     }
     
+    /**
+     * Process and array of chunk (names) with provided $settings
+     *
+     * @param array $chunks An array of chunk names.
+     * @param array $settings An array of settings/properties to pass to the chunks.
+     * @return string A concatenated string of all processed chunk output.
+     */
     public function processChunks(array $chunks, array $settings) {
 	    $contents = '';
 	    foreach ($chunks as $current) {
