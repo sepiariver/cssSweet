@@ -1,0 +1,52 @@
+++++++++++++++++++++++++++++++++
+++   cssSweet 3.2.0-beta1     ++
+++   Released on 2015-11-28   ++
+++++++++++++++++++++++++++++++++
+Updated scssphp library to 0.5.1
+Added ability to specify context settings to parse
+Moved some functions to class file
+Updated documentation
+Lowercase directories
+
+++++++++++++++++++++++++++++++++
+++   cssSweet 2.0.0-rc1       ++
+++   Released on 2015-05-04   ++
+++++++++++++++++++++++++++++++++
+Added scssphp library to process SCSS and minify
+Added jShrink library and plugin to process JS and minify
+Removed system settings. All settings are managed in plugin properties now.
+Added "dev mode"
+
+++++++++++++++++++++++++++++++++
+++   cssSweet 1.2.1-pl        ++
+++   Released on 2015-03-28   ++
+++++++++++++++++++++++++++++++++
+Fixed atrocious path bug
+Added config.json for GPM
+
+++++++++++++++++++++++++++++++++
+++   cssSweet 1.2.0-pl        ++
+++   Released on 2015-01-02   ++
+++++++++++++++++++++++++++++++++
+Ability to process multiple Chunks
+Added OnChunkFormSave event
+Better path and directory checking
+
+++++++++++++++++++++++++++++++++
+++   cssSweet 1.1.0-rc1       ++
+++   Released on 2014-04-05   ++
+++++++++++++++++++++++++++++++++
+Improved minification
+Improved error checking for ClientConfig class
+
+++++++++++++++++++++++++++++++++
+++   cssSweet 1.0.1-beta1     ++
+++   Released on 2013-10-05   ++
+++++++++++++++++++++++++++++++++
+Bugfix
+
+++++++++++++++++++++++++++++++++
+++   cssSweet 1.0.0-beta1     ++
+++   Released on 2013-10-05   ++
+++++++++++++++++++++++++++++++++
+Initial beta release
