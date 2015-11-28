@@ -122,7 +122,8 @@ class CssSweet
      * @param array $settings An array of settings/properties to pass to the chunks.
      * @return string A concatenated string of all processed chunk output.
      */
-    public function processChunks(array $chunks, array $settings) {
+    public function processChunks(array $chunks, array $settings) 
+    {
 	    $contents = '';
 	    foreach ($chunks as $current) {
 	    
@@ -146,6 +147,31 @@ class CssSweet
 		    
 		}
 		return $contents;
+	    
+    }
+    
+    /**
+     * Instantiate ClientConfig and include settings
+	 *
+     * @param array $settings An array of settings to merge into.
+     * @return array Either the original array or a merged one.
+     */
+    public function getClientConfigSettings($settings) 
+    {
+	    $clientConfig = null;
+	    // Grab the ClientConfig class
+		$ccPath = $this->modx->getOption('clientconfig.core_path', null, $this->modx->getOption('core_path') . 'components/clientconfig/');
+		$ccPath .= 'model/clientconfig/';
+		if (file_exists($ccPath . 'clientconfig.class.php')) $clientConfig = $this->modx->getService('clientconfig','ClientConfig', $ccPath);
+
+		// If we got the class (which means it's installed properly), include the settings
+		if ($clientConfig && ($clientConfig instanceof ClientConfig)) {
+		    $ccSettings = $clientConfig->getSettings();
+		    if (is_array($ccSettings)) $settings = array_merge($settings, $ccSettings);
+		} else { 
+		    $this->modx->log(modX::LOG_LEVEL_WARN, 'Failed to load ClientConfig class. ClientConfig settings not included.','','saveCustomCssClientConfig'); 
+		}
+		return $settings;
 	    
     }
     
@@ -174,6 +200,9 @@ class CssSweet
         }
         return $option;
     }
+    /**
+    * Despite the variable name, it takes a string and returns an array
+    */
     public function explodeAndClean($array, $delimiter = ',')
     {
         $array = explode($delimiter, $array);     // Explode fields to array
