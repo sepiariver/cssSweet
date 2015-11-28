@@ -157,6 +157,19 @@
               "value" : ""
             },
             {  
+              "name" : "custom_context_settings_context",
+              "description" : "The key of a single context from which to pull context settings for CSS values.",
+              "type" : "textfield",
+              "value" : ""
+            },
+            {  
+              "name" : "dev_context_settings_context",
+              "description" : "The key of a single context from which to pull context settings for CSS values in DEV MODE.",
+              "type" : "textfield",
+              "value" : "",
+              "area" : "Dev Mode"
+            },
+            {  
               "name" : "minify_custom_js",
               "description" : "Minify JS on output.",
               "type" : "combo-boolean",
