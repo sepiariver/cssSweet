@@ -6,6 +6,7 @@ Updated scssphp library to 0.5.1
 Added ability to specify context settings to parse
 Moved some functions to class file
 Updated documentation
+Lowercase directories
 
 ++++++++++++++++++++++++++++++++
 ++   cssSweet 2.0.0-rc1       ++
