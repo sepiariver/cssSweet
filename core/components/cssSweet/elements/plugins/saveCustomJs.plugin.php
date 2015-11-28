@@ -21,8 +21,24 @@
  *
  */
 
+// Never fire on the front end
+if ($modx->context->get('key') !== 'mgr') return;
+
 // In case the wrong event is enabled in plugin properties
 if ($modx->event->name !== 'OnSiteRefresh' && $modx->event->name !== 'OnChunkFormSave') return;
+
+// Grab the cssSweet clas
+$csssweet = null;
+$cssSweetPath = $modx->getOption('csssweet.core_path', null, $modx->getOption('core_path') . 'components/csssweet/');
+$cssSweetPath .= 'model/csssweet/';
+if (file_exists($cssSweetPath . 'csssweet.class.php')) $csssweet = $modx->getService('csssweet', 'CssSweet', $cssSweetPath);
+
+if (!$csssweet || !($csssweet instanceof CssSweet)) {
+
+    $modx->log(modX::LOG_LEVEL_ERROR, '[SaveCustomCss] could not load the required csssweet class!');
+	return;
+	
+}
 
 // Dev mode option
 $mode = ($modx->getOption('dev_mode', $scriptProperties, 0)) ? 'dev' : 'custom';
@@ -30,7 +46,7 @@ $mode = ($modx->getOption('dev_mode', $scriptProperties, 0)) ? 'dev' : 'custom';
 $modx->log(modX::LOG_LEVEL_INFO, 'saveCustomJs plugin is running in mode: ' . $mode);
 
 // Specify a comma-separated list of chunk names in plugin properties
-$chunks = array_filter(array_map('trim', explode(',', $modx->getOption($mode . '_js_chunks', $scriptProperties, ''))));
+$chunks = $csssweet->explodeAndClean($modx->getOption($mode . '_js_chunks', $scriptProperties, ''));
 // If no chunk names specified, there's nothing to do.
 if (empty($chunks)) {
     $modx->log(modX::LOG_LEVEL_WARN, 'No chunks were set in the saveCustomJs plugin property: ' . $mode . '_js_chunks. No action performed.');
@@ -74,42 +90,25 @@ if (!file_exists($csssCustomJsPath)) {
     }
 }
 
-// Grab the ClientConfig class
-$ccPath = $modx->getOption('clientconfig.core_path', null, $modx->getOption('core_path') . 'components/clientconfig/');
-$ccPath .= 'model/clientconfig/';
-if (file_exists($ccPath . 'clientconfig.class.php')) $clientConfig = $modx->getService('clientconfig','ClientConfig', $ccPath);
+// Initialize settings array
 $settings = array();
 
-// If we got the class (which means it's installed properly), include the settings
-if ($clientConfig && ($clientConfig instanceof ClientConfig)) {
-    $settings = $clientConfig->getSettings();
-    /* Make settings available as [[++tags]] */
-    $modx->setPlaceholders($settings, '+');
-} else { 
-    $modx->log(modX::LOG_LEVEL_WARN, 'Failed to load ClientConfig class. ClientConfig settings not included. Check for MODX tags in output.'); 
+// Get context settings
+$settings_ctx = $modx->getOption($mode . '_context_settings_context', $scriptProperties, '');
+if (!empty($settings_ctx)) {
+    $settings_ctx = $modx->getContext($settings_ctx);
+    if ($settings_ctx && is_array($settings_ctx->config)) $settings = array_merge($settings, $settings_ctx->config);
 }
 
+// Attempt to get Client Config settigs
+$settings = $csssweet->getClientConfigSettings($settings);
+
+/* Make settings available as [[++tags]] */
+$modx->setPlaceholders($settings, '+');
+
 // Parse chunk with $settings array
-$contents = '';
-foreach ($chunks as $current) {
-    $processed = '';
-    if ($current) {
-        try {
-            $modx->log(modX::LOG_LEVEL_INFO, 'Processing chunk: ' . $current);
-            $processed = $modx->getChunk($current, $settings);
-            if ($processed) {
-                $contents .= $processed;
-            } else {
-                $err = '$modx->getChunk() failed on line: ' . __LINE__ . ' for chunk: ' . $current;
-                throw new Exception($err);
-            }
-        } catch (Exception $err) {
-            $modx->log(modX::LOG_LEVEL_ERROR, $err->getMessage());
-        }
-    } else {
-        $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to get Chunk ' . $current . '. Chunk contents not saved.');
-    }
-}
+$contents = $csssweet->processChunks($chunks, $settings);
+
 // If there's no result, what's the point?
 if (empty($contents)) return;
 
