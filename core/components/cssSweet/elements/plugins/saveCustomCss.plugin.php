@@ -126,26 +126,7 @@ if ($clientConfig instanceof ClientConfig) {
 $modx->setPlaceholders($settings, '+');
 
 // Parse chunk with $settings array
-$contents = '';
-foreach ($chunks as $current) {
-    $processed = '';
-    if ($current) {
-        try {
-            $modx->log(modX::LOG_LEVEL_INFO, 'Processing chunk: ' . $current);
-            $processed = $modx->getChunk($current, $settings);
-            if ($processed) {
-                $contents .= $processed;
-            } else {
-                $err = '$modx->getChunk() failed on line: ' . __LINE__ . ' for chunk: ' . $current;
-                throw new Exception($err);
-            }
-        } catch (Exception $err) {
-            $modx->log(modX::LOG_LEVEL_ERROR, $err->getMessage());
-        }
-    } else {
-        $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to get Chunk ' . $current . '. Chunk contents not saved.');
-    }
-}
+$contents = $csssweet->processChunks($chunks, $settings);
 // If there's no result, what's the point?
 if (empty($contents)) return;
 
@@ -157,21 +138,19 @@ if (!$strip_comments) $contents = str_replace('/*', '/*!', $contents);
 $file = $csssCustomCssPath . $filename;
 
 // Init scssphp
-    $scssMin = $csssweet->scssphpInit($scss_import_paths, $css_output_format);
-    if ($scssMin) {
+$scssMin = $csssweet->scssphpInit($scss_import_paths, $css_output_format);
+if ($scssMin) {
 
-        try {
-            $contents = $scssMin->compile($contents);
-        } 
-        catch (Exception $e) {
-            $modx->log(modX::LOG_LEVEL_ERROR, $e->getMessage() . ' scss not compiled. minification not performed.','','saveCustomCss'); 
-        }
-        
-    } else { 
-        $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to load scss class. scss not compiled. minification not performed.','','saveCustomCss'); 
+    try {
+        $contents = $scssMin->compile($contents);
+    } 
+    catch (Exception $e) {
+        $modx->log(modX::LOG_LEVEL_ERROR, $e->getMessage() . ' scss not compiled. minification not performed.','','saveCustomCss'); 
     }
-    
-
+        
+} else { 
+    $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to load scss class. scss not compiled. minification not performed.','','saveCustomCss'); 
+}    
 
 // If we failed scss and minification at least output what we have
 file_put_contents($file, $contents);

@@ -108,6 +108,33 @@ class CssSweet
         
     }
     
+    public function processChunks(array $chunks, array $settings) {
+	    $contents = '';
+	    foreach ($chunks as $current) {
+	    
+		    $processed = '';
+		    if ($current) {
+		        try {
+		            $this->modx->log(modX::LOG_LEVEL_INFO, 'Processing chunk: ' . $current);
+		            $processed = $this->modx->getChunk($current, $settings);
+		            if ($processed) {
+		                $contents .= $processed;
+		            } else {
+		                $err = '$this->modx->getChunk() failed for chunk: ' . $current;
+		                throw new Exception($err);
+		            }
+		        } catch (Exception $err) {
+		            $this->modx->log(modX::LOG_LEVEL_ERROR, $err->getMessage());
+		        }
+		    } else {
+		        $this->modx->log(modX::LOG_LEVEL_ERROR, 'Failed to get Chunk ' . $current . '. Chunk contents not saved.');
+		    }
+		    
+		}
+		return $contents;
+	    
+    }
+    
     /* UTILITY METHODS (@theboxer) */
     
     /**
