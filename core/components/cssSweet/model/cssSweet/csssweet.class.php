@@ -98,6 +98,7 @@ class CssSweet
             //include_once $this->options['scssphpPath'] . 'src/Server.php';
         }
         
+        // Instantiate Compiler
         $scssphp = new Leafo\ScssPhp\Compiler();
         
         // Set path
@@ -124,6 +125,7 @@ class CssSweet
      */
     public function processChunks(array $chunks, array $settings) 
     {
+    	// Init var
 	    $contents = '';
 	    foreach ($chunks as $current) {
 	    
@@ -146,6 +148,7 @@ class CssSweet
 		    }
 		    
 		}
+		// Even if contents is empty, return it
 		return $contents;
 	    
     }
@@ -158,7 +161,9 @@ class CssSweet
      */
     public function getClientConfigSettings($settings) 
     {
+    	// Init var
 	    $clientConfig = null;
+	    
 	    // Grab the ClientConfig class
 		$ccPath = $this->modx->getOption('clientconfig.core_path', null, $this->modx->getOption('core_path') . 'components/clientconfig/');
 		$ccPath .= 'model/clientconfig/';
@@ -171,6 +176,8 @@ class CssSweet
 		} else { 
 		    $this->modx->log(modX::LOG_LEVEL_WARN, 'Failed to load ClientConfig class. ClientConfig settings not included.','','saveCustomCssClientConfig'); 
 		}
+		
+		// Settings may or may not be modified at this point
 		return $settings;
 	    
     }
