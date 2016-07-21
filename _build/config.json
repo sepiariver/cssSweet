@@ -1,211 +1,180 @@
 {
-  "name" : "cssSweet",
-  "lowCaseName" : "csssweet",
-  "description" : "cssSweet is a suite of tools for processing (S)CSS. It comes with several output modifiers to modify CSS values, and a plugin that concatenates and processes (S)CSS from specified chunks to a minified CSS file. Version 2+ also concatenates and minifies JS with a 2nd plugin.",
-  "author" : "@sepiariver YJ Tso",
-  "version" : "3.0.0-beta3",
-  "package" : {
-    "elements" : {
-      "snippets" : [
-        {
-          "name" : "lighten",
-          "properties" : [
-            {
-              "name" : "percOpt",
-              "description" : "Can be 'input', 'spectrum' or 'average'.",
-              "type" : "textfield",
-              "value" : "input"
-            },
-            {
-              "name" : "threshold",
-              "description" : "Valid, 6-character hex against which to evaluate light and dark hex values.",
-              "type" : "textfield",
-              "value" : "999999"
-            }
-          ]
-        },{
-          "name" : "modval"
-        },{
-          "name" : "prefix"
-        }        
-      ],
-      "plugins" : [
-        {
-          "name" : "saveCustomCss",
-          "events" : ["OnSiteRefresh","OnChunkFormSave"],
-          "properties" : [  
-            {  
-              "name" : "custom_scss_chunks",
-              "description" : "Name of chunk, or comma-separated list of chunks, from which to parse (S)CSS.",
-              "type" : "textfield",
-              "value" : "csss.custom_css.scss"
-            },
-            {  
-              "name" : "custom_css_filename",
-              "description" : "Name of file to output custom compiled CSS.",
-              "type" : "textfield",
-              "value" : "custom_css.min.css"
-            },{  
-              "name" : "dev_scss_chunks",
-              "description" : "Name of chunk, or comma-separated list of chunks, from which to parse (S)CSS in DEV mode.",
-              "type" : "textfield",
-              "value" : "",
-              "area" : "Dev Mode"
-            },
-            {  
-              "name" : "dev_css_filename",
-              "description" : "Name of file to output custom compiled CSS in DEV mode.",
-              "type" : "textfield",
-              "value" : "custom_css.min.dev.css",
-              "area" : "Dev Mode"
-            },
-            {  
-              "name" : "dev_mode",
-              "description" : "Enable DEV mode.",
-              "type" : "combo-boolean",
-              "value" : "0",
-              "area" : "Dev Mode"
-            },
-            {  
-              "name" : "custom_css_path",
-              "description" : "Full path for directory to which to OUTPUT the final CSS file.",
-              "type" : "textfield",
-              "value" : ""
-            },
-            {  
-              "name" : "custom_context_settings_context",
-              "description" : "The key of a single context from which to pull context settings for CSS values.",
-              "type" : "textfield",
-              "value" : ""
-            },
-            {  
-              "name" : "dev_context_settings_context",
-              "description" : "The key of a single context from which to pull context settings for CSS values in DEV MODE.",
-              "type" : "textfield",
-              "value" : "",
-              "area" : "Dev Mode"
-            },
-            {  
-              "name" : "minify_custom_css",
-              "description" : "Minify CSS on output. MUST be enabled for SCSS processing.",
-              "type" : "combo-boolean",
-              "value" : "1",
-              "area" : "SCSS and Minification"
-            },
-            {  
-              "name" : "scss_import_paths",
-              "description" : "Optionally set import paths to check for SCSS imports. All @import paths must be relative to these.",
-              "type" : "textfield",
-              "value" : "",
-              "area" : "SCSS and Minification"
-            },
-            {  
-              "name" : "strip_css_comment_blocks",
-              "description" : "Strips CSS comment blocks on output, only IF minification is ENABLED.",
-              "type" : "combo-boolean",
-              "value" : "0",
-              "area" : "SCSS and Minification"
-            },
-            {
-              "name" : "css_output_format",
-              "description" : "Choose either 'Expanded' (default), 'Nested' or 'Compact' CSS output, IF minification is DISABLED.",
-              "type" : "textfield",
-              "value" : "Expanded",
-              "area" : "SCSS and Minification"
-            }
-          ]
-        },{
-          "name" : "saveCustomJs",
-          "events" : ["OnSiteRefresh","OnChunkFormSave"],
-          "properties" : [  
-            {  
-              "name" : "custom_js_chunks",
-              "description" : "Name of chunk, or comma-separated list of chunks, from which to parse JS.",
-              "type" : "textfield",
-              "value" : ""
-            },
-            {  
-              "name" : "custom_js_filename",
-              "description" : "Name of file to output custom compiled JS.",
-              "type" : "textfield",
-              "value" : "custom_js.min.js"
-            },{  
-              "name" : "dev_js_chunks",
-              "description" : "Name of chunk, or comma-separated list of chunks, from which to parse JS in DEV mode.",
-              "type" : "textfield",
-              "value" : "",
-              "area" : "Dev Mode"
-            },
-            {  
-              "name" : "dev_js_filename",
-              "description" : "Name of file to output custom compiled JS in DEV mode.",
-              "type" : "textfield",
-              "value" : "custom_js.min.dev.js",
-              "area" : "Dev Mode"
-            },
-            {  
-              "name" : "dev_mode",
-              "description" : "Enable DEV mode.",
-              "type" : "combo-boolean",
-              "value" : "0",
-              "area" : "Dev Mode"
-            },
-            {  
-              "name" : "custom_js_path",
-              "description" : "Full path for directory to which to OUTPUT the final JS file.",
-              "type" : "textfield",
-              "value" : ""
-            },
-            {  
-              "name" : "custom_context_settings_context",
-              "description" : "The key of a single context from which to pull context settings for CSS values.",
-              "type" : "textfield",
-              "value" : ""
-            },
-            {  
-              "name" : "dev_context_settings_context",
-              "description" : "The key of a single context from which to pull context settings for CSS values in DEV MODE.",
-              "type" : "textfield",
-              "value" : "",
-              "area" : "Dev Mode"
-            },
-            {  
-              "name" : "minify_custom_js",
-              "description" : "Minify JS on output.",
-              "type" : "combo-boolean",
-              "value" : "1",
-              "area" : "Minification"
-            },
-            {  
-              "name" : "strip_js_comment_blocks",
-              "description" : "Strips JS comment blocks on output.",
-              "type" : "combo-boolean",
-              "value" : "0",
-              "area" : "Minification"
-            }
-          ]
+    "name": "cssSweet",
+    "lowCaseName": "csssweet",
+    "description": "cssSweet is a suite of tools for processing (S)CSS. It comes with several output modifiers to modify CSS values, and a plugin that concatenates and processes (S)CSS from specified chunks to a minified CSS file. Version 2+ also concatenates and minifies JS with a 2nd plugin.",
+    "author": "@sepiariver YJ Tso",
+    "version": "4.0.0-dev1",
+    "package": {
+        "elements": {
+            "snippets": [
+                {
+                    "name": "lighten",
+                    "properties": [
+                        {
+                            "name": "percOpt",
+                            "description": "Can be 'input', 'spectrum' or 'average'.",
+                            "type": "textfield",
+                            "value": "input"
+                        },
+                        {
+                            "name": "threshold",
+                            "description": "Valid, 6-character hex against which to evaluate light and dark hex values.",
+                            "type": "textfield",
+                            "value": "999999"
+                        }
+                    ]
+                },
+                {
+                    "name": "modval"
+                },
+                {
+                    "name": "prefix"
+                }
+            ],
+            "plugins": [
+                {
+                    "name": "saveCustomCss",
+                    "events": [
+                        "OnSiteRefresh",
+                        "OnChunkFormSave"
+                    ],
+                    "properties": [
+                        {
+                            "name": "scss_chunks",
+                            "description": "Name of chunk, or comma-separated list of chunks, from which to parse (S)CSS.",
+                            "type": "textfield",
+                            "value": "csss.custom_css.scss"
+                        },
+                        {
+                            "name": "css_filename",
+                            "description": "Name of file to output custom compiled CSS.",
+                            "type": "textfield",
+                            "value": "custom_css.min.css"
+                        },
+                        {
+                            "name": "dev_mode",
+                            "description": "Enable DEV mode.",
+                            "type": "textfield",
+                            "value": "custom",
+                            "area": "Mode"
+                        },
+                        {
+                            "name": "css_path",
+                            "description": "Full path for directory to which to OUTPUT the final CSS file.",
+                            "type": "textfield",
+                            "value": ""
+                        },
+                        {
+                            "name": "context_settings_context",
+                            "description": "The key of a single context from which to pull context settings for CSS values.",
+                            "type": "textfield",
+                            "value": ""
+                        },
+                        {
+                            "name": "minify_custom_css",
+                            "description": "Minify CSS on output. MUST be enabled for SCSS processing.",
+                            "type": "combo-boolean",
+                            "value": "1",
+                            "area": "SCSS and Minification"
+                        },
+                        {
+                            "name": "scss_import_paths",
+                            "description": "Optionally set import paths to check for SCSS imports. All @import paths must be relative to these.",
+                            "type": "textfield",
+                            "value": "",
+                            "area": "SCSS and Minification"
+                        },
+                        {
+                            "name": "strip_css_comment_blocks",
+                            "description": "Strips CSS comment blocks on output, only IF minification is ENABLED.",
+                            "type": "combo-boolean",
+                            "value": "0",
+                            "area": "SCSS and Minification"
+                        },
+                        {
+                            "name": "css_output_format",
+                            "description": "Choose either 'Expanded' (default), 'Nested' or 'Compact' CSS output, IF minification is DISABLED.",
+                            "type": "textfield",
+                            "value": "Expanded",
+                            "area": "SCSS and Minification"
+                        }
+                    ]
+                },
+                {
+                    "name": "saveCustomJs",
+                    "events": [
+                        "OnSiteRefresh",
+                        "OnChunkFormSave"
+                    ],
+                    "properties": [
+                        {
+                            "name": "js_chunks",
+                            "description": "Name of chunk, or comma-separated list of chunks, from which to parse JS.",
+                            "type": "textfield",
+                            "value": ""
+                        },
+                        {
+                            "name": "js_filename",
+                            "description": "Name of file to output custom compiled JS.",
+                            "type": "textfield",
+                            "value": "custom_js.min.js"
+                        },
+                        {
+                            "name": "dev_mode",
+                            "description": "Enable DEV mode.",
+                            "type": "textfield",
+                            "value": "custom",
+                            "area": "Mode"
+                        },
+                        {
+                            "name": "js_path",
+                            "description": "Full path for directory to which to OUTPUT the final JS file.",
+                            "type": "textfield",
+                            "value": ""
+                        },
+                        {
+                            "name": "context_settings_context",
+                            "description": "The key of a single context from which to pull context settings for CSS values.",
+                            "type": "textfield",
+                            "value": ""
+                        },
+                        {
+                            "name": "minify_custom_js",
+                            "description": "Minify JS on output.",
+                            "type": "combo-boolean",
+                            "value": "1",
+                            "area": "Minification"
+                        },
+                        {
+                            "name": "strip_js_comment_blocks",
+                            "description": "Strips JS comment blocks on output.",
+                            "type": "combo-boolean",
+                            "value": "0",
+                            "area": "Minification"
+                        }
+                    ]
+                }
+            ],
+            "chunks": [
+                {
+                    "name": "csss.custom_css.scss",
+                    "description": "Sample chunk only. It's recommended to create your own chunk(s) with a unique name(s) and set them in the saveCustomCss plugin properties.",
+                    "file": "csss.custom_css.scss.tpl"
+                }
+            ]
         }
-      ],
-      "chunks" : [
-        {
-          "name" : "csss.custom_css.scss",
-          "description" : "Sample chunk only. It's recommended to create your own chunk(s) with a unique name(s) and set them in the saveCustomCss plugin properties.", 
-          "file" : "csss.custom_css.scss.tpl"
-        }
-      ]
-    }
-  },
-  "build": {
-    "attributes": {
-      "chunks": {
-        "update_object": false
-      },
-      "plugins": {
-        "update_object": true
-      }
     },
-    "setupOptions":{
-      "source": "setup.options.php"
+    "build": {
+        "attributes": {
+            "chunks": {
+                "update_object": false
+            },
+            "plugins": {
+                "update_object": true
+            }
+        },
+        "setupOptions": {
+            "source": "setup.options.php"
+        }
     }
-  }
 }

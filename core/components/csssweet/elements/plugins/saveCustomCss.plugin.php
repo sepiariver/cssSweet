@@ -27,7 +27,7 @@ if ($modx->context->get('key') !== 'mgr') return;
 // In case the wrong event is enabled in plugin properties
 if ($modx->event->name !== 'OnSiteRefresh' && $modx->event->name !== 'OnChunkFormSave') return;
 
-// Grab the cssSweet clas
+// Grab the cssSweet class
 $csssweet = null;
 $cssSweetPath = $modx->getOption('csssweet.core_path', null, $modx->getOption('core_path') . 'components/csssweet/');
 $cssSweetPath .= 'model/csssweet/';
@@ -41,15 +41,24 @@ if (!$csssweet || !($csssweet instanceof CssSweet)) {
 }
 
 // Dev mode option
-$mode = ($modx->getOption('dev_mode', $scriptProperties, 0)) ? 'dev' : 'custom';
+$mode = $modx->getOption('dev_mode', $scriptProperties, 'custom');
 // Letting folks know what's going on
 $modx->log(modX::LOG_LEVEL_INFO, 'saveCustomCss plugin is running in mode: ' . $mode);
 
+// Override properties with mode props
+$properties = $scriptProperties;
+foreach ($properties as $key => $val) {
+    // skip any mode props
+    if (strpos($key, $mode) === 0) continue;
+    // these are standard scriptProperties
+    $properties[$key] = (isset($properties[$mode . '_' . $key])) ? $properties[$mode . '_' . $key] : $val;
+}
+
 // Specify a comma-separated list of chunk names in plugin properties
-$chunks = $csssweet->explodeAndClean($modx->getOption($mode . '_scss_chunks', $scriptProperties, ''));
+$chunks = $csssweet->explodeAndClean($modx->getOption('scss_chunks', $properties, ''));
 // If no chunk names specified, there's nothing to do.
 if (empty($chunks)) {
-    $modx->log(modX::LOG_LEVEL_WARN, 'No chunks were set in the saveCustomCss plugin property: ' . $mode . '_scss_chunks. No action performed.');
+    $modx->log(modX::LOG_LEVEL_WARN, 'No chunks were set in the saveCustomCss plugin property scss_chunks. No action performed.');
     return;
 }
 
@@ -57,29 +66,29 @@ if (empty($chunks)) {
 if ($modx->event->name === 'OnChunkFormSave' && !in_array($chunk->get('name'), $chunks)) return;
 
 // Specify an output file name in plugin properties
-$filename = $modx->getOption($mode . '_css_filename', $scriptProperties, '');
+$filename = $modx->getOption('css_filename', $properties, '');
 if (empty($filename)) return;
 
 // Optionally choose an output format if not minified
-$css_output_format = $modx->getOption('css_output_format', $scriptProperties, 'Expanded');
+$css_output_format = $modx->getOption('css_output_format', $properties, 'Expanded');
 $css_output_format_options = array('Expanded','Nested','Compact');
 if (!in_array($css_output_format, $css_output_format_options)) $css_output_format = 'Expanded';
 
 // Optionally minify the output, defaults to 'true' 
-$minify_custom_css = (bool) $modx->getOption('minify_custom_css', $scriptProperties, true);
+$minify_custom_css = (bool) $modx->getOption('minify_custom_css', $properties, true);
 $css_output_format = ($minify_custom_css) ? 'Compressed' : $css_output_format;
 
 // Strip CSS comment blocks; defaults to 'false'
-$strip_comments = (bool) $modx->getOption('strip_css_comment_blocks', $scriptProperties, false);
+$strip_comments = (bool) $modx->getOption('strip_css_comment_blocks', $properties, false);
 $css_output_format = ($minify_custom_css && $strip_comments) ? 'Crunched' : $css_output_format;
 
 // Optionally set base_path for scss imports
-$scss_import_paths = $modx->getOption('scss_import_paths', $scriptProperties, '');
+$scss_import_paths = $modx->getOption('scss_import_paths', $properties, '');
 $scss_import_paths = (empty($scss_import_paths)) ? array() : $csssweet->explodeAndClean($scss_import_paths);
 
 // Get the output path; construct fallback; log for debugging
-$csssCustomCssPath = $modx->getOption('custom_css_path', $scriptProperties, '');
-if (empty($csssCustomCssPath)) $csssCustomCssPath = $modx->getOption('assets_path') . 'components/csssweet/';
+$csssCustomCssPath = $modx->getOption('css_path', $properties, '');
+if (empty($csssCustomCssPath)) $csssCustomCssPath = $modx->getOption('assets_path') . 'components/csssweet/' . $mode . '/';
 $modx->log(modX::LOG_LEVEL_INFO, '$csssCustomCssPath is: ' . $csssCustomCssPath . ' on line: ' . __LINE__);
 $csssCustomCssPath = rtrim($csssCustomCssPath, '/') . '/';
 
@@ -103,7 +112,7 @@ if (!file_exists($csssCustomCssPath)) {
 $settings = array();
 
 // Get context settings
-$settings_ctx = $modx->getOption($mode . '_context_settings_context', $scriptProperties, '');
+$settings_ctx = $modx->getOption('context_settings_context', $properties, '');
 if (!empty($settings_ctx)) {
     $settings_ctx = $modx->getContext($settings_ctx);
     if ($settings_ctx && is_array($settings_ctx->config)) $settings = array_merge($settings, $settings_ctx->config);

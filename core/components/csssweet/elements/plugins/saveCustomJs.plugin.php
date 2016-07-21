@@ -41,15 +41,24 @@ if (!$csssweet || !($csssweet instanceof CssSweet)) {
 }
 
 // Dev mode option
-$mode = ($modx->getOption('dev_mode', $scriptProperties, 0)) ? 'dev' : 'custom';
+$mode = $modx->getOption('dev_mode', $scriptProperties, 'custom');
 // Letting folks know what's going on
 $modx->log(modX::LOG_LEVEL_INFO, 'saveCustomJs plugin is running in mode: ' . $mode);
 
+// Override properties with mode props
+$properties = $scriptProperties;
+foreach ($properties as $key => $val) {
+    // skip any mode props
+    if (strpos($key, $mode) === 0) continue;
+    // these are standard scriptProperties
+    $properties[$key] = (isset($properties[$mode . '_' . $key])) ? $properties[$mode . '_' . $key] : $val;
+}
+
 // Specify a comma-separated list of chunk names in plugin properties
-$chunks = $csssweet->explodeAndClean($modx->getOption($mode . '_js_chunks', $scriptProperties, ''));
+$chunks = $csssweet->explodeAndClean($modx->getOption('js_chunks', $properties, ''));
 // If no chunk names specified, there's nothing to do.
 if (empty($chunks)) {
-    $modx->log(modX::LOG_LEVEL_WARN, 'No chunks were set in the saveCustomJs plugin property: ' . $mode . '_js_chunks. No action performed.');
+    $modx->log(modX::LOG_LEVEL_WARN, 'No chunks were set in the saveCustomJs plugin property js_chunks. No action performed.');
     return;
 }
 
@@ -57,19 +66,19 @@ if (empty($chunks)) {
 if ($modx->event->name === 'OnChunkFormSave' && !in_array($chunk->get('name'), $chunks)) return;
 
 // Specify an output file name in plugin properties
-$filename = $modx->getOption($mode . '_js_filename', $scriptProperties, '');
+$filename = $modx->getOption('js_filename', $properties, '');
 if (empty($filename)) return;
 
 // Optionally minify the output, defaults to 'true' 
-$minify_custom_js = (bool) $modx->getOption('minify_custom_js', $scriptProperties, true);
+$minify_custom_js = (bool) $modx->getOption('minify_custom_js', $properties, true);
 
 // Strip comment blocks; defaults to 'false'
-$strip_comments = (bool) $modx->getOption('strip_js_comment_blocks', $scriptProperties, false);
+$strip_comments = (bool) $modx->getOption('strip_js_comment_blocks', $properties, false);
 $preserve_comments = ($strip_comments) ? false : true;
 
 // Get the output path; construct fallback; log for info/debugging
-$csssCustomJsPath = $modx->getOption('custom_js_path', $scriptProperties, '');
-if (empty($csssCustomJsPath)) $csssCustomJsPath = $modx->getOption('assets_path') . 'components/csssweet/js/';
+$csssCustomJsPath = $modx->getOption('js_path', $properties, '');
+if (empty($csssCustomJsPath)) $csssCustomJsPath = $modx->getOption('assets_path') . 'components/csssweet/' . $mode . '/js/';
 $modx->log(modX::LOG_LEVEL_INFO, '$csssCustomJsPath is: ' . $csssCustomJsPath . ' on line: ' . __LINE__);
 $csssCustomJsPath = rtrim($csssCustomJsPath, '/') . '/';
 
@@ -94,7 +103,7 @@ if (!file_exists($csssCustomJsPath)) {
 $settings = array();
 
 // Get context settings
-$settings_ctx = $modx->getOption($mode . '_context_settings_context', $scriptProperties, '');
+$settings_ctx = $modx->getOption('context_settings_context', $properties, '');
 if (!empty($settings_ctx)) {
     $settings_ctx = $modx->getContext($settings_ctx);
     if ($settings_ctx && is_array($settings_ctx->config)) $settings = array_merge($settings, $settings_ctx->config);
