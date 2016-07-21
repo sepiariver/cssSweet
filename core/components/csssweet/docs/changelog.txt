@@ -1,4 +1,12 @@
 ++++++++++++++++++++++++++++++++
+++   cssSweet 4.0.0-dev1      ++
+++   Released on 2016-07-21   ++
+++++++++++++++++++++++++++++++++
+Updated scssphp library to 0.6.5
+Added ability to override all scriptProperties with "dev_mode"
+Arbitrary modes as property namespaces
+
+++++++++++++++++++++++++++++++++
 ++   cssSweet 3.0.0-beta3     ++
 ++   Released on 2015-11-28   ++
 ++++++++++++++++++++++++++++++++

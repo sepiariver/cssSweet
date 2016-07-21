@@ -1,6 +1,6 @@
 cssSweet
 =========================================
-Version: 3.0.0-beta3
+Version: 4.0.0-dev1
 
 Author: YJ Tso (@sepiariver) [on Twitter](https://twitter.com/sepiariver)
 
@@ -13,6 +13,8 @@ http://sepiariver.github.io/cssSweet
 as well as here:
 
 http://rtfm.modx.com/extras/revo/csssweet (this one needs updating)
+
+** Version 4.0.0 is in development. You can help test by installing the package (in the `_packages` folder) an submitting any issues [here](https://github.com/sepiariver/cssSweet/issues). **
 
 ## Example Use Cases
 - Use system or context settings to store primary colors in a site's color scheme, then process all other color values relative to these, so you can shift the entire color theme by modifying a few settings.
