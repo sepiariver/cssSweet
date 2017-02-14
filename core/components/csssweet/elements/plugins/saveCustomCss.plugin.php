@@ -41,7 +41,7 @@ if (!$csssweet || !($csssweet instanceof CssSweet)) {
 }
 
 // Dev mode option
-$mode = $modx->getOption('dev_mode', $scriptProperties, 'custom');
+$mode = $modx->getOption('dev_mode', $scriptProperties, 'custom', true);
 // Letting folks know what's going on
 $modx->log(modX::LOG_LEVEL_INFO, 'saveCustomCss plugin is running in mode: ' . $mode);
 
