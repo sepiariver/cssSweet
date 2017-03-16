@@ -3,14 +3,12 @@
     "lowCaseName": "csssweet",
     "description": "cssSweet is a suite of tools for processing (S)CSS. It comes with several output modifiers to modify CSS values, and a plugin that concatenates and processes (S)CSS from specified chunks to a minified CSS file. Version 2+ also concatenates and minifies JS with a 2nd plugin.",
     "author": "@sepiariver YJ Tso",
-    "version": "4.0.0-dev1",
+    "version": "4.0.1-rc1",
     "package": {
         "elements": {
-            "snippets": [
-                {
+            "snippets": [{
                     "name": "lighten",
-                    "properties": [
-                        {
+                    "properties": [{
                             "name": "percOpt",
                             "description": "Can be 'input', 'spectrum' or 'average'.",
                             "type": "textfield",
@@ -31,15 +29,13 @@
                     "name": "prefix"
                 }
             ],
-            "plugins": [
-                {
+            "plugins": [{
                     "name": "saveCustomCss",
                     "events": [
                         "OnSiteRefresh",
                         "OnChunkFormSave"
                     ],
-                    "properties": [
-                        {
+                    "properties": [{
                             "name": "scss_chunks",
                             "description": "Name of chunk, or comma-separated list of chunks, from which to parse (S)CSS.",
                             "type": "textfield",
@@ -106,8 +102,7 @@
                         "OnSiteRefresh",
                         "OnChunkFormSave"
                     ],
-                    "properties": [
-                        {
+                    "properties": [{
                             "name": "js_chunks",
                             "description": "Name of chunk, or comma-separated list of chunks, from which to parse JS.",
                             "type": "textfield",
@@ -155,13 +150,11 @@
                     ]
                 }
             ],
-            "chunks": [
-                {
-                    "name": "csss.custom_css.scss",
-                    "description": "Sample chunk only. It's recommended to create your own chunk(s) with a unique name(s) and set them in the saveCustomCss plugin properties.",
-                    "file": "csss.custom_css.scss.tpl"
-                }
-            ]
+            "chunks": [{
+                "name": "csss.custom_css.scss",
+                "description": "Sample chunk only. It's recommended to create your own chunk(s) with a unique name(s) and set them in the saveCustomCss plugin properties.",
+                "file": "csss.custom_css.scss.tpl"
+            }]
         }
     },
     "build": {

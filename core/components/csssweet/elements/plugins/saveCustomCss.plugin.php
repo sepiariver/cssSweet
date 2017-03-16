@@ -4,17 +4,17 @@
  * @author @sepiariver
  * Copyright 2013 - 2015 by YJ Tso <yj@modx.com> <info@sepiariver.com>
  *
- * saveCustomCss and cssSweet is free software; 
- * you can redistribute it and/or modify it under the terms of the GNU General 
- * Public License as published by the Free Software Foundation; 
+ * saveCustomCss and cssSweet is free software;
+ * you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation;
  * either version 2 of the License, or (at your option) any later version.
  *
- * saveCustomCss and cssSweet is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+ * saveCustomCss and cssSweet is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License along with
- * saveCustomCss and cssSweet; if not, write to the Free Software Foundation, Inc., 
+ * saveCustomCss and cssSweet; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  * @package cssSweet
@@ -23,7 +23,7 @@
 
 // Never fire on the front end
 if ($modx->context->get('key') !== 'mgr') return;
- 
+
 // In case the wrong event is enabled in plugin properties
 if ($modx->event->name !== 'OnSiteRefresh' && $modx->event->name !== 'OnChunkFormSave') return;
 
@@ -37,11 +37,11 @@ if (!$csssweet || !($csssweet instanceof CssSweet)) {
 
     $modx->log(modX::LOG_LEVEL_ERROR, '[SaveCustomCss] could not load the required csssweet class!');
 	return;
-	
+
 }
 
 // Dev mode option
-$mode = $modx->getOption('dev_mode', $scriptProperties, 'custom');
+$mode = $modx->getOption('dev_mode', $scriptProperties, 'custom', true);
 // Letting folks know what's going on
 $modx->log(modX::LOG_LEVEL_INFO, 'saveCustomCss plugin is running in mode: ' . $mode);
 
@@ -74,7 +74,7 @@ $css_output_format = $modx->getOption('css_output_format', $properties, 'Expande
 $css_output_format_options = array('Expanded','Nested','Compact');
 if (!in_array($css_output_format, $css_output_format_options)) $css_output_format = 'Expanded';
 
-// Optionally minify the output, defaults to 'true' 
+// Optionally minify the output, defaults to 'true'
 $minify_custom_css = (bool) $modx->getOption('minify_custom_css', $properties, true);
 $css_output_format = ($minify_custom_css) ? 'Compressed' : $css_output_format;
 
@@ -143,14 +143,14 @@ if ($scssMin) {
 
     try {
         $contents = $scssMin->compile($contents);
-    } 
-    catch (Exception $e) {
-        $modx->log(modX::LOG_LEVEL_ERROR, $e->getMessage() . ' scss not compiled. minification not performed.','','saveCustomCss'); 
     }
-        
-} else { 
-    $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to load scss class. scss not compiled. minification not performed.','','saveCustomCss'); 
-}    
+    catch (Exception $e) {
+        $modx->log(modX::LOG_LEVEL_ERROR, $e->getMessage() . ' scss not compiled. minification not performed.','','saveCustomCss');
+    }
+
+} else {
+    $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to load scss class. scss not compiled. minification not performed.','','saveCustomCss');
+}
 
 // If we failed scss and minification at least output what we have
 file_put_contents($file, $contents);

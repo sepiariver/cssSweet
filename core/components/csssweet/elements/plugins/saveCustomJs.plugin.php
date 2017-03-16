@@ -4,17 +4,17 @@
  * @author @sepiariver
  * Copyright 2013 - 2015 by YJ Tso <yj@modx.com> <info@sepiariver.com>
  *
- * saveCustomJs and cssSweet is free software; 
- * you can redistribute it and/or modify it under the terms of the GNU General 
- * Public License as published by the Free Software Foundation; 
+ * saveCustomJs and cssSweet is free software;
+ * you can redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation;
  * either version 2 of the License, or (at your option) any later version.
  *
- * saveCustomJs and cssSweet is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+ * saveCustomJs and cssSweet is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License along with
- * saveCustomJs and cssSweet; if not, write to the Free Software Foundation, Inc., 
+ * saveCustomJs and cssSweet; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  * @package cssSweet
@@ -37,11 +37,11 @@ if (!$csssweet || !($csssweet instanceof CssSweet)) {
 
     $modx->log(modX::LOG_LEVEL_ERROR, '[SaveCustomCss] could not load the required csssweet class!');
 	return;
-	
+
 }
 
 // Dev mode option
-$mode = $modx->getOption('dev_mode', $scriptProperties, 'custom');
+$mode = $modx->getOption('dev_mode', $scriptProperties, 'custom', true);
 // Letting folks know what's going on
 $modx->log(modX::LOG_LEVEL_INFO, 'saveCustomJs plugin is running in mode: ' . $mode);
 
@@ -69,7 +69,7 @@ if ($modx->event->name === 'OnChunkFormSave' && !in_array($chunk->get('name'), $
 $filename = $modx->getOption('js_filename', $properties, '');
 if (empty($filename)) return;
 
-// Optionally minify the output, defaults to 'true' 
+// Optionally minify the output, defaults to 'true'
 $minify_custom_js = (bool) $modx->getOption('minify_custom_js', $properties, true);
 
 // Strip comment blocks; defaults to 'false'
@@ -137,24 +137,24 @@ $file = $csssCustomJsPath . $filename;
 // Status report
 $status = 'not';
 if ($minify_custom_js) {
-	
+
 		$jshrink = $csssweet->jshrinkInit();
-	    
-	    // If we got the class, try minification. Log failures.    
+
+	    // If we got the class, try minification. Log failures.
 	    if ($jshrink) {
-	    
+
 	        try {
 	            $contents = $jshrink::minify($contents, array('flaggedComments' => $preserve_comments));
 	            $status = '';
-	        } 
-	        catch (Exception $e) {
-	            $modx->log(modX::LOG_LEVEL_ERROR, $e->getMessage() . '— js not compiled. Minification not performed.'); 
 	        }
-	    
-	    } else { 
-	        $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to load js Minifier class — js not compiled. Minification not performed.'); 
+	        catch (Exception $e) {
+	            $modx->log(modX::LOG_LEVEL_ERROR, $e->getMessage() . '— js not compiled. Minification not performed.');
+	        }
+
+	    } else {
+	        $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to load js Minifier class — js not compiled. Minification not performed.');
 	    }
-    
+
 }
 
 // None of the minifiers seem to handle this correctly?
