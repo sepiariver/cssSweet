@@ -1,0 +1,8 @@
+title: cssSweet
+description: Suite of CSS (and JS) tools for MODX CMS
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-cayman
+
+gems:
+  - jekyll-mentions
