@@ -8,11 +8,11 @@ cssSweet is a suite of tools for processing (S)CSS. It comes with several output
 
 The documentation site is here:
 
-http://sepiariver.github.io/cssSweet
+[http://sepiariver.github.io/cssSweet](http://sepiariver.github.io/cssSweet)
 
 as well as here:
 
-http://rtfm.modx.com/extras/revo/csssweet (this one needs updating)
+[http://rtfm.modx.com/extras/revo/csssweet](http://rtfm.modx.com/extras/revo/csssweet) **(this one needs updating)**
 
 
 ## Example Use Cases
@@ -23,7 +23,7 @@ http://rtfm.modx.com/extras/revo/csssweet (this one needs updating)
 - Manage your Sass, CSS, and JS development workflow right from inside the MODX Manager.
 - Add a code editor like Ace, and you can use MODX as your IDE for front-end development.
 
-_NOTE: please see section below on potentially breaking changes when upgrading from cssSweet version 1.x._
+_NOTE: please see section below on potentially breaking changes when upgrading, especially from cssSweet version 1.x._
 
 ## Usage
 
