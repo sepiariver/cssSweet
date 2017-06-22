@@ -1,6 +1,6 @@
 cssSweet
 =========================================
-Version: 4.0.1-rc1
+Version: 4.1.0-pl1
 
 Author: YJ Tso (@sepiariver) [on Twitter](https://twitter.com/sepiariver)
 
@@ -54,6 +54,8 @@ You can include static Chunks that reference files--even minified files. You can
 You can optionally enable the `OnChunkFormSave` Event in the Plugin events tab. (As of version 2, this event is enabled by default.)
 
 Doing so will speed up your process immensely, as a new output file will be generated each time you save a Chunk that is in the list of Chunks you've set.
+
+As of version 4.1, you can also enable the custom `ClientConfig_ConfigChange` event, if you have the ClientConfig Extra installed.
 
 ### "Dev" Mode
 As of version 4, the dedicated "dev mode" properties have been removed, and the `dev_mode` Plugin property is a textfield rather than boolean. By entering a (string) namespace, the plugin will use the properties prefixed with `{$namespace}_`, allowing you to process a different set of Chunks, output to a different file, or override any Plugin property.
