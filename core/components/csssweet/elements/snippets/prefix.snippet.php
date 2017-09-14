@@ -34,6 +34,7 @@ if ( $options === 'all' ) $options = 'webkit,moz,ms,o';
 
 // Which prefix?
 $prefixes = ['webkit','moz','ms','o'];
+$output = '';
 $selects = explode(',',$options);
 foreach($selects as $select) {
     if( in_array($select,$prefixes) ) $output .= "-$select-$input" . PHP_EOL;
