@@ -81,7 +81,7 @@ class Parser
         $this->sourceIndex      = $sourceIndex;
         $this->charset          = null;
         $this->utf8             = ! $encoding || strtolower($encoding) === 'utf-8';
-        $this->patternModifiers = $this->utf8 ? 'Aisu' : 'Ais';
+        $this->patternModifiers = $this->utf8 ? 'Ais' : 'Ais';
 
         if (empty(self::$operatorPattern)) {
             self::$operatorPattern = '([*\/%+-]|[!=]\=|\>\=?|\<\=\>|\<\=?|and|or)';
