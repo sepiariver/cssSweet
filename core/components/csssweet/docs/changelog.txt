@@ -1,4 +1,11 @@
 ++++++++++++++++++++++++++++++++
+++   cssSweet 4.2.0-rc3       ++
+++   Released on 2018-01-28   ++
+++++++++++++++++++++++++++++++++
+Update scssphp to 0.7.4
+Hotfix parser config that slowed down processing
+
+++++++++++++++++++++++++++++++++
 ++   cssSweet 4.1.0-pl1       ++
 ++   Released on 2017-06-21   ++
 ++++++++++++++++++++++++++++++++

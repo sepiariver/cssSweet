@@ -1,6 +1,6 @@
 cssSweet
 =========================================
-Version: 4.1.0-pl1
+Version: 4.2.0-rc3
 
 Author: YJ Tso (@sepiariver) [on Twitter](https://twitter.com/sepiariver)
 
