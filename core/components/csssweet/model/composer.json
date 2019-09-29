@@ -1,0 +1,6 @@
+{
+    "require": {
+        "scssphp/scssphp": "1.0.4",
+        "tedivm/jshrink": "1.3.3"
+    }
+}
