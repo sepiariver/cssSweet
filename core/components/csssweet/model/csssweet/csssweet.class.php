@@ -44,6 +44,7 @@ class CssSweet
             'namespace' => $this->namespace,
             'corePath' => $corePath,
             'modelPath' => $corePath . 'model/',
+            'vendorPath' => $corePath . 'model/vendor/',
             'chunksPath' => $corePath . 'elements/chunks/',
             'snippetsPath' => $corePath . 'elements/snippets/',
             'templatesPath' => $corePath . 'templates/',
@@ -55,7 +56,8 @@ class CssSweet
             'scssphpPath' => $scssphpPath,
             'jshrinkPath' => $jshrinkPath,
         ), $options);
-               
+
+        require_once($this->options['vendorPath'] . 'autoload.php');
     }
     
     /**
@@ -68,45 +70,16 @@ class CssSweet
     public function scssphpInit($paths=array(), $formatter='Expanded') 
     {
         $scssphp = null;
-        // Check min PHP requirement
-        if (version_compare(PHP_VERSION, '5.4') < 0) {
-            $this->modx->log(modX::LOG_LEVEL_ERROR, 'scssphp requires PHP 5.4 or above!');
-            return $scssphp;
-        }
-   
-        // Check class but don't autoload
-        if (! class_exists('scssc', false)) {
-            include_once $this->options['scssphpPath'] . 'src/Base/Range.php';
-            include_once $this->options['scssphpPath'] . 'src/Block.php';
-            include_once $this->options['scssphpPath'] . 'src/Colors.php';
-            include_once $this->options['scssphpPath'] . 'src/Compiler.php';
-            include_once $this->options['scssphpPath'] . 'src/Compiler/Environment.php';
-            include_once $this->options['scssphpPath'] . 'src/Formatter.php';
-            include_once $this->options['scssphpPath'] . 'src/Formatter/Compact.php';
-            include_once $this->options['scssphpPath'] . 'src/Formatter/Compressed.php';
-            include_once $this->options['scssphpPath'] . 'src/Formatter/Crunched.php';
-            include_once $this->options['scssphpPath'] . 'src/Formatter/Debug.php';
-            include_once $this->options['scssphpPath'] . 'src/Formatter/Expanded.php';
-            include_once $this->options['scssphpPath'] . 'src/Formatter/Nested.php';
-            include_once $this->options['scssphpPath'] . 'src/Formatter/OutputBlock.php';
-            include_once $this->options['scssphpPath'] . 'src/Node.php';
-            include_once $this->options['scssphpPath'] . 'src/Node/Number.php';
-            include_once $this->options['scssphpPath'] . 'src/Parser.php';
-            include_once $this->options['scssphpPath'] . 'src/Type.php';
-            include_once $this->options['scssphpPath'] . 'src/Util.php';
-            include_once $this->options['scssphpPath'] . 'src/Version.php';
-            //include_once $this->options['scssphpPath'] . 'src/Server.php';
-        }
         
         // Instantiate Compiler
-        $scssphp = new Leafo\ScssPhp\Compiler();
-		if (!($scssphp instanceof Leafo\ScssPhp\Compiler)) return null;
+        $scssphp = new ScssPhp\ScssPhp\Compiler();
+		if (!($scssphp instanceof \ScssPhp\ScssPhp\Compiler)) return null;
         
         // Set path
         $scssphp->setImportPaths($paths);
         
         // Set formatter
-        $formatter = 'Leafo\ScssPhp\Formatter\\' . $formatter;
+        $formatter = 'ScssPhp\ScssPhp\Formatter\\' . $formatter;
         // Found this helpful
         $this->modx->log(modX::LOG_LEVEL_INFO, 'Applying scssphp formatter class: ' . $formatter);
         

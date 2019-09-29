@@ -27,7 +27,7 @@ class CssSweetTest extends TestCase
     }
     public function testInit()
     {   
-        $this->assertTrue($this->scssphp instanceof \Leafo\ScssPhp\Compiler);
+        $this->assertTrue($this->scssphp instanceof \ScssPhp\ScssPhp\Compiler);
     }
 
     public function testCompile()
