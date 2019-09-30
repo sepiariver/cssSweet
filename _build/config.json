@@ -3,10 +3,13 @@
     "lowCaseName": "csssweet",
     "description": "cssSweet is a suite of tools for processing (S)CSS. It comes with several output modifiers to modify CSS values, and a plugin that concatenates and processes (S)CSS from specified chunks to a minified CSS file. Version 2+ also concatenates and minifies JS with a 2nd plugin.",
     "author": "@sepiariver YJ Tso",
-    "version": "5.1.0-dev1",
+    "version": "5.1.0-beta1",
     "package": {
         "elements": {
             "snippets": [{
+                    "name": "csssweet.convert",
+                    "file": "convert.snippet.php"
+                },{
                     "name": "csssweet.lighten",
                     "file": "lighten.snippet.php"
                 },
@@ -17,10 +20,6 @@
                 {
                     "name": "csssweet.prefix",
                     "file": "prefix.snippet.php"
-                },
-                {
-                    "name": "csssweet.convert",
-                    "file": "convert.snippet.php"
                 },
                 {
                     "name": "csssweet.saturate",

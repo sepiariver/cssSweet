@@ -1,6 +1,6 @@
 cssSweet
 =========================================
-Version: 5.1.0-dev1
+Version: 5.1.0-beta1
 
 Author: YJ Tso (@sepiariver) [on Twitter](https://twitter.com/sepiariver)
 
@@ -61,6 +61,16 @@ As of version 4.1, you can also enable the custom `ClientConfig_ConfigChange` ev
 As of version 4, the dedicated "dev mode" properties have been removed, and the `dev_mode` Plugin property is a textfield rather than boolean. By entering a (string) namespace, the plugin will use the properties prefixed with `{$namespace}_`, allowing you to process a different set of Chunks, output to a different file, or override any Plugin property.
 
 This allows for multiple workflows and output files. You can use it to build [moderately-sized bundles of assets for performance](https://medium.com/@asyncmax/the-right-way-to-bundle-your-assets-for-faster-sites-over-http-2-437c37efe3ff) or build a different output file for different Contexts.
+
+### Snippets
+
+cssSweet installs with a suite of utility Snippets to manipulate style declarations. See the files in the [Snippets folder](https://github.com/sepiariver/cssSweet/tree/master/core/components/csssweet/elements/snippets) for more detailed usage examples. As of version 5.x, the Snippets use `ozdemirburak/iris` for color manipulation.
+
+- csssweet.convert: Convert color values to different formats.
+- csssweet.lighten: Lighten or darken a color value, in a variety of formats.
+- csssweet.modval: Modifies the numeric value in a string.
+- csssweet.prefix: Naively adds vendor prefixes to a string.
+- csssweet.saturate: Saturate or desaturate a color value.
 
 ## Potentially Breaking Changes (especially when upgrading from version 1.x)
 The utmost care has been taken to ensure that upgrades of cssSweet are as safe as possible. However, there are a few scenarios that could potentially break an existing site, especially when you upgrade cssSweet from version 1 to version 2+. Hopefully the following points will help you avoid those:

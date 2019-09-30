@@ -1,11 +1,12 @@
 ++++++++++++++++++++++++++++++++
-++   cssSweet 5.1.0-dev1       ++
-++   Released on    ++
+++   cssSweet 5.1.0-beta1     ++
+++   Released on 2019-10-01   ++
 ++++++++++++++++++++++++++++++++
 Update scssphp to 1.0.4
 Update jShrink to 1.3.3
 Composer, phpunit
 Use ozdemirburak/iris for color manipulation
+Upgrade and add new Snippets
 
 ++++++++++++++++++++++++++++++++
 ++   cssSweet 4.2.0-rc3       ++

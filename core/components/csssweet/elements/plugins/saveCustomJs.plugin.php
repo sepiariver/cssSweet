@@ -1,5 +1,4 @@
 <?php
-
 /**
  * saveCustomJs
  * @author @sepiariver
