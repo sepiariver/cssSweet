@@ -36,8 +36,6 @@ class CssSweet
         $corePath = $this->getOption('core_path', $options, $this->modx->getOption('core_path', null, MODX_CORE_PATH) . 'components/csssweet/');
         $assetsPath = $this->getOption('assets_path', $options, $this->modx->getOption('assets_path', null, MODX_ASSETS_PATH) . 'components/csssweet/');
         $assetsUrl = $this->getOption('assets_url', $options, $this->modx->getOption('assets_url', null, MODX_ASSETS_URL) . 'components/csssweet/');
-        $scssphpPath = $corePath . 'model/csssweet/libs/scssphp/';
-        $jshrinkPath = $corePath . 'model/csssweet/libs/jshrink/';
 
         /* load config defaults */
         $this->options = array_merge(array(
@@ -53,8 +51,6 @@ class CssSweet
             'jsUrl' => $assetsUrl . 'js/',
             'cssUrl' => $assetsUrl . 'css/',
             'connectorUrl' => $assetsUrl . 'connector.php',
-            'scssphpPath' => $scssphpPath,
-            'jshrinkPath' => $jshrinkPath,
         ), $options);
 
         require_once($this->options['vendorPath'] . 'autoload.php');
