@@ -25,8 +25,14 @@
 if ($modx->context->get('key') !== 'mgr') return;
 
 // In case the wrong event is enabled in plugin properties
-$allowedEvents = array('OnSiteRefresh', 'OnChunkFormSave', 'ClientConfig_ConfigChange');
+$allowedEvents = ['OnSiteRefresh', 'OnChunkFormSave', 'ClientConfig_ConfigChange', 'OnDocFormSave'];
 if (!in_array($modx->event->name, $allowedEvents)) return;
+
+// Support @sottwell's approach
+if ($modx->event->name === 'OnDocFormSave') {
+    if (!($resource instanceof modResource)) return;
+    if ($resource->get('contentType') !== 'text/css') return;
+}
 
 // Grab the cssSweet clas
 $csssweet = null;

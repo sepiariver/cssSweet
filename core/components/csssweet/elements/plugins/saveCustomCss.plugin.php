@@ -25,17 +25,21 @@
 if ($modx->context->get('key') !== 'mgr') return;
 
 // In case the wrong event is enabled in plugin properties
-$allowedEvents = array('OnSiteRefresh', 'OnChunkFormSave', 'ClientConfig_ConfigChange');
+$allowedEvents = ['OnSiteRefresh', 'OnChunkFormSave', 'ClientConfig_ConfigChange', 'OnDocFormSave'];
 if (!in_array($modx->event->name, $allowedEvents)) return;
+
+// Support @sottwell's approach
+if ($modx->event->name === 'OnDocFormSave') {
+    if (!($resource instanceof modResource)) return;
+    if ($resource->get('contentType') !== 'text/css') return;
+}
 
 // Grab the cssSweet class
 $csssweet = null;
 $cssSweetPath = $modx->getOption('csssweet.core_path', null, $modx->getOption('core_path') . 'components/csssweet/');
 $cssSweetPath .= 'model/csssweet/';
 if (file_exists($cssSweetPath . 'csssweet.class.php')) $csssweet = $modx->getService('csssweet', 'CssSweet', $cssSweetPath);
-
 if (!$csssweet || !($csssweet instanceof CssSweet)) {
-
     $modx->log(modX::LOG_LEVEL_ERROR, '[SaveCustomCss] could not load the required csssweet class!');
     return;
 }
