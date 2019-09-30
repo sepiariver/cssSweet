@@ -75,7 +75,7 @@ class CssSweet
         $scssphp->setImportPaths($paths);
 
         // Set formatter
-        $formatter = 'ScssPhp\ScssPhp\Formatter\\' . $formatter;
+        $formatter = '\\ScssPhp\\ScssPhp\\Formatter\\' . $formatter;
         // Found this helpful
         $this->modx->log(modX::LOG_LEVEL_INFO, 'Applying scssphp formatter class: ' . $formatter);
 
@@ -98,7 +98,7 @@ class CssSweet
     {
         $iris = null;
         // Set format class
-        $format = '\OzdemirBurak\Iris\Color\\' . ucfirst(strtolower($format));
+        $format = '\\OzdemirBurak\\Iris\\Color\\' . ucfirst(strtolower($format));
         // Grab the iris color format class
         $iris = new $format($value);
         if (!($iris instanceof $format)) return null;
