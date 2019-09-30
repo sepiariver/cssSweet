@@ -32,8 +32,8 @@ class CssSweetTest extends TestCase
 
     public function testCompile()
     {
-        $scss = file_get_contents('cases/test.scss');
-        $expected = file_get_contents('cases/expected.css');
+        $scss = file_get_contents('assets/test.scss');
+        $expected = file_get_contents('assets/expected.css');
         $compiled = $this->scssphp->compile($scss);
 
         $this->assertSame($expected, $compiled);

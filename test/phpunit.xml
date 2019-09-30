@@ -1,6 +1,6 @@
 <phpunit bootstrap="vendor/autoload.php">
     <testsuites>
-        <testsuite name="SCSSPHPTest">
+        <testsuite name="CssSweetTestSuite">
             <directory>cases</directory>
         </testsuite>
     </testsuites>

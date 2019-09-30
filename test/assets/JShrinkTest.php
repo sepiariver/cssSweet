@@ -1,28 +1,29 @@
 <?php
+
 use PHPUnit\Framework\TestCase;
 
-class SCSSPHPTest extends TestCase
+class JShrinkTest extends TestCase
 {
     protected $projectPath;
-    protected $scssphp;
+    protected $jShrink;
 
     protected function setUp(): void
     {
         $this->projectPath = dirname(dirname(dirname(__FILE__)));
         require_once($this->projectPath . '/core/components/csssweet/model/vendor/autoload.php');
-        $this->scssphp = new ScssPhp\ScssPhp\Compiler();
+        $this->jShrink = new JShrink\Minifier();
     }
     public function testInstantiation()
     {
-        $this->assertTrue($this->scssphp instanceof \ScssPhp\ScssPhp\Compiler);
+        $this->assertTrue($this->jShrink instanceof \JShrink\Minifier);
     }
 
     public function testCompile()
     {
-        $scss = file_get_contents('assets/test.scss');
-        $expected = file_get_contents('assets/expected.css');
-        $compiled = $this->scssphp->compile($scss);
-
+        $js = file_get_contents('assets/jquery.js');
+        $expected = file_get_contents('assets/jquery.min.js');
+        $compiled = $this->jShrink->minify($js);
+        file_put_contents($compiled, 'assets/compiled.js');
         $this->assertSame($expected, $compiled);
     }
 }
