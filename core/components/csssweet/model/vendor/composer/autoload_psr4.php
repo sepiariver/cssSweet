@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'ScssPhp\\ScssPhp\\' => array($vendorDir . '/scssphp/scssphp/src'),
+    'OzdemirBurak\\Iris\\' => array($vendorDir . '/ozdemirburak/iris/src'),
 );

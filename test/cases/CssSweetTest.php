@@ -47,4 +47,18 @@ class CssSweetTest extends TestCase
 
         $this->assertSame($expectedjs, $compiledjs);
     }
+
+    public function testIris()
+    {
+        $irisHex = $this->cssSweet->getIris('#ff00ff');
+        $this->assertTrue($irisHex instanceof \OzdemirBurak\Iris\Color\Hex);
+        $irisRgb = $this->cssSweet->getIris('rgb(255, 0, 255)', 'rgb');
+        $this->assertTrue($irisRgb instanceof \OzdemirBurak\Iris\Color\Rgb);
+        $this->assertEquals($irisHex->toRgb(), $irisRgb);
+
+        $hex = $this->cssSweet->getIris('#333');
+        $this->assertEquals($hex->lighten(20), '#666666');
+        $this->assertEquals($hex->darken(20), '#000000');
+        $this->assertEquals($hex->brighten(20), '#666666');
+    }
 }

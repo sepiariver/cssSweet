@@ -94,6 +94,17 @@ class CssSweet
         return $jshrink;
     }
 
+    public function getIris(string $value, $format = 'hex')
+    {
+        $iris = null;
+        // Set format class
+        $format = '\OzdemirBurak\Iris\Color\\' . ucfirst(strtolower($format));
+        // Grab the iris color format class
+        $iris = new $format($value);
+        if (!($iris instanceof $format)) return null;
+        return $iris;
+    }
+
     /**
      * Process and array of chunk (names) with provided $settings
      *
