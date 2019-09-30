@@ -17,6 +17,7 @@ class CssSweetTest extends TestCase
         require_once($this->projectPath . '/test/config.core.php');
         require_once(MODX_CORE_PATH . 'model/modx/modx.class.php');
         $this->modx = new modX();
+        $this->modx->initialize('web');
         require_once($this->projectPath . '/core/components/csssweet/model/csssweet/csssweet.class.php');
         $this->cssSweet = new CssSweet($this->modx);
 
@@ -26,6 +27,8 @@ class CssSweetTest extends TestCase
     public function testInstantiation()
     {
         $this->assertTrue($this->modx instanceof modX);
+        $this->assertTrue($this->modx->context instanceof modContext);
+        $this->assertEquals($this->modx->context->key, 'web');
         $this->assertTrue($this->cssSweet instanceof CssSweet);
     }
     public function testInit()
@@ -111,5 +114,18 @@ class CssSweetTest extends TestCase
     {
         $this->assertEquals($this->cssSweet->saturating('#80e61a', 20), '#80ff00');
         $this->assertEquals($this->cssSweet->saturating('rgb(128,230,26)', -20), 'rgb(128,204,51)');
+    }
+    public function testSnippets()
+    {
+        $this->assertEquals($this->modx->runSnippet('csssweet.lighten', ['input' => '#333', 'options' => '20']), '#666666');
+        $this->assertEquals($this->modx->runSnippet('csssweet.modval', ['input' => '10px', 'options' => '+5']), '15px');
+        $this->assertEquals($this->modx->runSnippet('csssweet.convert', ['input' => 'rgb(51,51,51)', 'options' => 'hex']), '#333333');
+        $this->assertEquals($this->modx->runSnippet('csssweet.saturate', ['input' => '#80e61a', 'options' => '20']), '#80ff00');
+        $expected = addslashes('-webkit-transition: 300ms all ease;
+-moz-transition: 300ms all ease;
+-ms-transition: 300ms all ease;
+-o-transition: 300ms all ease;
+transition: 300ms all ease;');
+        $this->assertEquals($this->modx->runSnippet('csssweet.prefix', ['input' => 'transition: 300ms all ease;', 'options' => 'all']), $expected);
     }
 }
