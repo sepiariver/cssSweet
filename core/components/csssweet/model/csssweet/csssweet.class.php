@@ -364,6 +364,57 @@ class CssSweet
         return ($perc >= 0) ? $color->saturate($perc) : $color->desaturate(abs($perc));
     }
 
+    public function getProperties($properties, $mode)
+    {
+        if (!is_array($properties)) {
+            $this->modx->log(modX::LOG_LEVEL_ERROR, '[cssSweet.getProperties] invalid $properties array.');
+            return [];
+        }
+        $mode = (string) $mode;
+        // Override properties with mode props
+        foreach ($properties as $key => $val) {
+            // skip any mode props
+            if (strpos($key, $mode) === 0) continue;
+            // these are standard scriptProperties
+            $properties[$key] = (isset($properties[$mode . '_' . $key])) ? $properties[$mode . '_' . $key] : $val;
+        }
+        return $properties;
+    }
+
+    public function handleOutputDir($path, $caller = 'csssweet.handleOutputDir') 
+    {
+        // If directory exists but isn't writable we have a problem, Houston
+        if (file_exists($path) && !is_writable($path)) {
+            $this->modx->log(modX::LOG_LEVEL_ERROR, 'The directory at ' . $path . 'is not writable!', '', $caller);
+            return [
+                'success' => false,
+                'message' => 'The directory at ' . $path . 'is not writable!',
+            ];
+        }
+        // Check if directory exists, if not, create it
+        elseif (!file_exists($path)) {
+            if (mkdir($path, 0755, true)) {
+                $this->modx->log(modX::LOG_LEVEL_INFO, 'Directory created at ' . $path, '', $caller);
+                return [
+                    'success' => true,
+                    'message' => 'Directory created at ' . $path,
+                ];
+            } else {
+                $this->modx->log(modX::LOG_LEVEL_ERROR, 'Directory could not be created at ' . $path, '', $caller);
+                return [
+                    'success' => false,
+                    'message' => 'Directory could not be created at ' . $path,
+                ];
+            }
+        }
+        else {
+            return [
+                'success' => true,
+                'message' => 'Using output directory ' . $path,
+            ];
+        }
+    }
+
     /* UTILITY METHODS (@theboxer) */
 
     /**

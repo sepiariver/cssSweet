@@ -46,13 +46,7 @@ $mode = $modx->getOption('dev_mode', $scriptProperties, 'custom', true);
 $modx->log(modX::LOG_LEVEL_INFO, 'saveCustomJs plugin is running in mode: ' . $mode);
 
 // Override properties with mode props
-$properties = $scriptProperties;
-foreach ($properties as $key => $val) {
-    // skip any mode props
-    if (strpos($key, $mode) === 0) continue;
-    // these are standard scriptProperties
-    $properties[$key] = (isset($properties[$mode . '_' . $key])) ? $properties[$mode . '_' . $key] : $val;
-}
+$properties = $csssweet->getProperties($scriptProperties, $mode);
 
 // Specify a comma-separated list of chunk names in plugin properties
 $chunks = $csssweet->explodeAndClean($modx->getOption('js_chunks', $properties, ''));
@@ -79,24 +73,14 @@ $preserve_comments = ($strip_comments) ? false : true;
 // Get the output path; construct fallback; log for info/debugging
 $csssCustomJsPath = $modx->getOption('js_path', $properties, '');
 if (empty($csssCustomJsPath)) $csssCustomJsPath = $modx->getOption('assets_path') . 'components/csssweet/' . $mode . '/js/';
-$modx->log(modX::LOG_LEVEL_INFO, '$csssCustomJsPath is: ' . $csssCustomJsPath . ' on line: ' . __LINE__);
 $csssCustomJsPath = rtrim($csssCustomJsPath, '/') . '/';
 
-// If directory exists but isn't writable we have a problem, Houston
-if (file_exists($csssCustomJsPath) && !is_writable($csssCustomJsPath)) {
-    $modx->log(modX::LOG_LEVEL_ERROR, 'The directory at ' . $csssCustomJsPath . 'is not writable!');
+$checkStatus = $csssweet->handleOutputDir($csssCustomJsPath, 'csssweet.saveCustomJs');
+if ($checkStatus['success']) {
+    $modx->log(modX::LOG_LEVEL_WARN, $checkStatus['message']);
+} else {
+    $modx->log(modX::LOG_LEVEL_ERROR, '$csssCustomJsPath error: ' . $checkStatus['message']);
     return;
-}
-
-// Check if directory exists, if not, create it
-if (!file_exists($csssCustomJsPath)) {
-    if (mkdir($csssCustomJsPath, 0755, true)) {
-        $modx->log(modX::LOG_LEVEL_INFO, 'Directory created at ' . $csssCustomJsPath);
-    } else {
-        $modx->log(modX::LOG_LEVEL_ERROR, 'Directory could not be created at ' . $csssCustomJsPath);
-        // We can't continue in this case
-        return;
-    }
 }
 
 // Initialize settings array

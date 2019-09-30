@@ -46,13 +46,7 @@ $mode = $modx->getOption('dev_mode', $scriptProperties, 'custom', true);
 $modx->log(modX::LOG_LEVEL_INFO, 'saveCustomCss plugin is running in mode: ' . $mode);
 
 // Override properties with mode props
-$properties = $scriptProperties;
-foreach ($properties as $key => $val) {
-    // skip any mode props
-    if (strpos($key, $mode) === 0) continue;
-    // these are standard scriptProperties
-    $properties[$key] = (isset($properties[$mode . '_' . $key])) ? $properties[$mode . '_' . $key] : $val;
-}
+$properties = $csssweet->getProperties($scriptProperties, $mode);
 
 // Specify a comma-separated list of chunk names in plugin properties
 $chunks = $csssweet->explodeAndClean($modx->getOption('scss_chunks', $properties, ''));
@@ -89,23 +83,14 @@ $scss_import_paths = (empty($scss_import_paths)) ? array() : $csssweet->explodeA
 // Get the output path; construct fallback; log for debugging
 $csssCustomCssPath = $modx->getOption('css_path', $properties, '');
 if (empty($csssCustomCssPath)) $csssCustomCssPath = $modx->getOption('assets_path') . 'components/csssweet/' . $mode . '/';
-$modx->log(modX::LOG_LEVEL_INFO, '$csssCustomCssPath is: ' . $csssCustomCssPath . ' on line: ' . __LINE__);
 $csssCustomCssPath = rtrim($csssCustomCssPath, '/') . '/';
 
-// If directory exists but isn't writable we have a problem, Houston
-if (file_exists($csssCustomCssPath) && !is_writable($csssCustomCssPath)) {
-    $modx->log(modX::LOG_LEVEL_ERROR, 'The directory at ' . $csssCustomCssPath . 'is not writable!', '', 'saveCustomCss');
+$checkStatus = $csssweet->handleOutputDir($csssCustomCssPath, 'csssweet.saveCustomCss');
+if ($checkStatus['success']) {
+    $modx->log(modX::LOG_LEVEL_WARN, $checkStatus['message']);
+} else {
+    $modx->log(modX::LOG_LEVEL_ERROR, '$csssCustomJsPath error: ' . $checkStatus['message']);
     return;
-}
-
-// Check if directory exists, if not, create it
-if (!file_exists($csssCustomCssPath)) {
-    if (mkdir($csssCustomCssPath, 0755, true)) {
-        $modx->log(modX::LOG_LEVEL_INFO, 'Directory created at ' . $csssCustomCssPath, '', 'saveCustomCss');
-    } else {
-        $modx->log(modX::LOG_LEVEL_ERROR, 'Directory could not be created at ' . $csssCustomCssPath, '', 'saveCustomCss');
-        return;
-    }
 }
 
 // Initialize settings array
