@@ -381,7 +381,7 @@ class CssSweet
         return $properties;
     }
 
-    public function handleOutputDir($path, $caller = 'csssweet.handleOutputDir') 
+    public function checkDir($path, $caller = 'csssweet.checkDir') 
     {
         // If directory exists but isn't writable we have a problem, Houston
         if (file_exists($path) && !is_writable($path)) {

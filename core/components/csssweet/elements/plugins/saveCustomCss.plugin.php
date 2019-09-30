@@ -85,11 +85,11 @@ $csssCustomCssPath = $modx->getOption('css_path', $properties, '');
 if (empty($csssCustomCssPath)) $csssCustomCssPath = $modx->getOption('assets_path') . 'components/csssweet/' . $mode . '/';
 $csssCustomCssPath = rtrim($csssCustomCssPath, '/') . '/';
 
-$checkStatus = $csssweet->handleOutputDir($csssCustomCssPath, 'csssweet.saveCustomCss');
-if ($checkStatus['success']) {
-    $modx->log(modX::LOG_LEVEL_WARN, $checkStatus['message']);
+$checkDir = $csssweet->checkDir($csssCustomCssPath, 'csssweet.saveCustomCss');
+if ($checkDir['success']) {
+    $modx->log(modX::LOG_LEVEL_WARN, $checkDir['message']);
 } else {
-    $modx->log(modX::LOG_LEVEL_ERROR, '$csssCustomJsPath error: ' . $checkStatus['message']);
+    $modx->log(modX::LOG_LEVEL_ERROR, '$csssCustomJsPath error: ' . $checkDir['message']);
     return;
 }
 
@@ -125,7 +125,6 @@ $file = $csssCustomCssPath . $filename;
 // Init scssphp
 $scssMin = $csssweet->scssphpInit($scss_import_paths, $css_output_format);
 if ($scssMin) {
-
     try {
         $contents = $scssMin->compile($contents);
     } catch (Exception $e) {

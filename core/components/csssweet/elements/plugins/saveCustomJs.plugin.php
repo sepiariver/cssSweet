@@ -75,11 +75,11 @@ $csssCustomJsPath = $modx->getOption('js_path', $properties, '');
 if (empty($csssCustomJsPath)) $csssCustomJsPath = $modx->getOption('assets_path') . 'components/csssweet/' . $mode . '/js/';
 $csssCustomJsPath = rtrim($csssCustomJsPath, '/') . '/';
 
-$checkStatus = $csssweet->handleOutputDir($csssCustomJsPath, 'csssweet.saveCustomJs');
-if ($checkStatus['success']) {
-    $modx->log(modX::LOG_LEVEL_WARN, $checkStatus['message']);
+$checkDir = $csssweet->checkDir($csssCustomJsPath, 'csssweet.saveCustomJs');
+if ($checkDir['success']) {
+    $modx->log(modX::LOG_LEVEL_WARN, $checkDir['message']);
 } else {
-    $modx->log(modX::LOG_LEVEL_ERROR, '$csssCustomJsPath error: ' . $checkStatus['message']);
+    $modx->log(modX::LOG_LEVEL_ERROR, '$csssCustomJsPath error: ' . $checkDir['message']);
     return;
 }
 
@@ -121,12 +121,9 @@ $file = $csssCustomJsPath . $filename;
 // Status report
 $status = 'not';
 if ($minify_custom_js) {
-
     $jshrink = $csssweet->jshrinkInit();
-
     // If we got the class, try minification. Log failures.
     if ($jshrink) {
-
         try {
             $contents = $jshrink::minify($contents, array('flaggedComments' => $preserve_comments));
             $status = '';
