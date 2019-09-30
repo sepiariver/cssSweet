@@ -168,11 +168,12 @@ class CssSweet
         return $settings;
     }
 
-    public function lightening($input, $options)
+    public function getColorClass($input)
     {
         // Set color class
         $format = null;
         $unHash = false;
+        $color = null;
         if (strpos($input, '#') === 0) {
             $format = 'Hex';
         } elseif (preg_match('/[a-fA-F0-9]{6}/', $input) || preg_match('/[a-fA-F0-9]{3}/', $input)) {
@@ -191,16 +192,32 @@ class CssSweet
             $format = 'Hsv';
         } else {
             $this->modx->log(modX::LOG_LEVEL_ERROR, '[cssSweet.lighten] unsupported color format: ' . $input);
-            return '';
         }
 
         // Instantiate iris color class
-        try {
-            $color = $this->getIris($input, $format);
-        } catch (\OzdemirBurak\Iris\Exceptions\InvalidColorException $e) {
-            $this->modx->log(modX::LOG_LEVEL_ERROR, '[cssSweet.lighten] InvalidColorException: ' . $e->getMessage());
-            return '';
+        if ($format) {
+            try {
+                $color = $this->getIris($input, $format);
+            } catch (\OzdemirBurak\Iris\Exceptions\InvalidColorException $e) {
+                $this->modx->log(modX::LOG_LEVEL_ERROR, '[cssSweet.lighten] InvalidColorException: ' . $e->getMessage());
+            }
         }
+        
+        return [
+            'format' => $format,
+            'unHash' => $unHash,
+            'color' => $color,
+        ];
+    }
+
+    public function lightening($input, $options)
+    {
+        // Set color class
+        $cc = $this->getColorClass($input);
+        if (!$cc['color']) return '';
+        $format = $cc['format'];
+        $unHash = $cc['unHash'];
+        $color = $cc['color'];
 
         // Set additional options
         preg_match('/(max)/', $options, $max);
@@ -272,7 +289,7 @@ class CssSweet
 
         // Only first operator
         $op = (empty($op[0])) ? '+' : $op[0];
-        
+
         // Simple math only
         switch ($op) {
             case '-':
