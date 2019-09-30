@@ -1,5 +1,6 @@
 <?php
 
+use OzdemirBurak\Iris\Exceptions\InvalidColorException;
 use PHPUnit\Framework\TestCase;
 
 class CssSweetTest extends TestCase
@@ -60,5 +61,24 @@ class CssSweetTest extends TestCase
         $this->assertEquals($hex->lighten(20), '#666666');
         $this->assertEquals($hex->darken(20), '#000000');
         $this->assertEquals($hex->brighten(20), '#666666');
+    }
+    public function testLightening()
+    {
+        $this->assertEquals($this->cssSweet->lightening('#333', '20'), '#666666');
+        $this->assertEquals($this->cssSweet->lightening('rgb(51,51,51)', '20'), 'rgb(125,125,125)');
+        $this->assertEquals($this->cssSweet->lightening('#333', '-20'), '#000000');
+        $this->assertEquals($this->cssSweet->lightening('rgb(51,51,51)', '-20'), 'rgb(23,23,23)');
+        $this->assertEquals($this->cssSweet->lightening('333', '20'), '666666');
+        $this->assertEquals($this->cssSweet->lightening('333', '-20'), '000000');
+        $this->assertEquals($this->cssSweet->lightening('#333', 'max'), '#000000');
+        $this->assertEquals($this->cssSweet->lightening('#333', 'rev'), '#ffffff');
+        $this->assertEquals($this->cssSweet->lightening('#aaa', 'max'), '#ffffff');
+        $this->assertEquals($this->cssSweet->lightening('#aaa', 'rev'), '#000000');
+        $this->assertEquals($this->cssSweet->lightening('#000', 'rev50'), '#808080');
+        $this->assertEquals($this->cssSweet->lightening('#fff', 'rev50'), '#808080');
+        $this->assertEquals($this->cssSweet->lightening('#zzz', '20'), '');
+        $this->assertEquals($this->cssSweet->lightening('#333', '0'), '#333333');
+        $this->assertEquals($this->cssSweet->lightening('#333', 'foobar'), '#333333');
+        
     }
 }

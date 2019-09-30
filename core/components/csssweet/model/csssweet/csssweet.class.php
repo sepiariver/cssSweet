@@ -168,6 +168,96 @@ class CssSweet
         return $settings;
     }
 
+    public function lightening($input, $options)
+    {
+        // Set color class
+        $format = null;
+        $unHash = false;
+        if (strpos($input, '#') === 0) {
+            $format = 'Hex';
+        } elseif (preg_match('/[a-fA-F0-9]{6}/', $input) || preg_match('/[a-fA-F0-9]{3}/', $input)) {
+            $format = 'Hex';
+            $input = '#' . $input;
+            $unHash = true;
+        } elseif (strpos($input, 'rgb') === 0) {
+            $format = 'Rgb';
+        } elseif (strpos($input, 'rgba') === 0) {
+            $format = 'Rgba';
+        } elseif (strpos($input, 'hsl') === 0) {
+            $format = 'Hsl';
+        } elseif (strpos($input, 'hsla') === 0) {
+            $format = 'Hsla';
+        } elseif (strpos($input, 'hsv') === 0) {
+            $format = 'Hsv';
+        } else {
+            $this->modx->log(modX::LOG_LEVEL_ERROR, '[cssSweet.lighten] unsupported color format: ' . $input);
+            return '';
+        }
+
+        // Instantiate iris color class
+        try {
+            $color = $this->getIris($input, $format);
+        } catch (\OzdemirBurak\Iris\Exceptions\InvalidColorException $e) {
+            $this->modx->log(modX::LOG_LEVEL_ERROR, '[cssSweet.lighten] InvalidColorException: ' . $e->getMessage());
+            return '';
+        }
+
+        // Set additional options
+        preg_match('/(max)/', $options, $max);
+        preg_match('/(rev)/', $options, $rev);
+        $options = preg_replace('/[^0-9-]/', '', $options);
+
+        // Light vs Dark
+        $darkInput = $color->isDark();
+        $lightInput = $color->isLight();
+
+        // Shortcuts if using 'max' or 'rev' without percentage
+        if (!$options) {
+            // Default to 0 if no options percentage provided
+            $perc = 0;
+            $neg = false;
+            // Set max/rev outputs 
+            $wht = ($unHash) ? 'ffffff' : '#ffffff';
+            $blk = ($unHash) ? '000000' : '#000000';
+            // Return for max/rev
+            if ($max) {
+                if ($lightInput) return $wht;
+                if ($darkInput) return $blk;
+            }
+            if ($rev) {
+                if ($lightInput) return $blk;
+                if ($darkInput) return $wht;
+            }
+        } else {
+            // If ($options) process percentage
+            $perc = (intval($options, 10) / 100);
+            $neg = ($perc <= 0);
+            $perc = min(abs($perc), 1) * 100;
+            // Set max/rev outputs 
+            $wht = $color->tint($perc);
+            $blk = $color->shade($perc);
+            // Return for max/rev
+            if ($max) {
+                if ($lightInput) return $wht;
+                if ($darkInput) return $blk;
+            }
+            if ($rev) {
+                if ($lightInput) return $blk;
+                if ($darkInput) return $wht;
+            }
+        }
+
+        // Lighten or darken the input
+        $result = ($neg) ? $color->darken($perc) : $color->lighten($perc);
+
+        // return processed hex color value
+        if ($unHash && (strpos($result, '#') === 0)) {
+            $result = substr($result, 1);
+        }
+
+        return $result;
+    }
+
     /* UTILITY METHODS (@theboxer) */
 
     /**

@@ -26,18 +26,18 @@ $input = isset($input) ? $input : '';
 $input = (isset($to)) ? $to : $input;
 
 // Check it
-if ( !$input ) return;
+if (!$input) return;
 
 // Get options and defaults
 $options = isset($options) ? $options : 'webkit,moz';
-if ( $options === 'all' ) $options = 'webkit,moz,ms,o';
+if ($options === 'all') $options = 'webkit,moz,ms,o';
 
 // Which prefix?
-$prefixes = ['webkit','moz','ms','o'];
+$prefixes = ['webkit', 'moz', 'ms', 'o'];
 $output = '';
-$selects = explode(',',$options);
-foreach($selects as $select) {
-    if( in_array($select,$prefixes) ) $output .= "-$select-$input" . PHP_EOL;
+$selects = explode(',', $options);
+foreach ($selects as $select) {
+    if (in_array($select, $prefixes)) $output .= "-$select-$input" . PHP_EOL;
 }
 $output .= $input;
 

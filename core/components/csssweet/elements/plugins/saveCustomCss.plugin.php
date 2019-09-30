@@ -1,4 +1,5 @@
 <?php
+
 /**
  * saveCustomCss
  * @author @sepiariver
@@ -25,7 +26,7 @@
 if ($modx->context->get('key') !== 'mgr') return;
 
 // In case the wrong event is enabled in plugin properties
-$allowedEvents = array('OnSiteRefresh','OnChunkFormSave','ClientConfig_ConfigChange');
+$allowedEvents = array('OnSiteRefresh', 'OnChunkFormSave', 'ClientConfig_ConfigChange');
 if (!in_array($modx->event->name, $allowedEvents)) return;
 
 // Grab the cssSweet class
@@ -37,8 +38,7 @@ if (file_exists($cssSweetPath . 'csssweet.class.php')) $csssweet = $modx->getSer
 if (!$csssweet || !($csssweet instanceof CssSweet)) {
 
     $modx->log(modX::LOG_LEVEL_ERROR, '[SaveCustomCss] could not load the required csssweet class!');
-	return;
-
+    return;
 }
 
 // Dev mode option
@@ -72,7 +72,7 @@ if (empty($filename)) return;
 
 // Optionally choose an output format if not minified
 $css_output_format = $modx->getOption('css_output_format', $properties, 'Expanded');
-$css_output_format_options = array('Expanded','Nested','Compact');
+$css_output_format_options = array('Expanded', 'Nested', 'Compact');
 if (!in_array($css_output_format, $css_output_format_options)) $css_output_format = 'Expanded';
 
 // Optionally minify the output, defaults to 'true'
@@ -95,7 +95,7 @@ $csssCustomCssPath = rtrim($csssCustomCssPath, '/') . '/';
 
 // If directory exists but isn't writable we have a problem, Houston
 if (file_exists($csssCustomCssPath) && !is_writable($csssCustomCssPath)) {
-    $modx->log(modX::LOG_LEVEL_ERROR, 'The directory at ' . $csssCustomCssPath . 'is not writable!','','saveCustomCss');
+    $modx->log(modX::LOG_LEVEL_ERROR, 'The directory at ' . $csssCustomCssPath . 'is not writable!', '', 'saveCustomCss');
     return;
 }
 
@@ -144,13 +144,11 @@ if ($scssMin) {
 
     try {
         $contents = $scssMin->compile($contents);
+    } catch (Exception $e) {
+        $modx->log(modX::LOG_LEVEL_ERROR, $e->getMessage() . ' scss not compiled. minification not performed.', '', 'saveCustomCss');
     }
-    catch (Exception $e) {
-        $modx->log(modX::LOG_LEVEL_ERROR, $e->getMessage() . ' scss not compiled. minification not performed.','','saveCustomCss');
-    }
-
 } else {
-    $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to load scss class. scss not compiled. minification not performed.','','saveCustomCss');
+    $modx->log(modX::LOG_LEVEL_ERROR, 'Failed to load scss class. scss not compiled. minification not performed.', '', 'saveCustomCss');
 }
 
 // If we failed scss and minification at least output what we have
