@@ -6,10 +6,16 @@
     "version": "5.1.1-beta1",
     "package": {
         "elements": {
-            "snippets": [{
+            "snippets": [
+                {
                     "name": "csssweet.convert",
                     "file": "convert.snippet.php"
-                },{
+                },
+                {
+                    "name": "csssweet.extract",
+                    "file": "extract.snippet.php"
+                },
+                {
                     "name": "csssweet.lighten",
                     "file": "lighten.snippet.php"
                 },
@@ -26,13 +32,15 @@
                     "file": "saturate.snippet.php"
                 }
             ],
-            "plugins": [{
+            "plugins": [
+                {
                     "name": "saveCustomCss",
                     "events": [
                         "OnSiteRefresh",
                         "OnChunkFormSave"
                     ],
-                    "properties": [{
+                    "properties": [
+                        {
                             "name": "scss_chunks",
                             "description": "Name of chunk, or comma-separated list of chunks, from which to parse (S)CSS.",
                             "type": "textfield",
@@ -99,7 +107,8 @@
                         "OnSiteRefresh",
                         "OnChunkFormSave"
                     ],
-                    "properties": [{
+                    "properties": [
+                        {
                             "name": "js_chunks",
                             "description": "Name of chunk, or comma-separated list of chunks, from which to parse JS.",
                             "type": "textfield",
@@ -147,11 +156,13 @@
                     ]
                 }
             ],
-            "chunks": [{
-                "name": "csss.custom_css.scss",
-                "description": "Sample chunk only. It's recommended to create your own chunk(s) with a unique name(s) and set them in the saveCustomCss plugin properties.",
-                "file": "csss.custom_css.scss.tpl"
-            }]
+            "chunks": [
+                {
+                    "name": "csss.custom_css.scss",
+                    "description": "Sample chunk only. It's recommended to create your own chunk(s) with a unique name(s) and set them in the saveCustomCss plugin properties.",
+                    "file": "csss.custom_css.scss.tpl"
+                }
+            ]
         }
     },
     "build": {

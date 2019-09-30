@@ -203,7 +203,7 @@ class CssSweet
                 $this->modx->log(modX::LOG_LEVEL_ERROR, '[cssSweet.lighten] InvalidColorException: ' . $e->getMessage());
             }
         }
-        
+
         return [
             'format' => $format,
             'unHash' => $unHash,
@@ -360,8 +360,38 @@ class CssSweet
         // Clean options
         if (empty($options)) return $color;
 
+        // Saturate
         $perc = intval($options);
-        return ($perc >= 0) ? $color->saturate($perc) : $color->desaturate(abs($perc));
+        $result = ($perc >= 0) ? $color->saturate($perc) : $color->desaturate(abs($perc));
+
+        // return processed hex color value
+        if ($unHash && (strpos($result, '#') === 0)) {
+            $result = substr($result, 1);
+        }
+
+        return $result;
+    }
+
+    public function extracting($input, $options)
+    {
+        // Set color class
+        $cc = $this->getColorClass($input);
+        if (!$cc['color']) return '';
+        $format = $cc['format'];
+        $color = $cc['color'];
+
+        // Channel map
+        $channels = ['red' => 0, 'green' => 1, 'blue' => 2, 'alpha' => 3, 'r' => 0, 'g' => 1, 'b' => 2, 'a' => 3, '0' => 0, '1' => 1, '2' => 2, '3' => 3, 'hue' => 0, 'saturation' => 1, 'lightness' => 2, 'value' => 2, 'h' => 0, 's' => 1, 'l' => 2, 'v' => 2];
+
+        // Clean options
+        // Harder to troubleshoot if a color is returned here?
+        if (empty($options)) return '';
+        $o = (string) trim($options);
+        if (!isset($channels[$o])) return '';
+
+        $i = $channels[$o];
+        $values =  $color->values();
+        return $values[$i];
     }
 
     public function getProperties($properties, $mode)
@@ -381,7 +411,7 @@ class CssSweet
         return $properties;
     }
 
-    public function checkDir($path, $caller = 'csssweet.checkDir') 
+    public function checkDir($path, $caller = 'csssweet.checkDir')
     {
         // If directory exists but isn't writable we have a problem, Houston
         if (file_exists($path) && !is_writable($path)) {
@@ -406,8 +436,7 @@ class CssSweet
                     'message' => 'Directory could not be created at ' . $path,
                 ];
             }
-        }
-        else {
+        } else {
             return [
                 'success' => true,
                 'message' => 'Using output directory ' . $path,

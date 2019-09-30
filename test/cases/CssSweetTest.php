@@ -115,11 +115,25 @@ class CssSweetTest extends TestCase
         $this->assertEquals($this->cssSweet->saturating('#80e61a', 20), '#80ff00');
         $this->assertEquals($this->cssSweet->saturating('rgb(128,230,26)', -20), 'rgb(128,204,51)');
     }
+    public function testExtracting()
+    {
+        $this->assertEquals($this->cssSweet->extracting('#80e61a', 'red'), '80');
+        $this->assertEquals($this->cssSweet->extracting('#80e61a', 'g'), 'e6');
+        $this->assertEquals($this->cssSweet->extracting('#80e61a', 'blue'), '1a');
+        $this->assertEquals($this->cssSweet->extracting('rgba(128, 230, 26, 0.5)', 'a'), '0.5');
+        $this->assertEquals($this->cssSweet->extracting('hsla(0, 0%, 20%, 1)', 'hue'), '0');
+        $this->assertEquals($this->cssSweet->extracting('hsla(0, 0%, 20%, 1)', 's'), '0%');
+        $this->assertEquals($this->cssSweet->extracting('hsla(0, 0%, 20%, 1)', 'l'), '20%');
+        $this->assertEquals($this->cssSweet->extracting('hsla(0, 0%, 20%, 1)', 'alpha'), '1');
+        $this->assertEquals($this->cssSweet->extracting('hsv(0,0%,20%)', 'value'), '20%');
+    }
     public function testSnippets()
     {
+        $this->assertEquals($this->modx->runSnippet('csssweet.convert', ['input' => 'rgb(51,51,51)', 'options' => 'hex']), '#333333');
+        $this->assertEquals($this->modx->runSnippet('csssweet.extract', ['input' => 'rgba(51,51,51,0.5)', 'options' => 'alpha']), '0.5');
+        $this->assertEquals($this->modx->runSnippet('csssweet.extract', ['input' => '#333', 'options' => 'r']), '33');
         $this->assertEquals($this->modx->runSnippet('csssweet.lighten', ['input' => '#333', 'options' => '20']), '#666666');
         $this->assertEquals($this->modx->runSnippet('csssweet.modval', ['input' => '10px', 'options' => '+5']), '15px');
-        $this->assertEquals($this->modx->runSnippet('csssweet.convert', ['input' => 'rgb(51,51,51)', 'options' => 'hex']), '#333333');
         $this->assertEquals($this->modx->runSnippet('csssweet.saturate', ['input' => '#80e61a', 'options' => '20']), '#80ff00');
         $expected = addslashes('-webkit-transition: 300ms all ease;
 -moz-transition: 300ms all ease;
