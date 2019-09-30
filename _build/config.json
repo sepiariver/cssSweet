@@ -7,20 +7,7 @@
     "package": {
         "elements": {
             "snippets": [{
-                    "name": "lighten",
-                    "properties": [{
-                            "name": "percOpt",
-                            "description": "Can be 'input', 'spectrum' or 'average'.",
-                            "type": "textfield",
-                            "value": "input"
-                        },
-                        {
-                            "name": "threshold",
-                            "description": "Valid, 6-character hex against which to evaluate light and dark hex values.",
-                            "type": "textfield",
-                            "value": "999999"
-                        }
-                    ]
+                    "name": "lighten"
                 },
                 {
                     "name": "modval"
