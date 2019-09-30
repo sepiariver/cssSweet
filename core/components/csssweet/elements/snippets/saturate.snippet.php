@@ -1,17 +1,16 @@
 <?php
 /* 
- * modval
+ * saturate
  *
- * Output modifier that accepts a numeric value and modifies it. 
- * Identifies strings as units and separates them. 
+ * Output modifier that accepts a color value and changes saturation. 
  *
  * Examples:
- * [[modval?input=`4px`&options=`*3`]]
- * '12px'
+ * [[saturate? &input=`#80e61a` &options=`20`]]
+ * '#80ff00'
  *
- * [[+inches:modval=`/2`]]
- * Where the value of the placeholder is '18 inches'
- * '9 inches'
+ * [[+inches:saturate=`-20`]]
+ * Where the value of the placeholder is 'rgb(128,230,26)'
+ * 'rgb(128,204,51)'
  */
 
 // Get values
@@ -23,8 +22,8 @@ $cssSweetPath = $modx->getOption('csssweet.core_path', null, $modx->getOption('c
 $cssSweetPath .= 'model/csssweet/';
 if (file_exists($cssSweetPath . 'csssweet.class.php')) $csssweet = $modx->getService('csssweet', 'CssSweet', $cssSweetPath);
 if (!$csssweet || !($csssweet instanceof CssSweet)) {
-    $modx->log(modX::LOG_LEVEL_ERROR, '[cssSweet.modval] could not load the required csssweet class!');
+    $modx->log(modX::LOG_LEVEL_ERROR, '[cssSweet.convert] could not load the required csssweet class!');
     return '';
 }
 
-return $csssweet->modifying($input, $options);
+return $csssweet->saturating($input, $options);

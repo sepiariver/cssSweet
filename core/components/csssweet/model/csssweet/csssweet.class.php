@@ -170,26 +170,27 @@ class CssSweet
 
     public function getColorClass($input)
     {
+        $input = trim($input);
         // Set color class
         $format = null;
         $unHash = false;
         $color = null;
-        if (strpos($input, '#') === 0) {
+        if (strpos($input, 'rgba') === 0) {
+            $format = 'Rgba';
+        } elseif (strpos($input, 'rgb') === 0) {
+            $format = 'Rgb';
+        } elseif (strpos($input, 'hsla') === 0) {
+            $format = 'Hsla';
+        } elseif (strpos($input, 'hsl') === 0) {
+            $format = 'Hsl';
+        } elseif (strpos($input, 'hsv') === 0) {
+            $format = 'Hsv';
+        } elseif (strpos($input, '#') === 0) {
             $format = 'Hex';
         } elseif (preg_match('/[a-fA-F0-9]{6}/', $input) || preg_match('/[a-fA-F0-9]{3}/', $input)) {
             $format = 'Hex';
             $input = '#' . $input;
             $unHash = true;
-        } elseif (strpos($input, 'rgb') === 0) {
-            $format = 'Rgb';
-        } elseif (strpos($input, 'rgba') === 0) {
-            $format = 'Rgba';
-        } elseif (strpos($input, 'hsl') === 0) {
-            $format = 'Hsl';
-        } elseif (strpos($input, 'hsla') === 0) {
-            $format = 'Hsla';
-        } elseif (strpos($input, 'hsv') === 0) {
-            $format = 'Hsv';
         } else {
             $this->modx->log(modX::LOG_LEVEL_ERROR, '[cssSweet.lighten] unsupported color format: ' . $input);
         }
@@ -278,11 +279,11 @@ class CssSweet
     public function modifying($input, $options)
     {
         // Get input: grab the first float in the string, then clean it for the unit
-        if (empty($input)) return '';
-        $inputValue = floatval($input);
+        $inputValue = floatval(trim($input));
         $unit = preg_replace('/[^a-zA-Z]/', '', trim($input, $inputValue));
 
         // Get options: operators go in an array, extract remaining float
+        if (empty($options)) return $inputValue . $unit;
         preg_match('/[\+\-\*\/]/', $options, $op);
         $options = preg_replace('/[\+\-\*\/]/', '', $options);
         $optionValue = floatval(trim($options));
@@ -309,6 +310,58 @@ class CssSweet
 
         // Results
         return $val . $unit;
+    }
+
+    public function converting($input, $options = '')
+    {
+        // Set color class
+        $cc = $this->getColorClass(trim($input));
+        if (!$cc['color']) return '';
+        $format = $cc['format'];
+        $color = $cc['color'];
+
+        // Clean options
+        $options = ucfirst(strtolower(trim($options)));
+        if (empty($options) || $options === $format) return $color;
+
+        // Convert
+        switch ($options) {
+            case 'Rgb':
+                return $color->toRgb();
+                break;
+            case 'Rgba':
+                return $color->toRgba();
+                break;
+            case 'Hsl':
+                return $color->toHsl();
+                break;
+            case 'Hsla':
+                return $color->toHsla();
+                break;
+            case 'Hsv':
+                return $color->toHsv();
+                break;
+            case 'Hex':
+            default:
+                return $color->toHex();
+                break;
+        }
+    }
+
+    public function saturating($input, $options)
+    {
+        // Set color class
+        $cc = $this->getColorClass($input);
+        if (!$cc['color']) return '';
+        $format = $cc['format'];
+        $unHash = $cc['unHash'];
+        $color = $cc['color'];
+
+        // Clean options
+        if (empty($options)) return $color;
+
+        $perc = intval($options);
+        return ($perc >= 0) ? $color->saturate($perc) : $color->desaturate(abs($perc));
     }
 
     /* UTILITY METHODS (@theboxer) */

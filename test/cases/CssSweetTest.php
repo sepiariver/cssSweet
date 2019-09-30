@@ -62,6 +62,14 @@ class CssSweetTest extends TestCase
         $this->assertEquals($hex->darken(20), '#000000');
         $this->assertEquals($hex->brighten(20), '#666666');
     }
+    public function testGetColor()
+    {
+        $this->assertEquals($this->cssSweet->getColorClass('rgba(128, 230, 26, 0.5)')['color'], 'rgba(128,230,26,0.5)');
+        $this->assertEquals($this->cssSweet->getColorClass('rgb(128, 230, 26)')['color'], 'rgb(128,230,26)');
+        $this->assertEquals($this->cssSweet->getColorClass('hsla(0, 0%, 20%, 1)')['color'], 'hsla(0,0%,20%,1)');
+        $this->assertEquals($this->cssSweet->getColorClass('hsl(0, 0%, 20%)')['color'], 'hsl(0,0%,20%)');
+        $this->assertEquals($this->cssSweet->getColorClass('hsv(0, 0%, 20%)')['color'], 'hsv(0,0%,20%)');
+    }
     public function testLightening()
     {
         $this->assertEquals($this->cssSweet->lightening('#333', '20'), '#666666');
@@ -88,5 +96,20 @@ class CssSweetTest extends TestCase
         $this->assertEquals($this->cssSweet->modifying('10in', '*2'), '20in');
         $this->assertEquals($this->cssSweet->modifying('10in', '/2'), '5in');
         $this->assertEquals($this->cssSweet->modifying('-90deg', '*2'), '-180deg');
+    }
+    public function testConverting()
+    {
+        $this->assertEquals($this->cssSweet->converting('#333'), '#333333');
+        $this->assertEquals($this->cssSweet->converting('#333', 'foobar'), '#333333');
+        $this->assertEquals($this->cssSweet->converting('rgb(51,51,51)', 'hex'), '#333333');
+        $this->assertEquals($this->cssSweet->converting('#333', 'rgb'), 'rgb(51,51,51)');
+        $this->assertEquals($this->cssSweet->converting('#333', 'rgba'), 'rgba(51,51,51,1)');
+        $this->assertEquals($this->cssSweet->converting('#333', 'hsla'), 'hsla(0,0%,20%,1)');
+        $this->assertEquals($this->cssSweet->converting('#333', 'hsv'), 'hsv(0,0%,20%)');
+    }
+    public function testSaturating()
+    {
+        $this->assertEquals($this->cssSweet->saturating('#80e61a', 20), '#80ff00');
+        $this->assertEquals($this->cssSweet->saturating('rgb(128,230,26)', -20), 'rgb(128,204,51)');
     }
 }

@@ -1,17 +1,17 @@
 <?php
 /* 
- * modval
+ * convert
  *
- * Output modifier that accepts a numeric value and modifies it. 
- * Identifies strings as units and separates them. 
+ * Output modifier that accepts a color value and converts it to 
+ * another format. 
  *
  * Examples:
- * [[modval?input=`4px`&options=`*3`]]
- * '12px'
+ * [[convert? &input=`#333` &options=`rgba`]]
+ * 'rgba(51,51,51,1)'
  *
- * [[+inches:modval=`/2`]]
- * Where the value of the placeholder is '18 inches'
- * '9 inches'
+ * [[+inches:convert]]
+ * Where the value of the placeholder is 'rgba(51,51,51,1)'
+ * '#333333'
  */
 
 // Get values
@@ -23,8 +23,8 @@ $cssSweetPath = $modx->getOption('csssweet.core_path', null, $modx->getOption('c
 $cssSweetPath .= 'model/csssweet/';
 if (file_exists($cssSweetPath . 'csssweet.class.php')) $csssweet = $modx->getService('csssweet', 'CssSweet', $cssSweetPath);
 if (!$csssweet || !($csssweet instanceof CssSweet)) {
-    $modx->log(modX::LOG_LEVEL_ERROR, '[cssSweet.modval] could not load the required csssweet class!');
+    $modx->log(modX::LOG_LEVEL_ERROR, '[cssSweet.convert] could not load the required csssweet class!');
     return '';
 }
 
-return $csssweet->modifying($input, $options);
+return $csssweet->converting($input, $options);

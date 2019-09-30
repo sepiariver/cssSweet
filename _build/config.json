@@ -7,13 +7,24 @@
     "package": {
         "elements": {
             "snippets": [{
-                    "name": "lighten"
+                    "name": "csssweet.lighten",
+                    "file": "lighten.snippet.php"
                 },
                 {
-                    "name": "modval"
+                    "name": "csssweet.modval",
+                    "file": "modval.snippet.php"
                 },
                 {
-                    "name": "prefix"
+                    "name": "csssweet.prefix",
+                    "file": "prefix.snippet.php"
+                },
+                {
+                    "name": "csssweet.convert",
+                    "file": "convert.snippet.php"
+                },
+                {
+                    "name": "csssweet.saturate",
+                    "file": "saturate.snippet.php"
                 }
             ],
             "plugins": [{
