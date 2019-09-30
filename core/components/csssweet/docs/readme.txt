@@ -1,6 +1,6 @@
 cssSweet
 =========================================
-Version: 4.2.0-rc3
+Version: 5.0.0-dev1
 
 Author: YJ Tso (@sepiariver) [on Twitter](https://twitter.com/sepiariver)
 
@@ -75,6 +75,6 @@ The utmost care has been taken to ensure that upgrades of cssSweet are as safe a
 ## Thanks
 A lot of time, research and consideration was put into which libraries should be included in this package, for the minification functions. I whole-heartedly support these fine developers and their open-source projects. Please extend your thanks to these folks, if you find cssSsweet useful (or even if you don't :P)
 
-[@leafo/scssphp] (https://github.com/leafo/scssphp)
+[@scssphp/scssphp] (https://github.com/scssphp/scssphp)
 
 [@tedious/Jshrink] (https://github.com/tedious/JShrink)
