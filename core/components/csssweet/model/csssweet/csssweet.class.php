@@ -258,6 +258,42 @@ class CssSweet
         return $result;
     }
 
+    public function modifying($input, $options)
+    {
+        // Get input: grab the first float in the string, then clean it for the unit
+        if (empty($input)) return '';
+        $inputValue = floatval($input);
+        $unit = preg_replace('/[^a-zA-Z]/', '', trim($input, $inputValue));
+
+        // Get options: operators go in an array, extract remaining float
+        preg_match('/[\+\-\*\/]/', $options, $op);
+        $options = preg_replace('/[\+\-\*\/]/', '', $options);
+        $optionValue = floatval(trim($options));
+
+        // Only first operator
+        $op = (empty($op[0])) ? '+' : $op[0];
+        
+        // Simple math only
+        switch ($op) {
+            case '-':
+                $val = $inputValue - $optionValue;
+                break;
+            case '*':
+                $val = $inputValue * $optionValue;
+                break;
+            case '/':
+                $val = $inputValue / $optionValue;
+                break;
+            case '+':
+            default:
+                $val = $inputValue + $optionValue;
+                break;
+        }
+
+        // Results
+        return $val . $unit;
+    }
+
     /* UTILITY METHODS (@theboxer) */
 
     /**

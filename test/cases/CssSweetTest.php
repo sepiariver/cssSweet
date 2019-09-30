@@ -81,4 +81,12 @@ class CssSweetTest extends TestCase
         $this->assertEquals($this->cssSweet->lightening('#333', 'foobar'), '#333333');
         
     }
+    public function testModifying()
+    {
+        $this->assertEquals($this->cssSweet->modifying('10px', '+5'), '15px');
+        $this->assertEquals($this->cssSweet->modifying('10px', '-5'), '5px');
+        $this->assertEquals($this->cssSweet->modifying('10in', '*2'), '20in');
+        $this->assertEquals($this->cssSweet->modifying('10in', '/2'), '5in');
+        $this->assertEquals($this->cssSweet->modifying('-90deg', '*2'), '-180deg');
+    }
 }

@@ -14,26 +14,17 @@
  * '9 inches'
  */
 
-/* Get input: numbers go in an array, everything else is assumed
- * as a unit.
- */
-$input = isset($input) ? $input : '';
-if (!$input) return;
-preg_match('/([0-9.]+)/', $input, $valArr);
-$unit = preg_replace('/([0-9.]+)/', '', $input);
+// Get values
+if (empty($input) || empty($options)) return '';
 
-// Get options: numbers go in one array, operators in another
-preg_match('/([0-9.]+)/', $options, $optValArr);
-preg_match('/[\+\-\*\/]/', $options, $op);
+// Grab the cssSweet class
+$csssweet = null;
+$cssSweetPath = $modx->getOption('csssweet.core_path', null, $modx->getOption('core_path') . 'components/csssweet/');
+$cssSweetPath .= 'model/csssweet/';
+if (file_exists($cssSweetPath . 'csssweet.class.php')) $csssweet = $modx->getService('csssweet', 'CssSweet', $cssSweetPath);
+if (!$csssweet || !($csssweet instanceof CssSweet)) {
+    $modx->log(modX::LOG_LEVEL_ERROR, '[cssSweet.modval] could not load the required csssweet class!');
+    return '';
+}
 
-// Default operator
-if (!$op) $op[0] = '+';
-
-// Simple math only
-if ($op[0] == '+') $val = ($valArr[0] + $optValArr[0]);
-if ($op[0] == '-') $val = ($valArr[0] - $optValArr[0]);
-if ($op[0] == '*') $val = ($valArr[0] * $optValArr[0]);
-if ($op[0] == '/') $val = ($valArr[0] / $optValArr[0]);
-
-// Results
-return $val . $unit;
+return $csssweet->modifying($input, $options);
