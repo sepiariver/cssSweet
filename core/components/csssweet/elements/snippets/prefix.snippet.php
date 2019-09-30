@@ -26,7 +26,7 @@ $input = isset($input) ? $input : '';
 $input = (isset($to)) ? $to : $input;
 
 // Check it
-if (!$input) return;
+if (empty($input)) return;
 
 // Get options and defaults
 $options = isset($options) ? $options : 'webkit,moz';
