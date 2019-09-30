@@ -8,6 +8,7 @@ class CssSweetTest extends TestCase
     protected $modx;
     protected $cssSweet;
     protected $scssphp;
+    protected $jShrink;
     
     protected function setUp(): void
     {
@@ -19,6 +20,7 @@ class CssSweetTest extends TestCase
         $this->cssSweet = new CssSweet($this->modx);
 
         $this->scssphp = $this->cssSweet->scssphpInit([], 'Nested');
+        $this->jShrink = $this->cssSweet->jshrinkInit();
     }
     public function testInstantiation()
     {
@@ -28,14 +30,21 @@ class CssSweetTest extends TestCase
     public function testInit()
     {   
         $this->assertTrue($this->scssphp instanceof \ScssPhp\ScssPhp\Compiler);
+        $this->assertTrue($this->jShrink instanceof \JShrink\Minifier);
     }
 
     public function testCompile()
     {
         $scss = file_get_contents('assets/test.scss');
-        $expected = file_get_contents('assets/expected.css');
-        $compiled = $this->scssphp->compile($scss);
+        $expectedcss = file_get_contents('assets/expected.css');
+        $compiledcss = $this->scssphp->compile($scss);
 
-        $this->assertSame($expected, $compiled);
+        $this->assertSame($expectedcss, $compiledcss);
+
+        $js = file_get_contents('assets/test.js');
+        $expectedjs = file_get_contents('assets/expected.js');
+        $compiledjs = $this->jShrink->minify($js);
+
+        $this->assertSame($expectedjs, $compiledjs);
     }
 }

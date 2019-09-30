@@ -21,7 +21,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307 USA
  **/
- 
+
 class CssSweet
 {
     public $modx = null;
@@ -30,7 +30,7 @@ class CssSweet
 
     public function __construct(modX &$modx, array $options = array())
     {
-        $this->modx =& $modx;
+        $this->modx = &$modx;
         $this->namespace = $this->getOption('namespace', $options, 'csssweet');
 
         $corePath = $this->getOption('core_path', $options, $this->modx->getOption('core_path', null, MODX_CORE_PATH) . 'components/csssweet/');
@@ -38,7 +38,7 @@ class CssSweet
         $assetsUrl = $this->getOption('assets_url', $options, $this->modx->getOption('assets_url', null, MODX_ASSETS_URL) . 'components/csssweet/');
         $scssphpPath = $corePath . 'model/csssweet/libs/scssphp/';
         $jshrinkPath = $corePath . 'model/csssweet/libs/jshrink/';
-        
+
         /* load config defaults */
         $this->options = array_merge(array(
             'namespace' => $this->namespace,
@@ -59,7 +59,7 @@ class CssSweet
 
         require_once($this->options['vendorPath'] . 'autoload.php');
     }
-    
+
     /**
      * Do special stuff to init scssphp classes
      *
@@ -67,45 +67,37 @@ class CssSweet
      * @param string $formatter The scssphp formatter class selector. Default 'Expanded'
      * @return object An instance of the $scssphp class.
      */
-    public function scssphpInit($paths=array(), $formatter='Expanded') 
+    public function scssphpInit($paths = array(), $formatter = 'Expanded')
     {
         $scssphp = null;
-        
+
         // Instantiate Compiler
         $scssphp = new ScssPhp\ScssPhp\Compiler();
-		if (!($scssphp instanceof \ScssPhp\ScssPhp\Compiler)) return null;
-        
+        if (!($scssphp instanceof \ScssPhp\ScssPhp\Compiler)) return null;
+
         // Set path
         $scssphp->setImportPaths($paths);
-        
+
         // Set formatter
         $formatter = 'ScssPhp\ScssPhp\Formatter\\' . $formatter;
         // Found this helpful
         $this->modx->log(modX::LOG_LEVEL_INFO, 'Applying scssphp formatter class: ' . $formatter);
-        
+
         $scssphp->setFormatter($formatter);
-        
+
         // Ask and you shall receive
-        return $scssphp; 
-        
+        return $scssphp;
     }
-    
-    public function jshrinkInit() 
+
+    public function jshrinkInit()
     {
-	    
-	    $jshrink = null;
-	    // Grab the JS minifier class
-		$cssSweetjsMinFile = $this->options['jshrinkPath'] . 'Minifier.php';
-	    
-	    if (file_exists($cssSweetjsMinFile)) {
-	        include_once $cssSweetjsMinFile;
-	        $jshrink = new Minifier();
-	    }
-	    if (!($jshrink instanceof Minifier)) return null;
-	    return $jshrink;
-	    
+        $jshrink = null;
+        // Grab the JS minifier class
+        $jshrink = new JShrink\Minifier();
+        if (!($jshrink instanceof \JShrink\Minifier)) return null;
+        return $jshrink;
     }
-    
+
     /**
      * Process and array of chunk (names) with provided $settings
      *
@@ -113,67 +105,64 @@ class CssSweet
      * @param array $settings An array of settings/properties to pass to the chunks.
      * @return string A concatenated string of all processed chunk output.
      */
-    public function processChunks(array $chunks, array $settings) 
+    public function processChunks(array $chunks, array $settings)
     {
-    	// Init var
-	    $contents = '';
-	    foreach ($chunks as $current) {
-	    
-		    $processed = '';
-		    if ($current) {
-		        try {
-		            $this->modx->log(modX::LOG_LEVEL_INFO, 'Processing chunk: ' . $current);
-		            $processed = $this->modx->getChunk($current, $settings);
-		            if ($processed) {
-		                $contents .= $processed;
-		            } else {
-		                $err = '$this->modx->getChunk() failed for chunk: ' . $current;
-		                throw new Exception($err);
-		            }
-		        } catch (Exception $err) {
-		            $this->modx->log(modX::LOG_LEVEL_ERROR, $err->getMessage());
-		        }
-		    } else {
-		        $this->modx->log(modX::LOG_LEVEL_ERROR, 'Failed to get Chunk ' . $current . '. Chunk contents not saved.');
-		    }
-		    
-		}
-		// Even if contents is empty, return it
-		return $contents;
-	    
+        // Init var
+        $contents = '';
+        foreach ($chunks as $current) {
+
+            $processed = '';
+            if ($current) {
+                try {
+                    $this->modx->log(modX::LOG_LEVEL_INFO, 'Processing chunk: ' . $current);
+                    $processed = $this->modx->getChunk($current, $settings);
+                    if ($processed) {
+                        $contents .= $processed;
+                    } else {
+                        $err = '$this->modx->getChunk() failed for chunk: ' . $current;
+                        throw new Exception($err);
+                    }
+                } catch (Exception $err) {
+                    $this->modx->log(modX::LOG_LEVEL_ERROR, $err->getMessage());
+                }
+            } else {
+                $this->modx->log(modX::LOG_LEVEL_ERROR, 'Failed to get Chunk ' . $current . '. Chunk contents not saved.');
+            }
+        }
+        // Even if contents is empty, return it
+        return $contents;
     }
-    
+
     /**
      * Instantiate ClientConfig and include settings
-	 *
+     *
      * @param array $settings An array of settings to merge into.
      * @return array Either the original array or a merged one.
      */
-    public function getClientConfigSettings($settings) 
+    public function getClientConfigSettings($settings)
     {
-    	// Init var
-	    $clientConfig = null;
-	    
-	    // Grab the ClientConfig class
-		$ccPath = $this->modx->getOption('clientconfig.core_path', null, $this->modx->getOption('core_path') . 'components/clientconfig/');
-		$ccPath .= 'model/clientconfig/';
-		if (file_exists($ccPath . 'clientconfig.class.php')) $clientConfig = $this->modx->getService('clientconfig','ClientConfig', $ccPath);
+        // Init var
+        $clientConfig = null;
 
-		// If we got the class (which means it's installed properly), include the settings
-		if ($clientConfig && ($clientConfig instanceof ClientConfig)) {
-		    $ccSettings = $clientConfig->getSettings();
-		    if (is_array($ccSettings)) $settings = array_merge($settings, $ccSettings);
-		} else { 
-		    $this->modx->log(modX::LOG_LEVEL_WARN, 'Failed to load ClientConfig class. ClientConfig settings not included.','','saveCustomCssClientConfig'); 
-		}
-		
-		// Settings may or may not be modified at this point
-		return $settings;
-	    
+        // Grab the ClientConfig class
+        $ccPath = $this->modx->getOption('clientconfig.core_path', null, $this->modx->getOption('core_path') . 'components/clientconfig/');
+        $ccPath .= 'model/clientconfig/';
+        if (file_exists($ccPath . 'clientconfig.class.php')) $clientConfig = $this->modx->getService('clientconfig', 'ClientConfig', $ccPath);
+
+        // If we got the class (which means it's installed properly), include the settings
+        if ($clientConfig && ($clientConfig instanceof ClientConfig)) {
+            $ccSettings = $clientConfig->getSettings();
+            if (is_array($ccSettings)) $settings = array_merge($settings, $ccSettings);
+        } else {
+            $this->modx->log(modX::LOG_LEVEL_WARN, 'Failed to load ClientConfig class. ClientConfig settings not included.', '', 'saveCustomCssClientConfig');
+        }
+
+        // Settings may or may not be modified at this point
+        return $settings;
     }
-    
+
     /* UTILITY METHODS (@theboxer) */
-    
+
     /**
      * Get a local configuration option or a namespaced system setting by key.
      *
@@ -198,8 +187,8 @@ class CssSweet
         return $option;
     }
     /**
-    * Despite the variable name, it takes a string and returns an array
-    */
+     * Despite the variable name, it takes a string and returns an array
+     */
     public function explodeAndClean($array, $delimiter = ',')
     {
         $array = explode($delimiter, $array);     // Explode fields to array
@@ -216,11 +205,10 @@ class CssSweet
             /** @var \modChunk $chunk */
             $chunk = $this->modx->newObject('modChunk', array('name' => 'inline-' . uniqid()));
             $chunk->setCacheable(false);
-            
+
             return $chunk->process($phs, $content);
         }
-        
+
         return $this->modx->getChunk($tpl, $phs);
     }
-
 }
