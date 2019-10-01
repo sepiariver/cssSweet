@@ -9,7 +9,7 @@
  * [[convert? &input=`#333` &options=`rgba`]]
  * 'rgba(51,51,51,1)'
  *
- * [[+inches:convert]]
+ * [[+color:convert]]
  * Where the value of the placeholder is 'rgba(51,51,51,1)'
  * '#333333'
  */

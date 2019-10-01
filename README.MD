@@ -1,25 +1,23 @@
 cssSweet
 =========================================
-Version: 5.1.6-beta1
+Version: 5.2.0-beta1
 
-Author: YJ Tso (@sepiariver) [on Twitter](https://twitter.com/sepiariver)
+Author: YJ Tso [@sepiariver](https://sepiariver.com/modx/)
 
-cssSweet is a suite of tools for processing (S)CSS. It comes with several output modifiers to modify CSS values, and a plugin that concatenates and processes (S)CSS from specified Chunks and outputs to a minified CSS file. version 2+ also concatenates and minifies JS with a 2nd plugin.
+cssSweet is a suite of tools for processing (S)CSS. It comes with several output modifiers to manipulate CSS values, and a plugin that concatenates and processes (S)CSS from specified Chunks and outputs to a minified CSS file. version 2+ also concatenates and minifies JS with a 2nd plugin.
 
-The documentation site is here:
+Find out more about cssSweet [here](https://sepiariver.com/modx/csssweet)
 
-[http://sepiariver.github.io/cssSweet])(http://sepiariver.github.io/cssSweet)
+as well as on the documentation site:
 
-as well as here:
-
-[http://rtfm.modx.com/extras/revo/csssweet](http://rtfm.modx.com/extras/revo/csssweet) **(this one needs updating)**
+[https://docs.modx.org/current/en/extras/csssweet](https://docs.modx.org/current/en/extras/csssweet) **(this one needs updating)**
 
 
 ## Example Use Cases
 - Use system or context settings to store primary colors in a site's color scheme, then process all other color values relative to these, so you can shift the entire color theme by modifying a few settings.
 - Use in conjunction with ClientConfig to give site owners a nice UI to manage CSS styles--but only the ones you expose, and only in the manner you choose!
 - Author MODX "themes" that are customizable by the end user.
-- Use other MODX tags & placeholders in your CSS--limitless possibilities! Utilize "dynamic CSS" without the performance penalty, because the plugin writes the static CSS file on the Manager Clear Cache and Chunk Save actions, not per request.
+- Use other MODX tags & placeholders in your CSS. Utilize "dynamic CSS" without the performance penalty, because the plugin writes the static CSS file on the Manager Clear Cache and Chunk Save actions, not per request.
 - Manage your Sass, CSS, and JS development workflow right from inside the MODX Manager.
 - Add a code editor like Ace, and you can use MODX as your IDE for front-end development.
 
@@ -57,6 +55,8 @@ Doing so will speed up your process immensely, as a new output file will be gene
 
 As of version 4.1, you can also enable the custom `ClientConfig_ConfigChange` event, if you have the ClientConfig Extra installed.
 
+As of version 5.1, an un-tested—and at this time unsupported—feature exists whereby you can enable the `OnDocFormSave` event, at which point saving a Resource with `contentType = text/css` will trigger the Plugin to execute. You still need to configure a Chunk where you include the content of the css Resources via a Snippet of some kind.
+
 ### "Dev" Mode
 As of version 4, the dedicated "dev mode" properties have been removed, and the `dev_mode` Plugin property is a textfield rather than boolean. By entering a (string) namespace, the plugin will use the properties prefixed with `{$namespace}_`, allowing you to process a different set of Chunks, output to a different file, or override any Plugin property.
 
@@ -66,27 +66,32 @@ This allows for multiple workflows and output files. You can use it to build [mo
 
 cssSweet installs with a suite of utility Snippets to manipulate style declarations. See the files in the [Snippets folder](https://github.com/sepiariver/cssSweet/tree/master/core/components/csssweet/elements/snippets) for more detailed usage examples. As of version 5.x, the Snippets use `ozdemirburak/iris` for color manipulation.
 
-- csssweet.convert: Convert color values to different formats.
-- csssweet.lighten: Lighten or darken a color value, in a variety of formats.
+- csssweet.convert: Convert color values to any other supported format.
+- csssweet.extract: Extract channel values, from any supported format.
+- csssweet.lighten: Lighten or darken a color value, in any supported format.
 - csssweet.modval: Modifies the numeric value in a string.
 - csssweet.prefix: Naively adds vendor prefixes to a string.
-- csssweet.saturate: Saturate or desaturate a color value.
+- csssweet.saturate: Saturate or desaturate a color value, in any supported format.
 
-## Potentially Breaking Changes (especially when upgrading from version 1.x)
-The utmost care has been taken to ensure that upgrades of cssSweet are as safe as possible. However, there are a few scenarios that could potentially break an existing site, especially when you upgrade cssSweet from version 1 to version 2+. Hopefully the following points will help you avoid those:
+## Potentially Breaking Changes (especially when upgrading from version 1.x or to 5.x)
+The utmost care has been taken to ensure that upgrades of cssSweet are as safe as possible. However, there are a few scenarios that could potentially break an existing site.
 
-1. **The default property set.** I haven't found a way to update the saveCustomCss plugin without overwriting the default property set. If you've customized the default property set, I recommend moving your custom properties to a custom property set.
-2. **Some property keys have changed.** Most notably, `custom_css_chunk` is now `custom_scss_chunks` to more accurately describe the plugin's actions. Ensure that after upgrading, your CSS Chunk names are listed in the new property, rather than the old one. I figured a major version upgrade is the most opportune time to change property keys.
-3. **The sample Chunk has a different name.** This served 2 purposes: to demonstrate the scss syntax compatibility, and prevent overwriting the default Chunk on upgrade, because some users (including myself) erroneously customized the default Chunk without changing its name. As with any MODX Extra that installs Chunks, it's highly recommended that you create new Chunks or rename the sample Chunk. That said, the cssSweet 2.x packages have been authored to *not* overwrite existing Chunks (with the help of @TheBoxer 's GitPackageManagement component), but I've tested this minimally.
+Version 5.x changes the behaviour of the included Snippets significantly. The new Snippets install with new names, so your existing implementation should continue to work, but it's worth experimenting with the new Snippets to see how the output compares. There _should_ be no drastic, breaking effects.
+
+If you have a legacy installation, upgrading from **version 1** to a later version, the following points should help you avoid any major issues:
+
+1. **The default property set.** It's an established pattern that updating an Element in MODX also updates its default property set. If you've customized the default property set of the cssSweet Plugins, you must move your custom properties to a custom property set, in order to preserve them.
+2. **Some property keys have changed.** Most notably, `custom_css_chunk` is now `custom_scss_chunks` to more accurately describe the plugin's actions. Ensure that after upgrading, your CSS Chunk names are listed in the new property, rather than the old one.
+3. **The sample Chunk has a different name.** This served 2 purposes: to demonstrate the scss syntax compatibility, and prevent overwriting the default Chunk on upgrade, because some users (including myself) erroneously customized the default Chunk without changing its name. As with any MODX Extra that installs Chunks, it's highly recommended that you create new Chunks or rename the sample Chunk. That said, the cssSweet 2.x packages have been authored to *not* overwrite existing Chunks (with the help of @TheBoxer 's GitPackageManagement component), but this remains minimally tested.
 4. **The default output filename has changed.** In an effort to prevent overwriting your existing compiled CSS before you've had a chance to set the properties correctly, I've changed the default CSS output filename. However, if by sheer chance, you had previously customized your output filename to `custom_css.min.css`, then the saveCustomCss plugin will overwrite it by default! In this (probably rare) case, _*make sure*_ to setup the plugin properties correctly before executing the plugin.
-5. **"Pre-process tags in Property Values."** This checkbox gets disabled on upgrades. If you're using MODX placeholder tags in your properties, then be sure to enable this again.
+5. **"Pre-process tags in Property Values."** This checkbox gets disabled on upgrades. If you're using MODX placeholder tags in your properties, then be sure to enable this again. In version 5.x this _should_ be preserved on upgrade.
 6. **In version 4, the "dev_mode" property keys have been removed from the default property set.** They're no longer relevant, unless you set the `dev_mode` property to the namespace "dev", but you can set the namespace to whatever you want.
 
 ## Thanks
 A lot of time, research and consideration was put into which libraries should be included in this package, for the minification functions. I whole-heartedly support these fine developers and their open-source projects. Please extend your thanks to these folks, if you find cssSsweet useful (or even if you don't :P)
 
-[@scssphp/scssphp] (https://github.com/scssphp/scssphp)
+[@scssphp/scssphp](https://github.com/scssphp/scssphp)
 
-[@tedious/Jshrink] (https://github.com/tedious/JShrink)
+[@tedious/Jshrink](https://github.com/tedious/JShrink)
 
 [@ozdemirburak/iris](https://github.com/ozdemirburak/iris)

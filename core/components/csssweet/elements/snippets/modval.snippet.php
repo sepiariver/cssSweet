@@ -9,9 +9,9 @@
  * [[modval?input=`4px`&options=`*3`]]
  * '12px'
  *
- * [[+inches:modval=`/2`]]
+ * [[+color:modval=`/2`]]
  * Where the value of the placeholder is '18 inches'
- * '9 inches'
+ * '9inches'
  */
 
 // Get values

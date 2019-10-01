@@ -8,7 +8,7 @@
  * [[saturate? &input=`#80e61a` &options=`20`]]
  * '#80ff00'
  *
- * [[+inches:saturate=`-20`]]
+ * [[+color:saturate=`-20`]]
  * Where the value of the placeholder is 'rgb(128,230,26)'
  * 'rgb(128,204,51)'
  */
