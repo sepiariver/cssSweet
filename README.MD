@@ -6,7 +6,7 @@ Author: YJ Tso [@sepiariver](https://sepiariver.com/modx/)
 
 cssSweet is a suite of tools for processing (S)CSS. It comes with several output modifiers to manipulate CSS values, and a plugin that concatenates and processes (S)CSS from specified Chunks and outputs to a minified CSS file. version 2+ also concatenates and minifies JS with a 2nd plugin.
 
-Find out more about cssSweet [here](https://sepiariver.com/modx/csssweet)
+Find out more about cssSweet [here](https://sepiariver.com/modx/tags/csssweet/)
 
 as well as on the documentation site:
 
