@@ -1,5 +1,5 @@
 ++++++++++++++++++++++++++++++++
-++   cssSweet 5.1.1-beta1     ++
+++   cssSweet 5.1.6-beta1     ++
 ++   Released on 2019-10-01   ++
 ++++++++++++++++++++++++++++++++
 Update scssphp to 1.0.4
@@ -8,6 +8,7 @@ Composer, phpunit
 Use ozdemirburak/iris for color manipulation
 Upgrade and add new Snippets
 Code organization and cleanup
+Better upgrade experience
 
 ++++++++++++++++++++++++++++++++
 ++   cssSweet 4.2.0-rc3       ++

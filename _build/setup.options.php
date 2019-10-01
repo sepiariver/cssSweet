@@ -32,7 +32,7 @@ HTML;
         foreach ($modx->query($sql) as $row) {
             $plugins[] = $row;
         }
-        $modx->cacheManager->set('csssweet-setup-plugin_properties', $plugins, 300);
+        $modx->cacheManager->set('csssweet-setup-plugin_properties', $plugins, 300, [xPDO::OPT_CACHE_KEY => 'csssweet-setup']);
         break;
     default:
     case xPDOTransport::ACTION_UNINSTALL:

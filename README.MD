@@ -1,6 +1,6 @@
 cssSweet
 =========================================
-Version: 5.1.1-beta1
+Version: 5.1.6-beta1
 
 Author: YJ Tso (@sepiariver) [on Twitter](https://twitter.com/sepiariver)
 
