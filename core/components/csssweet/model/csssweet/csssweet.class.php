@@ -401,6 +401,10 @@ class CssSweet
             return [];
         }
         $mode = (string) $mode;
+        if (empty($mode)) {
+            // Nothing to do
+            return $properties;
+        }
         // Override properties with mode props
         foreach ($properties as $key => $val) {
             // skip any mode props
