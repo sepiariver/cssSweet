@@ -35,7 +35,7 @@ Once installed, you'll have a default Chunk in the "cssSweet" category. If you e
 **Note: it's highly recommended to create new Chunks with unique names. As of version 2.x, the cssSweet package has been configured to _not_ update an existing Chunk with the same name, but I haven't tested that thoroughly yet. I'd hate for it to fail in your production environment.**
 
 Reference the generated CSS file in your template, like this
-`<link rel="stylesheet" href="[[++assets_path]]components/csssweet/custom_css.min.css">`
+`<link rel="stylesheet" href="[[++assets_url]]components/csssweet/custom_css.min.css">`
 and you'll be good to go.
 
 ### Customization
