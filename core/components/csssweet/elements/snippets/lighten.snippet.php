@@ -1,11 +1,12 @@
 <?php
-/* 
+
+/*
  * lighten
  *
- * Output modifier that accepts a color value in any supported format and 
- * percentage (+ or -) option. 
+ * Output modifier that accepts a color value in any supported format and
+ * percentage (+ or -) option.
  * Additionally, 'max' or 'rev' can be set, with or without a percentage,
- * translating into a tint or shade. 
+ * translating into a tint or shade.
  *
  * Examples:
  * [[+color:lighten=`20`]]
@@ -22,21 +23,24 @@
  * This would tint or shade the $input color by 60%
  * (so the result would be more of a medium gray)
  *
- * Variables other than $options must be set in snippet properties tab if 
+ * Variables other than $options must be set in snippet properties tab if
  * used as output modifier.
  *
  */
 
 // Get values
-if (empty($input)) return '';
+if (empty($input)) {
+    return '';
+}
 $input = trim($input);
 $options = isset($options) ? $options : '0';
-
 // Grab the cssSweet class
 $csssweet = null;
 $cssSweetPath = $modx->getOption('csssweet.core_path', null, $modx->getOption('core_path') . 'components/csssweet/');
 $cssSweetPath .= 'model/csssweet/';
-if (file_exists($cssSweetPath . 'csssweet.class.php')) $csssweet = $modx->getService('csssweet', 'CssSweet', $cssSweetPath);
+if (file_exists($cssSweetPath . 'csssweet.class.php')) {
+    $csssweet = $modx->getService('csssweet', 'CssSweet', $cssSweetPath);
+}
 if (!$csssweet || !($csssweet instanceof CssSweet)) {
     $modx->log(modX::LOG_LEVEL_ERROR, '[cssSweet.lighten] could not load the required csssweet class!');
     return '';

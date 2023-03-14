@@ -1,38 +1,33 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f88d41760899b8add42200709dc8c44d",
+    "content-hash": "f4d3ff5f6728b5101a39b0a78a9258e6",
     "packages": [
         {
             "name": "ozdemirburak/iris",
-            "version": "1.2.1",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ozdemirburak/iris.git",
-                "reference": "a100a217eb7fa7975069f02a0f9e1625610f2f00"
+                "reference": "239707401e09b9bab2baf3383343a8b9dea745db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ozdemirburak/iris/zipball/a100a217eb7fa7975069f02a0f9e1625610f2f00",
-                "reference": "a100a217eb7fa7975069f02a0f9e1625610f2f00",
+                "url": "https://api.github.com/repos/ozdemirburak/iris/zipball/239707401e09b9bab2baf3383343a8b9dea745db",
+                "reference": "239707401e09b9bab2baf3383343a8b9dea745db",
                 "shasum": ""
             },
             "require": {
-                "php": "~5.6|~7.0"
+                "php": "^7.3|^8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~5.0|~6.0",
-                "squizlabs/php_codesniffer": "~2.3"
+                "phpunit/phpunit": "~8.0|~9.0",
+                "squizlabs/php_codesniffer": "~3.5"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "OzdemirBurak\\Iris\\": "src"
@@ -45,8 +40,7 @@
             "authors": [
                 {
                     "name": "Burak Özdemir",
-                    "email": "mail@burakozdemir.co.uk",
-                    "homepage": "https://burakozdemir.co.uk"
+                    "homepage": "https://ozdemirburak.com"
                 }
             ],
             "description": "PHP library for color manipulation and conversion.",
@@ -55,6 +49,7 @@
                 "color",
                 "conversion",
                 "hex",
+                "hexa",
                 "hsl",
                 "hsla",
                 "hsv",
@@ -63,20 +58,24 @@
                 "rgba",
                 "transformation"
             ],
-            "time": "2018-10-07T23:02:25+00:00"
+            "support": {
+                "issues": "https://github.com/ozdemirburak/iris/issues",
+                "source": "https://github.com/ozdemirburak/iris/tree/2.5.0"
+            },
+            "time": "2022-02-13T20:50:58+00:00"
         },
         {
             "name": "scssphp/scssphp",
-            "version": "1.0.4",
+            "version": "v1.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scssphp/scssphp.git",
-                "reference": "7c292c66db52ede3afbfd6566c8872f3c5b32267"
+                "reference": "33749d12c2569bb24071f94e9af828662dabb068"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scssphp/scssphp/zipball/7c292c66db52ede3afbfd6566c8872f3c5b32267",
-                "reference": "7c292c66db52ede3afbfd6566c8872f3c5b32267",
+                "url": "https://api.github.com/repos/scssphp/scssphp/zipball/33749d12c2569bb24071f94e9af828662dabb068",
+                "reference": "33749d12c2569bb24071f94e9af828662dabb068",
                 "shasum": ""
             },
             "require": {
@@ -85,15 +84,30 @@
                 "php": ">=5.6.0"
             },
             "require-dev": {
-                "phpunit/phpunit": ">=4.8.36",
-                "squizlabs/php_codesniffer": "~2.5",
-                "twbs/bootstrap": "~4.3",
+                "bamarni/composer-bin-plugin": "^1.4",
+                "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5 || ^8.3 || ^9.4",
+                "sass/sass-spec": "*",
+                "squizlabs/php_codesniffer": "~3.5",
+                "symfony/phpunit-bridge": "^5.1",
+                "thoughtbot/bourbon": "^7.0",
+                "twbs/bootstrap": "~5.0",
+                "twbs/bootstrap4": "4.6.1",
                 "zurb/foundation": "~6.5"
+            },
+            "suggest": {
+                "ext-iconv": "Can be used as fallback when ext-mbstring is not available",
+                "ext-mbstring": "For best performance, mbstring should be installed as it is faster than ext-iconv"
             },
             "bin": [
                 "bin/pscss"
             ],
             "type": "library",
+            "extra": {
+                "bamarni-bin": {
+                    "forward-command": false,
+                    "bin-links": false
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "ScssPhp\\ScssPhp\\": "src/"
@@ -124,29 +138,33 @@
                 "scss",
                 "stylesheet"
             ],
-            "time": "2019-09-06T16:48:49+00:00"
+            "support": {
+                "issues": "https://github.com/scssphp/scssphp/issues",
+                "source": "https://github.com/scssphp/scssphp/tree/v1.11.0"
+            },
+            "time": "2022-09-02T21:24:55+00:00"
         },
         {
             "name": "tedivm/jshrink",
-            "version": "v1.3.3",
+            "version": "v1.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tedious/JShrink.git",
-                "reference": "566e0c731ba4e372be2de429ef7d54f4faf4477a"
+                "reference": "aa786b10f012fc0e15b5147c22bdb8c765fac76a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tedious/JShrink/zipball/566e0c731ba4e372be2de429ef7d54f4faf4477a",
-                "reference": "566e0c731ba4e372be2de429ef7d54f4faf4477a",
+                "url": "https://api.github.com/repos/tedious/JShrink/zipball/aa786b10f012fc0e15b5147c22bdb8c765fac76a",
+                "reference": "aa786b10f012fc0e15b5147c22bdb8c765fac76a",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.6|^7.0"
+                "php": "^7.0|^8.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.8",
-                "php-coveralls/php-coveralls": "^1.1.0",
-                "phpunit/phpunit": "^6"
+                "friendsofphp/php-cs-fixer": "^3.14",
+                "php-coveralls/php-coveralls": "^2.5.0",
+                "phpunit/phpunit": "^9|^10"
             },
             "type": "library",
             "autoload": {
@@ -170,7 +188,21 @@
                 "javascript",
                 "minifier"
             ],
-            "time": "2019-06-28T18:11:46+00:00"
+            "support": {
+                "issues": "https://github.com/tedious/JShrink/issues",
+                "source": "https://github.com/tedious/JShrink/tree/v1.6.5"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/tedivm",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/tedivm/jshrink",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2023-03-12T15:19:34+00:00"
         }
     ],
     "packages-dev": [],
@@ -180,5 +212,9 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
-    "platform-dev": []
+    "platform-dev": [],
+    "platform-overrides": {
+        "php": "7.4"
+    },
+    "plugin-api-version": "2.2.0"
 }

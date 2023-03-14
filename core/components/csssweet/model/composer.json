@@ -1,7 +1,12 @@
 {
     "require": {
-        "scssphp/scssphp": "1.0.4",
-        "tedivm/jshrink": "1.3.3",
-        "ozdemirburak/iris": "1.2.1"
+        "scssphp/scssphp": "^1.11",
+        "tedivm/jshrink": "^1.6",
+        "ozdemirburak/iris": "^2.5"
+    },
+    "config": {
+        "platform": {
+            "php": "7.4"
+        }
     }
 }

@@ -3,11 +3,9 @@ config.core.php
 .idea
 .settings
 .project
-_packages/*.*
-!_packages/.gitignore
-!_packages/*.zip
+_packages
 *.debug.php
-/test/vendor/
+vendor
 /test/.phpunit.*
 /test/config.core.php
 /test/output/

@@ -11,17 +11,24 @@ $s = array(
 $settings = array();
 
 foreach ($s as $key => $value) {
-    if (is_string($value) || is_int($value)) { $type = 'textfield'; }
-    elseif (is_bool($value)) { $type = 'combo-boolean'; }
-    else { $type = 'textfield'; }
+    if (is_string($value) || is_int($value)) {
+        $type = 'textfield';
+    } elseif (is_bool($value)) {
+        $type = 'combo-boolean';
+    } else {
+        $type = 'textfield';
+    }
 
-    $parts = explode('.',$key);
-    if (count($parts) == 1) { $area = 'Default'; }
-    else { $area = $parts[0]; }
-    
-    $settings['csss.'.$key] = $modx->newObject('modSystemSetting');
-    $settings['csss.'.$key]->set('key', 'csss.'.$key);
-    $settings['csss.'.$key]->fromArray(array(
+    $parts = explode('.', $key);
+    if (count($parts) == 1) {
+        $area = 'Default';
+    } else {
+        $area = $parts[0];
+    }
+
+    $settings['csss.' . $key] = $modx->newObject('modSystemSetting');
+    $settings['csss.' . $key]->set('key', 'csss.' . $key);
+    $settings['csss.' . $key]->fromArray(array(
         'value' => $value,
         'xtype' => $type,
         'namespace' => 'cssSweet',

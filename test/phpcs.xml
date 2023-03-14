@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<ruleset name="PHP_Compatibility_Standards">
+    <description>PHP Compatibility Standards</description>
+    <file>../core</file>
+    <file>../assets</file>
+    <file>../_build</file>
+
+    <!-- Ignore everything but errors. -->
+    <arg value="n" />
+
+    <!-- Set the basepath to the current directory -->
+    <arg name="basepath" value="../"/>
+
+    <!-- Set report -->
+    <arg name="report-file" value="./output/phpcs.txt"/>
+
+    <!-- Ignore vendor files -->
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+
+    <!-- Our base rule: set to PHPCompatibility-->
+    <rule ref="PHPCompatibility"/>
+    <rule ref="PSR12"/>
+</ruleset>
