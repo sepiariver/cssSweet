@@ -4,6 +4,11 @@
         "tedivm/jshrink": "^1.6",
         "ozdemirburak/iris": "^2.5"
     },
+    "autoload": {
+        "psr-4": {
+            "CssSweet\\": "src/"
+        }
+    },
     "config": {
         "platform": {
             "php": "7.4"

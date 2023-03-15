@@ -27,23 +27,16 @@
  * used as output modifier.
  *
  */
-
-// Get values
-if (empty($input)) {
-    return '';
-}
-$input = trim($input);
-$options = isset($options) ? $options : '0';
 // Grab the cssSweet class
-$csssweet = null;
 $cssSweetPath = $modx->getOption('csssweet.core_path', null, $modx->getOption('core_path') . 'components/csssweet/');
 $cssSweetPath .= 'model/csssweet/';
-if (file_exists($cssSweetPath . 'csssweet.class.php')) {
-    $csssweet = $modx->getService('csssweet', 'CssSweet', $cssSweetPath);
-}
+$csssweet = $modx->getService('csssweet', 'CssSweet', $cssSweetPath);
 if (!$csssweet || !($csssweet instanceof CssSweet)) {
-    $modx->log(modX::LOG_LEVEL_ERROR, '[cssSweet.lighten] could not load the required csssweet class!');
+    $modx->log(modX::LOG_LEVEL_ERROR, '[cssSweet.convert] could not load the required csssweet class!');
     return '';
 }
 
-return $csssweet->lightening($input, $options);
+return (new \CssSweet\v2\Snippet\Lighten($csssweet, [
+    'input' => $input,
+    'options' => $options,
+]))->process();

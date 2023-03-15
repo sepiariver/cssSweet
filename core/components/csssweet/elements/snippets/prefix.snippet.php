@@ -19,30 +19,16 @@
  * -o-transition: all 300ms ease;
  * transition: all 300ms ease;
  */
-
-// Get input
-$input = isset($input) ? $input : '';
-// If $to property is set, use that instead
-$input = (isset($to)) ? $to : $input;
-// Check it
-if (empty($input)) {
-    return;
+// Grab the cssSweet class
+$cssSweetPath = $modx->getOption('csssweet.core_path', null, $modx->getOption('core_path') . 'components/csssweet/');
+$cssSweetPath .= 'model/csssweet/';
+$csssweet = $modx->getService('csssweet', 'CssSweet', $cssSweetPath);
+if (!$csssweet || !($csssweet instanceof CssSweet)) {
+    $modx->log(modX::LOG_LEVEL_ERROR, '[cssSweet.convert] could not load the required csssweet class!');
+    return '';
 }
 
-// Get options and defaults
-$options = isset($options) ? $options : 'webkit,moz';
-if ($options === 'all') {
-    $options = 'webkit,moz,ms,o';
-}
-
-// Which prefix?
-$prefixes = ['webkit', 'moz', 'ms', 'o'];
-$output = '';
-$selects = explode(',', $options);
-foreach ($selects as $select) {
-    if (in_array($select, $prefixes)) {
-        $output .= "-$select-$input" . PHP_EOL;
-    }
-}
-$output .= $input;
-return $output;
+return (new \CssSweet\v2\Snippet\Prefix($csssweet, [
+    'input' => $input,
+    'options' => $options,
+]))->process();

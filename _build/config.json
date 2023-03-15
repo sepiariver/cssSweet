@@ -35,9 +35,12 @@
             "plugins": [
                 {
                     "name": "saveCustomCss",
+                    "file": "saveCustomCss.plugin.php",
                     "events": [
                         "OnSiteRefresh",
-                        "OnChunkFormSave"
+                        "OnChunkFormSave",
+                        "OnDocFormSave",
+                        "ClientConfig_ConfigChange"
                     ],
                     "properties": [
                         {
@@ -103,9 +106,12 @@
                 },
                 {
                     "name": "saveCustomJs",
+                    "file": "saveCustomJs.plugin.php",
                     "events": [
                         "OnSiteRefresh",
-                        "OnChunkFormSave"
+                        "OnChunkFormSave",
+                        "OnDocFormSave",
+                        "ClientConfig_ConfigChange"
                     ],
                     "properties": [
                         {

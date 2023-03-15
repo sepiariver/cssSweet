@@ -1,5 +1,9 @@
 <?php
 
+use JShrink\Minifier;
+use OzdemirBurak\Iris\Exceptions\InvalidColorException;
+use ScssPhp\ScssPhp\Compiler;
+
 /**
  * CssSweet wrapper class
  * @package cssSweet
@@ -54,7 +58,7 @@ class CssSweet
             'namespace' => $this->namespace,
             'corePath' => $corePath,
             'modelPath' => $corePath . 'model/',
-            'vendorPath' => $corePath . 'model/vendor/',
+            'vendorPath' => $corePath . 'vendor/',
             'chunksPath' => $corePath . 'elements/chunks/',
             'snippetsPath' => $corePath . 'elements/snippets/',
             'templatesPath' => $corePath . 'templates/',
@@ -78,13 +82,10 @@ class CssSweet
     public function scssphpInit(array $paths = array(), string $formatter = 'expanded')
     {
         // Instantiate Compiler
-        $scssphp = new ScssPhp\ScssPhp\Compiler();
+        $scssphp = new Compiler();
 
         // Set path
         $scssphp->setImportPaths($paths);
-
-        // Set formatter
-        $formatter = '\\ScssPhp\\ScssPhp\\Formatter\\' . $formatter;
         // Found this helpful
         $this->modx->log(modX::LOG_LEVEL_INFO, 'Applying scssphp formatter class: ' . $formatter);
 
@@ -94,10 +95,10 @@ class CssSweet
         return $scssphp;
     }
 
-    public function jshrinkInit(): \JShrink\Minifier
+    public function jshrinkInit(): Minifier
     {
         // Grab the JS minifier class
-        return new JShrink\Minifier();
+        return new Minifier();
     }
 
     public function getIris(string $value, $format = 'hex')
@@ -220,7 +221,7 @@ class CssSweet
         if ($format) {
             try {
                 $color = $this->getIris($input, $format);
-            } catch (\OzdemirBurak\Iris\Exceptions\InvalidColorException $e) {
+            } catch (InvalidColorException $e) {
                 $this->modx->log(
                     modX::LOG_LEVEL_ERROR,
                     '[cssSweet.lighten] InvalidColorException: ' . $e->getMessage()
@@ -233,243 +234,6 @@ class CssSweet
             'unHash' => $unHash,
             'color' => $color,
         ];
-    }
-
-    public function lightening($input, $options)
-    {
-        // Set color class
-        $cc = $this->getColorClass($input);
-        if (!$cc['color']) {
-            return '';
-        }
-        $format = $cc['format'];
-        $unHash = $cc['unHash'];
-        $color = $cc['color'];
-
-        // Set additional options
-        preg_match('/(max)/', $options, $max);
-        preg_match('/(rev)/', $options, $rev);
-        $options = preg_replace('/[^0-9-]/', '', $options);
-
-        // Light vs Dark
-        $darkInput = $color->isDark();
-        $lightInput = $color->isLight();
-
-        // Shortcuts if using 'max' or 'rev' without percentage
-        if (!$options) {
-            // Default to 0 if no options percentage provided
-            $perc = 0;
-            $neg = false;
-            // Set max/rev outputs
-            $wht = ($unHash) ? 'ffffff' : '#ffffff';
-            $blk = ($unHash) ? '000000' : '#000000';
-            // Return for max/rev
-            if ($max) {
-                if ($lightInput) {
-                    return $wht;
-                }
-                if ($darkInput) {
-                    return $blk;
-                }
-            }
-            if ($rev) {
-                if ($lightInput) {
-                    return $blk;
-                }
-                if ($darkInput) {
-                    return $wht;
-                }
-            }
-        } else {
-            // If ($options) process percentage
-            $perc = (intval($options, 10) / 100);
-            $neg = ($perc <= 0);
-            $perc = min(abs($perc), 1) * 100;
-            // Set max/rev outputs
-            $wht = $color->tint($perc);
-            $blk = $color->shade($perc);
-            // Return for max/rev
-            if ($max) {
-                if ($lightInput) {
-                    return $wht;
-                }
-                if ($darkInput) {
-                    return $blk;
-                }
-            }
-            if ($rev) {
-                if ($lightInput) {
-                    return $blk;
-                }
-                if ($darkInput) {
-                    return $wht;
-                }
-            }
-        }
-
-        // Lighten or darken the input
-        $result = ($neg) ? $color->darken($perc) : $color->lighten($perc);
-
-        // return processed hex color value
-        if ($unHash && (strpos($result, '#') === 0)) {
-            $result = substr($result, 1);
-        }
-
-        return $result;
-    }
-
-    public function modifying($input, $options)
-    {
-        // Get input: grab the first float in the string, then clean it for the unit
-        $inputValue = floatval(trim($input));
-        $unit = preg_replace('/[^a-zA-Z]/', '', trim($input, $inputValue));
-
-        // Get options: operators go in an array, extract remaining float
-        if (empty($options)) {
-            return $inputValue . $unit;
-        }
-        preg_match('/[\+\-\*\/]/', $options, $op);
-        $options = preg_replace('/[\+\-\*\/]/', '', $options);
-        $optionValue = floatval(trim($options));
-
-        // Only first operator
-        $op = (empty($op[0])) ? '+' : $op[0];
-
-        // Simple math only
-        switch ($op) {
-            case '-':
-                $val = $inputValue - $optionValue;
-                break;
-            case '*':
-                $val = $inputValue * $optionValue;
-                break;
-            case '/':
-                $val = $inputValue / $optionValue;
-                break;
-            case '+':
-            default:
-                $val = $inputValue + $optionValue;
-                break;
-        }
-
-        // Results
-        return $val . $unit;
-    }
-
-    public function converting($input, $options = '')
-    {
-        // Set color class
-        $cc = $this->getColorClass(trim($input));
-        if (!$cc['color']) {
-            return '';
-        }
-        $format = $cc['format'];
-        $color = $cc['color'];
-
-        // Clean options
-        $options = ucfirst(strtolower(trim($options)));
-        if (empty($options) || $options === $format) {
-            return $color;
-        }
-
-        // Convert
-        switch ($options) {
-            case 'Rgb':
-                return $color->toRgb();
-                break;
-            case 'Rgba':
-                return $color->toRgba();
-                break;
-            case 'Hsl':
-                return $color->toHsl();
-                break;
-            case 'Hsla':
-                return $color->toHsla();
-                break;
-            case 'Hsv':
-                return $color->toHsv();
-                break;
-            case 'Hex':
-            default:
-                return $color->toHex();
-                break;
-        }
-    }
-
-    public function saturating($input, $options)
-    {
-        // Set color class
-        $cc = $this->getColorClass($input);
-        if (!$cc['color']) {
-            return '';
-        }
-        $format = $cc['format'];
-        $unHash = $cc['unHash'];
-        $color = $cc['color'];
-
-        // Clean options
-        if (empty($options)) {
-            return $color;
-        }
-
-        // Saturate
-        $perc = intval($options);
-        $result = ($perc >= 0) ? $color->saturate($perc) : $color->desaturate(abs($perc));
-
-        // return processed hex color value
-        if ($unHash && (strpos($result, '#') === 0)) {
-            $result = substr($result, 1);
-        }
-
-        return $result;
-    }
-
-    public function extracting($input, $options)
-    {
-        // Set color class
-        $cc = $this->getColorClass($input);
-        if (!$cc['color']) {
-            return '';
-        }
-        $color = $cc['color'];
-
-        // Channel map
-        $channels = [
-            'red' => 0,
-            'green' => 1,
-            'blue' => 2,
-            'alpha' => 3,
-            'r' => 0,
-            'g' => 1,
-            'b' => 2,
-            'a' => 3,
-            '0' => 0,
-            '1' => 1,
-            '2' => 2,
-            '3' => 3,
-            'hue' => 0,
-            'saturation' => 1,
-            'lightness' => 2,
-            'value' => 2,
-            'h' => 0,
-            's' => 1,
-            'l' => 2,
-            'v' => 2
-        ];
-
-        // Clean options
-        // Harder to troubleshoot if a color is returned here?
-        if (empty($options)) {
-            return '';
-        }
-        $o = (string) trim($options);
-        if (!isset($channels[$o])) {
-            return '';
-        }
-
-        $i = $channels[$o];
-        $values =  $color->values();
-        return $values[$i];
     }
 
     public function getProperties($properties, $mode)
