@@ -45,18 +45,18 @@ trait CSS
 
         // Optionally choose an output format if not minified
         $css_output_format = $this->modx->getOption('css_output_format', $properties, 'Expanded');
-        $css_output_format_options = array('Expanded', 'Nested', 'Compact');
+        $css_output_format_options = array('Expanded', 'expanded', 'Compressed', 'compressed');
         if (!in_array($css_output_format, $css_output_format_options)) {
             $css_output_format = 'Expanded';
         }
 
         // Optionally minify the output, defaults to 'true'
         $minify_custom_css = (bool) $this->modx->getOption('minify_custom_css', $properties, true);
-        $css_output_format = ($minify_custom_css) ? 'Compressed' : $css_output_format;
+        $css_output_format = ($minify_custom_css) ? 'compressed' : $css_output_format;
 
         // Strip CSS comment blocks; defaults to 'false'
         $strip_comments = (bool) $this->modx->getOption('strip_css_comment_blocks', $properties, false);
-        $css_output_format = ($minify_custom_css && $strip_comments) ? 'Crunched' : $css_output_format;
+        $css_output_format = ($minify_custom_css && $strip_comments) ? 'compressed' : $css_output_format;
 
         // Optionally set base_path for scss imports
         $scss_import_paths = $this->modx->getOption('scss_import_paths', $properties, '');
@@ -135,7 +135,7 @@ trait CSS
         }
 
         // If we failed scss and minification at least output what we have
-        file_put_contents($file, $contents);
+        file_put_contents($file, $contents->getCss());
         if (file_exists($file) && is_readable($file)) {
             $this->modx->log(
                 \modX::LOG_LEVEL_INFO,

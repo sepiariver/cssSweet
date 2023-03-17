@@ -12,6 +12,9 @@ abstract class Event
     /** @var array */
     protected $sp = [];
 
+    /** @var bool */
+    protected bool $debug = false;
+
     public function __construct(\CssSweet $cs, array $scriptProperties)
     {
         $this->cs =& $cs;

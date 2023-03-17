@@ -155,7 +155,7 @@ class CssSweet
      * @param array $settings An array of settings to merge into.
      * @return array Either the original array or a merged one.
      */
-    public function getClientConfigSettings($settings)
+    public function getClientConfigSettings($settings): array
     {
         // Init var
         $clientConfig = null;

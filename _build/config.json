@@ -97,7 +97,7 @@
                         },
                         {
                             "name": "css_output_format",
-                            "description": "Choose either 'Expanded' (default), 'Nested' or 'Compact' CSS output, IF minification is DISABLED.",
+                            "description": "Choose either 'Expanded' (default), 'Compressed' CSS output, IF minification is DISABLED.",
                             "type": "textfield",
                             "value": "Expanded",
                             "area": "SCSS and Minification"
