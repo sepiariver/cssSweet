@@ -3,8 +3,7 @@
 switch ($options[xPDOTransport::PACKAGE_ACTION]) {
     case xPDOTransport::ACTION_INSTALL:
     case xPDOTransport::ACTION_UPGRADE:
-
-$output = <<<HTML
+        $output = <<<HTML
 <div id="moTrig" onmouseover="Ext.getCmp('package-setupoptions-install-btn').disable(); document.getElementById('moTrig').removeAttribute('style');" style="position:absolute;top:-100px;bottom:-100px;left:-100px;right:-100px;z-index:1000;"></div><!--/onmouseover-->
 <div>
     <input type="checkbox" name="csssweet_attempt_restore_plugin_process_property" id="csssweet_attempt_restore_plugin_process_property">
