@@ -1,5 +1,4 @@
 <?php
-
 /**
  * saveCustomJs
  * @author @sepiariver
@@ -46,4 +45,3 @@ if (class_exists($pluginClass)) {
 } else {
     $modx->log(modX::LOG_LEVEL_ERROR, "[SaveCustomCss] Class {$pluginClass} not found");
 }
-

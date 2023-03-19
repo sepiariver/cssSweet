@@ -1,6 +1,7 @@
 <?php
 
 use JShrink\Minifier;
+use OzdemirBurak\Iris\BaseColor;
 use OzdemirBurak\Iris\Exceptions\InvalidColorException;
 use ScssPhp\ScssPhp\Compiler;
 
@@ -101,7 +102,7 @@ class CssSweet
         return new Minifier();
     }
 
-    public function getIris(string $value, $format = 'hex')
+    public function getIris(string $value, $format = 'hex'): ?BaseColor
     {
         // Set format class
         $format = '\\OzdemirBurak\\Iris\\Color\\' . ucfirst(strtolower($format));
@@ -214,7 +215,7 @@ class CssSweet
             $input = '#' . $input;
             $unHash = true;
         } else {
-            $this->modx->log(modX::LOG_LEVEL_ERROR, '[cssSweet.lighten] unsupported color format: ' . $input);
+            $this->modx->log(modX::LOG_LEVEL_ERROR, '[cssSweet.getColorClass] unsupported color format: ' . $input);
         }
 
         // Instantiate iris color class
@@ -224,7 +225,7 @@ class CssSweet
             } catch (InvalidColorException $e) {
                 $this->modx->log(
                     modX::LOG_LEVEL_ERROR,
-                    '[cssSweet.lighten] InvalidColorException: ' . $e->getMessage()
+                    '[cssSweet.getColorClass] InvalidColorException: ' . $e->getMessage()
                 );
             }
         }
@@ -289,6 +290,47 @@ class CssSweet
                 'message' => 'Using output directory ' . $path,
             ];
         }
+    }
+
+    /* For testing and backwards compatibility */
+    public function converting($input, $options = '')
+    {
+        return (new \CssSweet\v2\Snippet\Convert($this, [
+            'input' => $input,
+            'options' => $options,
+        ]))->process();
+    }
+
+    public function extracting($input, $options)
+    {
+        return (new \CssSweet\v2\Snippet\Extract($this, [
+            'input' => $input,
+            'options' => $options,
+        ]))->process();
+    }
+
+    public function lightening($input, $options)
+    {
+        return (new \CssSweet\v2\Snippet\Lighten($this, [
+            'input' => $input,
+            'options' => $options,
+        ]))->process();
+    }
+
+    public function modifying($input, $options)
+    {
+        return (new \CssSweet\v2\Snippet\Modify($this, [
+            'input' => $input,
+            'options' => $options,
+        ]))->process();
+    }
+
+    public function saturating($input, $options)
+    {
+        return (new \CssSweet\v2\Snippet\Saturate($this, [
+            'input' => $input,
+            'options' => $options,
+        ]))->process();
     }
 
     /* UTILITY METHODS (@theboxer) */

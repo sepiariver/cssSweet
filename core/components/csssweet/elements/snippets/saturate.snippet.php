@@ -1,5 +1,4 @@
 <?php
-
 /*
  * saturate
  *
@@ -18,7 +17,7 @@ $cssSweetPath = $modx->getOption('csssweet.core_path', null, $modx->getOption('c
 $cssSweetPath .= 'model/csssweet/';
 $csssweet = $modx->getService('csssweet', 'CssSweet', $cssSweetPath);
 if (!$csssweet || !($csssweet instanceof CssSweet)) {
-    $modx->log(modX::LOG_LEVEL_ERROR, '[cssSweet.convert] could not load the required csssweet class!');
+    $modx->log(modX::LOG_LEVEL_ERROR, '[cssSweet.saturate] could not load the required csssweet class!');
     return '';
 }
 

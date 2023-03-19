@@ -9,7 +9,7 @@ class JShrinkTest extends TestCase
     protected function setUp(): void
     {
         $this->projectPath = dirname(dirname(dirname(__FILE__)));
-        require_once($this->projectPath . '/core/components/csssweet/model/vendor/autoload.php');
+        require_once($this->projectPath . '/core/components/csssweet/vendor/autoload.php');
         $this->jShrink = new JShrink\Minifier();
     }
     public function testInstantiation()

@@ -60,7 +60,9 @@ trait CSS
 
         // Optionally set base_path for scss imports
         $scss_import_paths = $this->modx->getOption('scss_import_paths', $properties, '');
-        $scss_import_paths = (empty($scss_import_paths)) ? array() : $this->cs->explodeAndClean($scss_import_paths);
+        $scss_import_paths = (empty($scss_import_paths))
+            ? [$this->modx->getOption('assets_path') . 'components/csssweet/scss/']
+            : $this->cs->explodeAndClean($scss_import_paths);
 
         // Get the output path; construct fallback; log for debugging
         $csssCustomCssPath = $this->modx->getOption('css_path', $properties, '');
@@ -120,7 +122,7 @@ trait CSS
             } catch (SassException $e) {
                 $this->modx->log(
                     \modX::LOG_LEVEL_ERROR,
-                    $e->getMessage() . ' scss not compiled. minification not performed.',
+                    $e->getMessage() . ' scss not compiled. minification not performed. Paths: ' . print_r($scss_import_paths, true),
                     '',
                     'saveCustomCss'
                 );

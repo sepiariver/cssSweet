@@ -1,5 +1,4 @@
 <?php
-
 /**
  * saveCustomCss
  * @author @sepiariver
