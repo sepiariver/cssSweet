@@ -3,7 +3,9 @@ config.core.php
 .idea
 .settings
 .project
-_packages
+_packages/*.*
+!_packages/.gitignore
+!_packages/*.zip
 *.debug.php
 vendor
 /test/.phpunit.*
