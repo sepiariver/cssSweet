@@ -166,7 +166,17 @@
                 {
                     "name": "csss.custom_css.scss",
                     "description": "Sample chunk only. It's recommended to create your own chunk(s) with a unique name(s) and set them in the saveCustomCss plugin properties.",
-                    "file": "csss.custom_css.scss.tpl"
+                    "file": "csss.custom_css.scss.tpl",
+                    "properties": [
+                        {
+                            "name": "aqua",
+                            "value": "#407F7F"
+                        },
+                        {
+                            "name": "grey",
+                            "value": "#aaaaaa"
+                        }
+                    ]
                 }
             ]
         }

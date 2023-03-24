@@ -127,7 +127,7 @@ class CssSweet
         }
 
         // If we got the class (which means it's installed properly), include the settings
-        if (class_exists('ClientConfig') && $clientConfig instanceof \ClientConfig) {
+        if ($clientConfig && ($clientConfig instanceof ClientConfig)) {
             $ccSettings = $clientConfig->getSettings();
             if (is_array($ccSettings)) {
                 $settings = array_merge($settings, $ccSettings);
@@ -198,6 +198,47 @@ class CssSweet
                 'message' => 'Using output directory ' . $path,
             ];
         }
+    }
+
+    /* For testing and backwards compatibility */
+    public function converting($input, $options = '')
+    {
+        return (new \CssSweet\v2\Snippet\Convert($this, [
+            'input' => $input,
+            'options' => $options,
+        ]))->process();
+    }
+
+    public function extracting($input, $options)
+    {
+        return (new \CssSweet\v2\Snippet\Extract($this, [
+            'input' => $input,
+            'options' => $options,
+        ]))->process();
+    }
+
+    public function lightening($input, $options)
+    {
+        return (new \CssSweet\v2\Snippet\Lighten($this, [
+            'input' => $input,
+            'options' => $options,
+        ]))->process();
+    }
+
+    public function modifying($input, $options)
+    {
+        return (new \CssSweet\v2\Snippet\Modify($this, [
+            'input' => $input,
+            'options' => $options,
+        ]))->process();
+    }
+
+    public function saturating($input, $options)
+    {
+        return (new \CssSweet\v2\Snippet\Saturate($this, [
+            'input' => $input,
+            'options' => $options,
+        ]))->process();
     }
 
     /* UTILITY METHODS (@theboxer) */

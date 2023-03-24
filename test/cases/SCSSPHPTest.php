@@ -9,7 +9,7 @@ class SCSSPHPTest extends TestCase
     protected function setUp(): void
     {
         $this->projectPath = dirname(dirname(dirname(__FILE__)));
-        require_once($this->projectPath . '/core/components/csssweet/model/vendor/autoload.php');
+        require_once($this->projectPath . '/core/components/csssweet/vendor/autoload.php');
         $this->scssphp = new ScssPhp\ScssPhp\Compiler();
     }
     public function testInstantiation()

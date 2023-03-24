@@ -11,7 +11,7 @@ class Lighten extends Snippet
     public function modify($input, $options)
     {
         // Set color class
-        $cc = $this->getColorClass($input);
+        $cc = $this->cs->getColorClass($input);
         if (!$cc['color']) {
             return '';
         }

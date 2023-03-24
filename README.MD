@@ -1,6 +1,6 @@
 cssSweet
 =========================================
-Version: 5.2.0-beta1
+Version: 5.3.0-beta1
 
 Author: YJ Tso [@sepiariver](https://sepiariver.com/modx/)
 
@@ -12,6 +12,7 @@ as well as on the documentation site:
 
 [https://docs.modx.org/current/en/extras/csssweet](https://docs.modx.org/current/en/extras/csssweet) **(this one needs updating)**
 
+Thank you to contributors: @matdave and the MODX team
 
 ## Example Use Cases
 - Use system or context settings to store primary colors in a site's color scheme, then process all other color values relative to these, so you can shift the entire color theme by modifying a few settings.

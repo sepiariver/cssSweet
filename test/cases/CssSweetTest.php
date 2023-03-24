@@ -2,6 +2,11 @@
 
 use OzdemirBurak\Iris\Exceptions\InvalidColorException;
 use PHPUnit\Framework\TestCase;
+use CssSweet\v2\Snippet\Convert;
+use CssSweet\v2\Snippet\Extract;
+use CssSweet\v2\Snippet\Lighten;
+use CssSweet\v2\Snippet\Prefix;
+use CssSweet\v2\Snippet\Saturate;
 
 class CssSweetTest extends TestCase
 {
@@ -21,7 +26,7 @@ class CssSweetTest extends TestCase
         require_once($this->projectPath . '/core/components/csssweet/model/csssweet/csssweet.class.php');
         $this->cssSweet = new CssSweet($this->modx);
 
-        $this->scssphp = $this->cssSweet->scssphpInit([], 'Nested');
+        $this->scssphp = $this->cssSweet->scssphpInit([], 'expanded');
         $this->jShrink = $this->cssSweet->jshrinkInit();
     }
     public function testInstantiation()

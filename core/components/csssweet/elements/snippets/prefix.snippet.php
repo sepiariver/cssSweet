@@ -1,5 +1,4 @@
 <?php
-
 /*
  * prefix
  *
@@ -24,7 +23,7 @@ $cssSweetPath = $modx->getOption('csssweet.core_path', null, $modx->getOption('c
 $cssSweetPath .= 'model/csssweet/';
 $csssweet = $modx->getService('csssweet', 'CssSweet', $cssSweetPath);
 if (!$csssweet || !($csssweet instanceof CssSweet)) {
-    $modx->log(modX::LOG_LEVEL_ERROR, '[cssSweet.convert] could not load the required csssweet class!');
+    $modx->log(modX::LOG_LEVEL_ERROR, '[cssSweet.prefix] could not load the required csssweet class!');
     return '';
 }
 
