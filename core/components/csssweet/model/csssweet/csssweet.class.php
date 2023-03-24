@@ -1,9 +1,5 @@
 <?php
 
-use JShrink\Minifier;
-use OzdemirBurak\Iris\Exceptions\InvalidColorException;
-use ScssPhp\ScssPhp\Compiler;
-
 /**
  * CssSweet wrapper class
  * @package cssSweet
@@ -73,47 +69,6 @@ class CssSweet
     }
 
     /**
-     * Do special stuff to init scssphp classes
-     *
-     * @param array $paths
-     * @param string $formatter The scssphp formatter class selector. Default 'Expanded'
-     * @return object An instance of the $scssphp class.
-     */
-    public function scssphpInit(array $paths = array(), string $formatter = 'expanded')
-    {
-        // Instantiate Compiler
-        $scssphp = new Compiler();
-
-        // Set path
-        $scssphp->setImportPaths($paths);
-        // Found this helpful
-        $this->modx->log(modX::LOG_LEVEL_INFO, 'Applying scssphp formatter class: ' . $formatter);
-
-        $scssphp->setOutputStyle(strtolower($formatter));
-
-        // Ask and you shall receive
-        return $scssphp;
-    }
-
-    public function jshrinkInit(): Minifier
-    {
-        // Grab the JS minifier class
-        return new Minifier();
-    }
-
-    public function getIris(string $value, $format = 'hex')
-    {
-        // Set format class
-        $format = '\\OzdemirBurak\\Iris\\Color\\' . ucfirst(strtolower($format));
-        // Grab the iris color format class
-        $iris = new $format($value);
-        if (!($iris instanceof $format)) {
-            return null;
-        }
-        return $iris;
-    }
-
-    /**
      * Process and array of chunk (names) with provided $settings
      *
      * @param array $chunks An array of chunk names.
@@ -172,7 +127,7 @@ class CssSweet
         }
 
         // If we got the class (which means it's installed properly), include the settings
-        if ($clientConfig && ($clientConfig instanceof ClientConfig)) {
+        if (class_exists('ClientConfig') && $clientConfig instanceof \ClientConfig) {
             $ccSettings = $clientConfig->getSettings();
             if (is_array($ccSettings)) {
                 $settings = array_merge($settings, $ccSettings);
@@ -188,52 +143,6 @@ class CssSweet
 
         // Settings may or may not be modified at this point
         return $settings;
-    }
-
-    public function getColorClass($input)
-    {
-        $input = trim($input);
-        // Set color class
-        $format = null;
-        $unHash = false;
-        $color = null;
-        if (strpos($input, 'rgba') === 0) {
-            $format = 'Rgba';
-        } elseif (strpos($input, 'rgb') === 0) {
-            $format = 'Rgb';
-        } elseif (strpos($input, 'hsla') === 0) {
-            $format = 'Hsla';
-        } elseif (strpos($input, 'hsl') === 0) {
-            $format = 'Hsl';
-        } elseif (strpos($input, 'hsv') === 0) {
-            $format = 'Hsv';
-        } elseif (strpos($input, '#') === 0) {
-            $format = 'Hex';
-        } elseif (preg_match('/[a-fA-F0-9]{6}/', $input) || preg_match('/[a-fA-F0-9]{3}/', $input)) {
-            $format = 'Hex';
-            $input = '#' . $input;
-            $unHash = true;
-        } else {
-            $this->modx->log(modX::LOG_LEVEL_ERROR, '[cssSweet.lighten] unsupported color format: ' . $input);
-        }
-
-        // Instantiate iris color class
-        if ($format) {
-            try {
-                $color = $this->getIris($input, $format);
-            } catch (InvalidColorException $e) {
-                $this->modx->log(
-                    modX::LOG_LEVEL_ERROR,
-                    '[cssSweet.lighten] InvalidColorException: ' . $e->getMessage()
-                );
-            }
-        }
-
-        return [
-            'format' => $format,
-            'unHash' => $unHash,
-            'color' => $color,
-        ];
     }
 
     public function getProperties($properties, $mode)

@@ -1,15 +1,17 @@
 <?php
 namespace CssSweet\v2\Snippet;
 
+use CssSweet\v2\Traits\CSS;
 use CssSweet\v2\Traits\Modifier;
 
 class Convert extends Snippet
 {
+    use CSS;
     use Modifier;
     public function modify($input, $options)
     {
         // Set color class
-        $cc = $this->cs->getColorClass(trim($input));
+        $cc = $this->getColorClass(trim($input));
         if (!$cc['color']) {
             return '';
         }
