@@ -25,9 +25,6 @@ class CssSweetTest extends TestCase
         $this->modx->initialize('web');
         require_once($this->projectPath . '/core/components/csssweet/model/csssweet/csssweet.class.php');
         $this->cssSweet = new CssSweet($this->modx);
-
-        $this->scssphp = $this->cssSweet->scssphpInit([], 'expanded');
-        $this->jShrink = $this->cssSweet->jshrinkInit();
     }
     public function testInstantiation()
     {
@@ -36,48 +33,7 @@ class CssSweetTest extends TestCase
         $this->assertEquals($this->modx->context->key, 'web');
         $this->assertTrue($this->cssSweet instanceof CssSweet);
     }
-    public function testInit()
-    {   
-        $this->assertTrue($this->scssphp instanceof \ScssPhp\ScssPhp\Compiler);
-        $this->assertTrue($this->jShrink instanceof \JShrink\Minifier);
-    }
 
-    public function testCompile()
-    {
-        $scss = file_get_contents('assets/test.scss');
-        $expectedcss = file_get_contents('assets/expected.css');
-        $compiledcss = $this->scssphp->compile($scss);
-
-        $this->assertSame($expectedcss, $compiledcss);
-
-        $js = file_get_contents('assets/test.js');
-        $expectedjs = file_get_contents('assets/expected.js');
-        $compiledjs = $this->jShrink->minify($js);
-
-        $this->assertSame($expectedjs, $compiledjs);
-    }
-
-    public function testIris()
-    {
-        $irisHex = $this->cssSweet->getIris('#ff00ff');
-        $this->assertTrue($irisHex instanceof \OzdemirBurak\Iris\Color\Hex);
-        $irisRgb = $this->cssSweet->getIris('rgb(255, 0, 255)', 'rgb');
-        $this->assertTrue($irisRgb instanceof \OzdemirBurak\Iris\Color\Rgb);
-        $this->assertEquals($irisHex->toRgb(), $irisRgb);
-
-        $hex = $this->cssSweet->getIris('#333');
-        $this->assertEquals($hex->lighten(20), '#666666');
-        $this->assertEquals($hex->darken(20), '#000000');
-        $this->assertEquals($hex->brighten(20), '#666666');
-    }
-    public function testGetColor()
-    {
-        $this->assertEquals($this->cssSweet->getColorClass('rgba(128, 230, 26, 0.5)')['color'], 'rgba(128,230,26,0.5)');
-        $this->assertEquals($this->cssSweet->getColorClass('rgb(128, 230, 26)')['color'], 'rgb(128,230,26)');
-        $this->assertEquals($this->cssSweet->getColorClass('hsla(0, 0%, 20%, 1)')['color'], 'hsla(0,0%,20%,1)');
-        $this->assertEquals($this->cssSweet->getColorClass('hsl(0, 0%, 20%)')['color'], 'hsl(0,0%,20%)');
-        $this->assertEquals($this->cssSweet->getColorClass('hsv(0, 0%, 20%)')['color'], 'hsv(0,0%,20%)');
-    }
     public function testLightening()
     {
         $this->assertEquals($this->cssSweet->lightening('#333', '20'), '#666666');

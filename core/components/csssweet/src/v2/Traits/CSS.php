@@ -192,7 +192,7 @@ trait CSS
                 $color = $this->getIris($input, $format);
             } catch (InvalidColorException $e) {
                 $this->modx->log(
-                    modX::LOG_LEVEL_ERROR,
+                    \modX::LOG_LEVEL_ERROR,
                     '[cssSweet.lighten] InvalidColorException: ' . $e->getMessage()
                 );
             }
