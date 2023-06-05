@@ -2,7 +2,9 @@
 
 namespace CssSweet\v2\Traits;
 
+use ScssPhp\ScssPhp\Compiler;
 use ScssPhp\ScssPhp\Exception\SassException;
+use OzdemirBurak\Iris\Exceptions\InvalidColorException;
 
 trait CSS
 {
@@ -15,9 +17,12 @@ trait CSS
     /** @var array */
     protected $sp = [];
 
+    /** @var bool */
+    protected bool $debug = false;
+
     protected function rebuildCss(): void
     {
-        $this->debug('Rebuilding CSS');
+        $this->debugMsg('Rebuilding CSS');
         // Dev mode option
         $mode = $this->modx->getOption('dev_mode', $this->sp, 'custom', true);
         // Letting folks know what's going on
@@ -115,7 +120,13 @@ trait CSS
         $file = $csssCustomCssPath . $filename;
 
         // Init scssphp
-        $scssMin = $this->cs->scssphpInit($scss_import_paths, $css_output_format);
+        $scssMin = new Compiler();
+        $scssMin->setImportPaths($scss_import_paths);
+        $this->modx->log(
+            \modX::LOG_LEVEL_INFO,
+            'Applying scssphp formatter class: ' . $css_output_format
+        );
+        $scssMin->setOutputStyle(strtolower($css_output_format));
         if ($scssMin) {
             try {
                 $contents = $scssMin->compileString($contents);
@@ -146,5 +157,66 @@ trait CSS
                 'saveCustomCss'
             );
         }
+    }
+
+    public function getColorClass($input)
+    {
+        $input = trim($input);
+        // Set color class
+        $format = null;
+        $unHash = false;
+        $color = null;
+        if (strpos($input, 'rgba') === 0) {
+            $format = 'Rgba';
+        } elseif (strpos($input, 'rgb') === 0) {
+            $format = 'Rgb';
+        } elseif (strpos($input, 'hsla') === 0) {
+            $format = 'Hsla';
+        } elseif (strpos($input, 'hsl') === 0) {
+            $format = 'Hsl';
+        } elseif (strpos($input, 'hsv') === 0) {
+            $format = 'Hsv';
+        } elseif (strpos($input, '#') === 0) {
+            $format = 'Hex';
+        } elseif (preg_match('/[a-fA-F0-9]{6}/', $input) || preg_match('/[a-fA-F0-9]{3}/', $input)) {
+            $format = 'Hex';
+            $input = '#' . $input;
+            $unHash = true;
+        } else {
+            $this->modx->log(modX::LOG_LEVEL_ERROR, '[cssSweet.lighten] unsupported color format: ' . $input);
+        }
+
+        // Instantiate iris color class
+        if ($format) {
+            try {
+                $color = $this->getIris($input, $format);
+            } catch (InvalidColorException $e) {
+                $this->modx->log(
+                    modX::LOG_LEVEL_ERROR,
+                    '[cssSweet.lighten] InvalidColorException: ' . $e->getMessage()
+                );
+            }
+        }
+
+        return [
+            'format' => $format,
+            'unHash' => $unHash,
+            'color' => $color,
+        ];
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function getIris(string $value, $format = 'hex')
+    {
+        // Set format class
+        $format = '\\OzdemirBurak\\Iris\\Color\\' . ucfirst(strtolower($format));
+        // Grab the iris color format class
+        $iris = new $format($value);
+        if (!($iris instanceof $format)) {
+            throw new \Exception('Invalid color format: ' . $format);
+        }
+        return $iris;
     }
 }

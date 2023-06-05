@@ -1,10 +1,12 @@
 <?php
 namespace CssSweet\v2\Snippet;
 
+use CssSweet\v2\Traits\CSS;
 use CssSweet\v2\Traits\Modifier;
 
 class Lighten extends Snippet
 {
+    use CSS;
     use Modifier;
     public function modify($input, $options)
     {

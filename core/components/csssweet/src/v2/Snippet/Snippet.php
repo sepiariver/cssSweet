@@ -30,7 +30,7 @@ abstract class Snippet
         return $this->modx->getOption($key, $this->sp, $default, $skipEmpty);
     }
 
-    protected function debug(string $msg, mixed $data = null): void
+    protected function debugMsg(string $msg, mixed $data = null): void
     {
         if (!$this->debug) {
             return;

@@ -2,6 +2,8 @@
 
 namespace CssSweet\v2\Traits;
 
+use JShrink\Minifier;
+
 trait JS
 {
     /** @var \CssSweet */
@@ -12,6 +14,9 @@ trait JS
 
     /** @var array */
     protected $sp = [];
+
+    /** @var bool */
+    protected bool $debug = false;
 
     protected function rebuildJs(): void
     {
@@ -105,22 +110,15 @@ trait JS
         // Status report
         $status = 'not';
         if ($minify_custom_js) {
-            $jshrink = $this->cs->jshrinkInit();
+            $jsShrink = new Minifier();
             // If we got the class, try minification. Log failures.
-            if ($jshrink) {
-                try {
-                    $contents = $jshrink::minify($contents, array('flaggedComments' => $preserve_comments));
-                    $status = '';
-                } catch (\Exception $e) {
-                    $this->modx->log(
-                        \modX::LOG_LEVEL_ERROR,
-                        $e->getMessage() . '— js not compiled. Minification not performed.'
-                    );
-                }
-            } else {
+            try {
+                $contents = $jsShrink::minify($contents, array('flaggedComments' => $preserve_comments));
+                $status = '';
+            } catch (\Exception $e) {
                 $this->modx->log(
                     \modX::LOG_LEVEL_ERROR,
-                    'Failed to load js Minifier class — js not compiled. Minification not performed.'
+                    $e->getMessage() . '— js not compiled. Minification not performed.'
                 );
             }
         }
